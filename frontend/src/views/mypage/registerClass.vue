@@ -71,11 +71,12 @@
               </div>
             </div>
             <div class="card-calendar-wrapper">
-              <el-image
+              <!-- <el-image
                 :src="require(`@/assets/images/calendar.png`)"
                 fit="cover"
                 style=""
-              />
+              /> -->
+              <VCalendarLibrary />
             </div>
           </el-card>
         </div>

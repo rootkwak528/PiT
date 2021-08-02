@@ -7,6 +7,7 @@ import VueAxios from "./common/lib/axios";
 import axios from "./common/lib/axios";
 import i18n from "./common/lib/i18n";
 import router from "./router";
+import VCalendarLibrary from "v-calendar";
 
 import "element-plus/packages/theme-chalk/src/base.scss";
 
@@ -199,6 +200,7 @@ app.use(VueAxios, axios);
 app.use(store);
 app.use(i18n);
 app.use(router);
+app.use(VCalendarLibrary);
 //app.use(newRouter)
 
 components.forEach(component => {
