@@ -26,6 +26,17 @@ export function requestLogin({ state }, payload) {
   let body = payload
   return $axios.post(url, body)
 }
+
+// 회원 정보 조회
+export function requestUserInfo({}, token) {
+  const url = `/users/me`
+  return $axios.get(url, {
+    headers: {
+      'Authorization' : token
+    }
+  })
+}
+
 // export function requestUserInfo ({}, token){
 //   console.log('requestUserInfo token : ' + token)
 //   const url = '/api/v1/users/me'
