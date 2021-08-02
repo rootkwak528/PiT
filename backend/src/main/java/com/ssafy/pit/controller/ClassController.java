@@ -27,7 +27,6 @@ public class ClassController {
 	@GetMapping("/{classNo}")
 	public ResponseEntity<ClassDetailGetRes> getClassDetail(@PathVariable int classNo){
 		ClassDetailGetRes classDetail = classService.getClassDetail(classNo);
-		
 		return ResponseEntity.status(200).body(classDetail);
 	}
 	
