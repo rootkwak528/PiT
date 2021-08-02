@@ -1,5 +1,3 @@
-Actions.js
-
 // API
 import $axios from 'axios'
 
