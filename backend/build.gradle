@@ -65,7 +65,10 @@ dependencies {
    compile("com.querydsl:querydsl-jpa")
    //compile("com.querydsl:querydsl-apt")
    implementation 'com.google.code.gson:gson:2.8.6'
-   
+   // 파일업로드
+   // https://mvnrepository.com/artifact/commons-io/commons-io
+	implementation 'commons-io:commons-io:2.8.0'
+
 }
 
 test {

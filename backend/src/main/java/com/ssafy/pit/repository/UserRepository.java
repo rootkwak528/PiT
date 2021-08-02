@@ -9,4 +9,5 @@ import com.ssafy.pit.entity.User;
 public interface UserRepository extends JpaRepository<User, Long> {
 	User findUserByUserEmail(String userEmail);
 	User findUserByUserNickname(String userNickname);
+	int deleteByUserEmail(String userEmail);
 }
