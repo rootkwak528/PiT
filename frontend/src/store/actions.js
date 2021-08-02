@@ -17,32 +17,32 @@ export function checkDuplicatedNickname({ state }, payload) {
   return $axios.get(url)
 }
 // skeleton 예시 참고
-export function requestLogin ({ state }, payload) {
-  console.log('requestLogin', state, payload)
-  const url = '/auth/login'
-  let body = payload
-  return $axios.post(url, body)
-}
+// export function requestLogin ({ state }, payload) {
+//   console.log('requestLogin', state, payload)
+//   const url = '/auth/login'
+//   let body = payload
+//   return $axios.post(url, body)
+// }
 
-export function requestUserInfo ({}, token){
-  console.log('requestUserInfo token : ' + token)
-  const url = '/api/v1/users/me'
-  return $axios.get(url, {
-    headers: {
-      'Authorization' : token
-    }
-  })
-}
+// export function requestUserInfo ({}, token){
+//   console.log('requestUserInfo token : ' + token)
+//   const url = '/api/v1/users/me'
+//   return $axios.get(url, {
+//     headers: {
+//       'Authorization' : token
+//     }
+//   })
+// }
 
-export function requestJoin ({ state }, payload) {
-  const url = '/users'
-  let body = payload
-  return $axios.post(url, body)
-}
+// export function requestJoin ({ state }, payload) {
+//   const url = '/users'
+//   let body = payload
+//   return $axios.post(url, body)
+// }
 
-export function checkDuplicationId ({ state }, payload) {
-  const url = `/users/${payload.userId}`
-  return $axios.get(url)
-}
+// export function checkDuplicationId ({ state }, payload) {
+//   const url = `/users/${payload.userId}`
+//   return $axios.get(url)
+// }
 // skeleton 예시 참고
 

@@ -65,10 +65,10 @@
     </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <el-button v-if="!joinValid" type="primary" @click="clickJoin" disabled
+        <el-button v-if="!joinValid" type="primary" @click="clickRegister" disabled
           >가입하기</el-button
         >
-        <el-button v-else type="primary" @click="clickJoin">가입하기</el-button>
+        <el-button v-else type="primary" @click="clickRegister">가입하기</el-button>
       </span>
     </template>
   </el-dialog>
@@ -144,10 +144,11 @@ export default {
     };
 
     const validateEmail = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('필수 입력 항목입니다.'))
-      } else if (value.length > 16) {
-        callback(new Error("최대 16자까지 입력 가능합니다."));
+      const email = value
+      const emailTest = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/
+
+      if(emailTest.test(email) == false){
+        callback(new Error("이메일 형식이 올바르지 않습니다."));
       } else {
         callback();
       }
@@ -224,18 +225,25 @@ export default {
 
     const state = reactive({
       form: {
+        gender: '001',
+        name: '',
         email: '',
         pwd: '',
         pwdChk: '',
-        gender: '001',
-        name: '',
+        type: '003',
+        profile: '',
         nickname: '',
-        job: '003',
-        phone: '',
         desc: '',
+        phone: '',
         align: 'left'
       },
       rules: {
+        gender: [
+          { required: true, trigger: 'blur' }
+        ],
+        name: [
+          { required: true, validator: validateName, trigger: 'blur' }
+        ],
         email: [
           { required: true, validator: validateEmail, trigger: 'blur' }
         ],
@@ -245,20 +253,12 @@ export default {
         pwdChk: [
           { required: true, validator: validatePwdChk, trigger: 'blur' }
         ],
-        gender: [
-          { required: true, trigger: 'blur' }
-        ],
-        name: [
-          { required: true, validator: validateName, trigger: 'blur' }
-        ],
-        gender: [{ required: true, trigger: "blur" }],
-        name: [{ required: true, validator: validateName, trigger: "blur" }],
+        type: [{ required: true, trigger: "blur" }],
         nickname: [
           { required: true, validator: validateNickname, trigger: "blur" }
         ],
-        job: [{ required: true, trigger: "blur" }],
-        phone: [{ required: true, validator: validatePhone, trigger: "blur" }],
-        desc: [{ validator: validateDesc, trigger: "blur" }]
+        desc: [{ validator: validateDesc, trigger: "blur" }],
+        phone: [{ required: true, validator: validatePhone, trigger: "blur" }]
       },
       dialogVisible: computed(() => props.open),
       formLabelWidth: "120px"
@@ -268,7 +268,7 @@ export default {
       console.log(joinForm.value);
     });
 
-    const clickJoin = function() {
+    const clickRegister = function() {
       // 로그인 클릭 시 validate 체크 후 그 결과 값에 따라, 로그인 API 호출 또는 경고창 표시
       joinForm.value.validate(valid => {
         if (valid) {
@@ -276,12 +276,16 @@ export default {
 
           loading.value = true;
           store
-            .dispatch("root/requestJoin", {
-              userDept: state.form.department,
-              userType: state.form.job,
+            .dispatch("root/register", {
+              userGender: state.form.gender,
               userName: state.form.name,
-              userId: state.form.id,
-              userPwd: state.form.password
+              userEmail: state.form.email,
+              userPwd: state.form.pwd,
+              userType: state.form.type,
+              userProfile: state.form.profile,
+              userNickname: state.form.nickname,
+              userDesc: state.form.desc,
+              userPhone: state.form.phone
             })
             .then(function(result) {
               // localStorage 에 jwt 토큰 저장
@@ -314,11 +318,12 @@ export default {
     }
 
     const checkDuplicatedEmail = function () {
-      joinForm.value.validateField('id', (err) => {
+      console.log("이메일 중복검사 클릭")
+      joinForm.value.validateField('email', (err) => {
         if (err === '') {
           store.dispatch('root/checkDuplicatedEmail', { userEmail: state.form.email })
           .then(result => {
-            alert('사용 가능한 아이디입니다.')
+            alert('사용 가능한 이메일입니다.')
             isEmailAvailable.value = true
             onInputForm()
           })
@@ -332,11 +337,12 @@ export default {
     };
 
     const checkDuplicatedNickname = function () {
-      joinForm.value.validateField('id', (err) => {
+      console.log("닉네임 중복검사 클릭")
+      joinForm.value.validateField('nickname', (err) => {
         if (err === '') {
           store.dispatch('root/checkDuplicatedNickname', { userNickname: state.form.nickname })
           .then(result => {
-            alert('사용 가능한 아이디입니다.')
+            alert('사용 가능한 닉네임입니다.')
             isEmailAvailable.value = true
             onInputForm()
           })
@@ -360,7 +366,7 @@ export default {
       onInputForm()
     }
 
-    return { joinForm, joinValid, isEmailAvailable, loading, state, clickJoin, handleClose, checkDuplicatedEmail, checkDuplicatedNickname, onInputForm, onInputIdForm }
+    return { joinForm, joinValid, isEmailAvailable, loading, state, clickRegister, handleClose, checkDuplicatedEmail, checkDuplicatedNickname, onInputForm, onInputIdForm }
   }
 };
 </script>
