@@ -2,7 +2,7 @@
   <el-dialog custom-class="join-dialog" title="회원가입" v-model="state.dialogVisible" @close="handleClose">
     <el-form v-loading="loading" :model="state.form" :rules="state.rules" ref="joinForm" :label-position="state.form.align">
       <el-form-item prop="email" label="아이디(이메일)" :label-width="state.formLabelWidth">
-        <el-input style="float:left; width:70%" v-model="state.form.email" autocomplete="off" @input="onInputIdForm"></el-input>
+        <el-input style="float:left; width:70%" v-model="state.form.email" autocomplete="off" @input="onInputEmailForm"></el-input>
         <el-button style="float:right; width:28%" type="primary" @click="checkDuplicatedEmail">중복 확인</el-button>
       </el-form-item>
       <el-form-item prop="pwd" label="비밀번호" :label-width="state.formLabelWidth">
@@ -31,7 +31,7 @@
         ></el-input>
       </el-form-item>
       <el-form-item prop="nickname" label="닉네임" :label-width="state.formLabelWidth">
-        <el-input style="float:left; width:70%" v-model="state.form.nickname" autocomplete="off" @input="onInputIdForm"></el-input>
+        <el-input style="float:left; width:70%" v-model="state.form.nickname" autocomplete="off" @input="onInputNicknameForm"></el-input>
         <el-button style="float:right; width:28%" type="primary" @click="checkDuplicatedNickname">중복 확인</el-button>
       </el-form-item>
       <el-form-item prop="job" label="분류" :label-width="state.formLabelWidth">
@@ -125,6 +125,7 @@ export default {
     const joinForm = ref(null)
     const joinValid = ref(false)
     const isEmailAvailable = ref(false)
+    const isNicknameAvailable = ref(false)
     const loading = ref(false)
 
     /*
@@ -225,12 +226,12 @@ export default {
 
     const state = reactive({
       form: {
-        gender: '001',
+        gender: '',
         name: '',
         email: '',
         pwd: '',
         pwdChk: '',
-        type: '003',
+        type: '',
         profile: '',
         nickname: '',
         desc: '',
@@ -305,15 +306,15 @@ export default {
     };
 
     const handleClose = function () {
+      state.form.gender = ''
+      state.form.name = ''
       state.form.email = ''
       state.form.pwd = ''
       state.form.pwdChk = ''
-      state.form.gender = '001'
-      state.form.name = ''
+      state.form.type = ''
       state.form.nickname = ''
-      state.form.job = '003'
-      state.form.phone = ''
       state.form.desc = ''
+      state.form.phone = ''
       emit('closeJoinDialog')
     }
 
@@ -334,6 +335,7 @@ export default {
             });
         }
       });
+      console.log(isEmailAvailable.value);
     };
 
     const checkDuplicatedNickname = function () {
@@ -343,7 +345,7 @@ export default {
           store.dispatch('root/checkDuplicatedNickname', { userNickname: state.form.nickname })
           .then(result => {
             alert('사용 가능한 닉네임입니다.')
-            isEmailAvailable.value = true
+            isNicknameAvailable.value = true
             onInputForm()
           })
           .catch(err => {
@@ -353,20 +355,26 @@ export default {
             });
         }
       });
+      console.log(isNicknameAvailable.value);
     };
 
     const onInputForm = function () {
       joinForm.value.validate((valid) => {
-        joinValid.value = valid & isEmailAvailable.value
+        joinValid.value = valid & isEmailAvailable.value & isNicknameAvailable.value
       })
     }
 
-    const onInputIdForm = function () {
+    const onInputEmailForm = function () {
       isEmailAvailable.value = false
       onInputForm()
     }
 
-    return { joinForm, joinValid, isEmailAvailable, loading, state, clickRegister, handleClose, checkDuplicatedEmail, checkDuplicatedNickname, onInputForm, onInputIdForm }
+    const onInputNicknameForm = function (){
+      isNicknameAvailable.value = false
+      onInputForm()
+    }
+
+    return { joinForm, joinValid, isEmailAvailable, loading, state, clickRegister, handleClose, checkDuplicatedEmail, checkDuplicatedNickname, onInputForm, onInputEmailForm, onInputNicknameForm }
   }
 };
 </script>
