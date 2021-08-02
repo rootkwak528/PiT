@@ -116,10 +116,10 @@ public class UserController {
 		String userEmail = userDetails.getUsername();
 		
 		if(userService.delete(userEmail) == 1) {
-			return ResponseEntity.status(200).body("회원정보 업데이트가 완료되었습니다.");
+			return ResponseEntity.status(200).body("회원탈퇴에 성공하였습니다.");
 		}	
 		else {
-			return ResponseEntity.status(404).body("업데이트 과정에서 문제가 발생했습니다.");
+			return ResponseEntity.status(404).body("회원탈퇴중에 문제가 발생하였습니다.");
 		}
 	}
 }
