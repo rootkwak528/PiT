@@ -4,7 +4,7 @@
       <el-form-item prop="email" label="아이디(이메일)" :label-width="state.formLabelWidth" >
         <el-input v-model="state.form.email" autocomplete="off" @input="onInputForm"></el-input>
       </el-form-item>
-      <el-form-item prop="password" label="비밀번호" :label-width="state.formLabelWidth">
+      <el-form-item prop="pwd" label="비밀번호" :label-width="state.formLabelWidth">
         <el-input v-model="state.form.pwd" autocomplete="off" show-password @input="onInputForm"></el-input>
       </el-form-item>
     </el-form>
@@ -89,7 +89,7 @@ export default {
       }
     };
 
-    const validatePassword = (rule, value, callback) => {
+    const validatePwd = (rule, value, callback) => {
       const num = value.search(/[0-9]/g)
       const eng = value.search(/[a-z]/ig)
       const spe = value.search(/[`~!@#$%^&*|₩₩₩'₩";:₩/?]/gi)
@@ -110,15 +110,15 @@ export default {
     const state = reactive({
       form: {
         email: '',
-        password: '',
+        pwd: '',
         align: 'left'
       },
       rules: {
         email: [
           { required: true, validator: validateEmail, trigger: 'blur' }
         ],
-        password: [
-          { required: true, validator: validatePassword, trigger: 'blur' }
+        pwd: [
+          { required: true, validator: validatePwd, trigger: 'blur' }
         ],
       },
       dialogVisible: computed(() => props.open),
@@ -134,6 +134,7 @@ export default {
 
     const clickLogin = function () {
       // 로그인 클릭 시 validate 체크 후 그 결과 값에 따라, 로그인 API 호출 또는 경고창 표시
+      console.log("로그인 클릭")
       loginForm.value.validate((valid) => {
         if (valid) {
           console.log('submit')
