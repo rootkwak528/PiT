@@ -30,14 +30,6 @@ public class Event {
 	@Column(name="event_content")
 	String eventContent;
 //	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone="Asia/Seoul")
-	@Column(name="event_start_date")
-	@Temporal(TemporalType.DATE)
-	Date eventStartDate;
-//	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone="Asia/Seoul")
-	@Column(name="event_end_date")
-	@Temporal(TemporalType.DATE)
-	Date eventEndDate;
-//	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone="Asia/Seoul")
 	@Column(name="event_start_time")
 	@Temporal(TemporalType.TIMESTAMP)
 	Date eventStartTime;
