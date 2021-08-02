@@ -144,10 +144,18 @@ export default {
     };
 
     const validateEmail = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('필수 입력 항목입니다.'))
-      } else if (value.length > 16) {
-        callback(new Error("최대 16자까지 입력 가능합니다."));
+      // if (value === '') {
+      //   callback(new Error('필수 입력 항목입니다.'))
+      // } else if (value.length > 16) {
+      //   callback(new Error("최대 16자까지 입력 가능합니다."));
+      // } else {
+      //   callback();
+      // }
+      const email = value
+      const emailTest = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/
+
+      if(emailTest.test(email) == false){
+        callback(new Error("이메일 형식이 올바르지 않습니다."));
       } else {
         callback();
       }
@@ -251,8 +259,6 @@ export default {
         name: [
           { required: true, validator: validateName, trigger: 'blur' }
         ],
-        gender: [{ required: true, trigger: "blur" }],
-        name: [{ required: true, validator: validateName, trigger: "blur" }],
         nickname: [
           { required: true, validator: validateNickname, trigger: "blur" }
         ],
@@ -314,11 +320,12 @@ export default {
     }
 
     const checkDuplicatedEmail = function () {
-      joinForm.value.validateField('id', (err) => {
+      console.log("이메일 중복검사 클릭")
+      joinForm.value.validateField('email', (err) => {
         if (err === '') {
           store.dispatch('root/checkDuplicatedEmail', { userEmail: state.form.email })
           .then(result => {
-            alert('사용 가능한 아이디입니다.')
+            alert('사용 가능한 이메일입니다.')
             isEmailAvailable.value = true
             onInputForm()
           })
@@ -332,11 +339,12 @@ export default {
     };
 
     const checkDuplicatedNickname = function () {
-      joinForm.value.validateField('id', (err) => {
+      console.log("닉네임 중복검사 클릭")
+      joinForm.value.validateField('nickname', (err) => {
         if (err === '') {
           store.dispatch('root/checkDuplicatedNickname', { userNickname: state.form.nickname })
           .then(result => {
-            alert('사용 가능한 아이디입니다.')
+            alert('사용 가능한 닉네임입니다.')
             isEmailAvailable.value = true
             onInputForm()
           })
