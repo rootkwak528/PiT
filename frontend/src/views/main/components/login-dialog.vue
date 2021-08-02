@@ -1,11 +1,11 @@
 <template>
   <el-dialog custom-class="login-dialog" title="로그인" v-model="state.dialogVisible" @close="handleClose">
     <el-form v-loading="loading" :model="state.form" :rules="state.rules" ref="loginForm" :label-position="state.form.align">
-      <el-form-item prop="id" label="아이디(이메일)" :label-width="state.formLabelWidth" >
-        <el-input v-model="state.form.id" autocomplete="off" @input="onInputForm"></el-input>
+      <el-form-item prop="email" label="아이디(이메일)" :label-width="state.formLabelWidth" >
+        <el-input v-model="state.form.email" autocomplete="off" @input="onInputForm"></el-input>
       </el-form-item>
-      <el-form-item prop="password" label="비밀번호" :label-width="state.formLabelWidth">
-        <el-input v-model="state.form.password" autocomplete="off" show-password @input="onInputForm"></el-input>
+      <el-form-item prop="pwd" label="비밀번호" :label-width="state.formLabelWidth">
+        <el-input v-model="state.form.pwd" autocomplete="off" show-password @input="onInputForm"></el-input>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -77,17 +77,19 @@ export default {
       // rules의 객체 키 값과 form의 객체 키 값이 같아야 매칭되어 적용됨
       //
     */
-    const validateId = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('필수 입력 항목입니다.'))
-      } else if (value.length > 16) {
-        callback(new Error('최대 16자까지 입력 가능합니다.'))
-      } else {
-        callback()
-      }
-    }
 
-    const validatePassword = (rule, value, callback) => {
+    const validateEmail = (rule, value, callback) => {
+      const email = value
+      const emailTest = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/
+
+      if(emailTest.test(email) == false){
+        callback(new Error("이메일 형식이 올바르지 않습니다."));
+      } else {
+        callback();
+      }
+    };
+
+    const validatePwd = (rule, value, callback) => {
       const num = value.search(/[0-9]/g)
       const eng = value.search(/[a-z]/ig)
       const spe = value.search(/[`~!@#$%^&*|₩₩₩'₩";:₩/?]/gi)
@@ -107,16 +109,16 @@ export default {
 
     const state = reactive({
       form: {
-        id: '',
-        password: '',
+        email: '',
+        pwd: '',
         align: 'left'
       },
       rules: {
-        id: [
-          { required: true, validator: validateId, trigger: 'blur' }
+        email: [
+          { required: true, validator: validateEmail, trigger: 'blur' }
         ],
-        password: [
-          { required: true, validator: validatePassword, trigger: 'blur' }
+        pwd: [
+          { required: true, validator: validatePwd, trigger: 'blur' }
         ],
       },
       dialogVisible: computed(() => props.open),
@@ -132,15 +134,15 @@ export default {
 
     const clickLogin = function () {
       // 로그인 클릭 시 validate 체크 후 그 결과 값에 따라, 로그인 API 호출 또는 경고창 표시
+      console.log("로그인 클릭")
       loginForm.value.validate((valid) => {
         if (valid) {
           console.log('submit')
 
           loading.value = true
 
-          store.dispatch('root/requestLogin', { userId: state.form.id, userPwd: state.form.password })
+          store.dispatch('root/requestLogin', { userEmail: state.form.email, userPwd: state.form.pwd })
           .then(function (result) {
-
             // localStorage 에 jwt 토큰 저장
             localStorage.setItem('jwt-auth-token', result.data.accessToken)
             store.commit('root/setIsLogined', true)
@@ -160,8 +162,8 @@ export default {
     }
 
     const handleClose = function () {
-      state.form.id = ''
-      state.form.password = ''
+      state.form.email = ''
+      state.form.pwd = ''
       emit('closeLoginDialog')
     }
 
