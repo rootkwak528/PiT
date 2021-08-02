@@ -35,8 +35,8 @@
         <el-button style="float:right; width:28%" type="primary" @click="checkDuplicatedNickname">중복 확인</el-button>
       </el-form-item>
       <el-form-item prop="job" label="분류" :label-width="state.formLabelWidth">
-        <el-radio v-model="state.form.job" label="002">트레이너</el-radio>
-        <el-radio v-model="state.form.job" label="003">수강생</el-radio>
+        <el-radio v-model="state.form.type" label="002">트레이너</el-radio>
+        <el-radio v-model="state.form.type" label="003">수강생</el-radio>
       </el-form-item>
       <el-form-item
         prop="phone"
