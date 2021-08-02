@@ -14,9 +14,9 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.ssafy.pit.entity.User;
 import com.ssafy.pit.repository.CodeRepositorySupport;
 import com.ssafy.pit.repository.UserRepository;
+import com.ssafy.pit.request.UserInfoPutReq;
 import com.ssafy.pit.request.UserRegisterPostReq;
 import com.ssafy.pit.response.UserInfoGetRes;
-import com.ssafy.pit.response.UserInfoPutReq;
 
 @Service("userService")
 public class UserServiceImpl implements UserService {

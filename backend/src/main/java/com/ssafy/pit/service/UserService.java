@@ -3,9 +3,9 @@ package com.ssafy.pit.service;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.ssafy.pit.entity.User;
+import com.ssafy.pit.request.UserInfoPutReq;
 import com.ssafy.pit.request.UserRegisterPostReq;
 import com.ssafy.pit.response.UserInfoGetRes;
-import com.ssafy.pit.response.UserInfoPutReq;
 
 public interface UserService {
 	User registerUser(UserRegisterPostReq userRegisterInfo);

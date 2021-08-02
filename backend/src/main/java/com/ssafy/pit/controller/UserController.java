@@ -16,9 +16,9 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.ssafy.pit.common.auth.PitUserDetails;
 import com.ssafy.pit.common.response.BaseResponseBody;
 import com.ssafy.pit.entity.User;
+import com.ssafy.pit.request.UserInfoPutReq;
 import com.ssafy.pit.request.UserRegisterPostReq;
 import com.ssafy.pit.response.UserInfoGetRes;
-import com.ssafy.pit.response.UserInfoPutReq;
 import com.ssafy.pit.service.UserService;
 
 @RestController
