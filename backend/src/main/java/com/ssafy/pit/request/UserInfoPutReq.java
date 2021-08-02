@@ -1,4 +1,4 @@
-package com.ssafy.pit.response;
+package com.ssafy.pit.request;
 
 import lombok.Getter;
 import lombok.Setter;
