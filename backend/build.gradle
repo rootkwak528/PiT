@@ -1,0 +1,70 @@
+plugins {
+   id 'org.springframework.boot' version '2.5.3'
+   id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+   id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+   id 'java'
+}
+
+apply plugin: 'com.ewerk.gradle.plugins.querydsl'
+
+group = 'com.ssafy'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+configurations {
+   compileOnly {
+      extendsFrom annotationProcessor
+   }
+}
+
+//이클립스인 경우를 위한 QueryDSL 설정. IntelliJ는 불필요. [시작]
+def querydslDir = 'src/main/generated'
+querydsl {
+    jpa = true
+    querydslSourcesDir = querydslDir
+    //library = "com.querydsl:querydsl-apt"
+}
+
+sourceSets {
+//    main {
+//        java {
+//            srcDirs = ['src/main/java', querydslDir]
+//        }
+//    }
+	main.java.srcDir querydslDir
+}
+configurations {
+    querydsl.extendsFrom compileClasspath
+}
+
+compileQuerydsl {
+    options.annotationProcessorPath = configurations.querydsl
+}
+
+//[끝]
+
+
+repositories {
+   mavenCentral()
+}
+
+dependencies {
+   implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+   implementation 'org.springframework.boot:spring-boot-starter-security'
+   implementation 'org.springframework.boot:spring-boot-starter-validation'
+   implementation 'org.springframework.boot:spring-boot-starter-web'
+   implementation 'com.querydsl:querydsl-jpa'
+   //implementation("com.querydsl:querydsl-apt:4.4.0")
+   compileOnly 'org.projectlombok:lombok'
+   runtimeOnly 'mysql:mysql-connector-java'
+   annotationProcessor 'org.projectlombok:lombok'
+   developmentOnly("org.springframework.boot:spring-boot-devtools")
+   testImplementation 'org.springframework.boot:spring-boot-starter-test'
+   testImplementation 'org.springframework.security:spring-security-test'
+   compile("com.querydsl:querydsl-jpa")
+   //compile("com.querydsl:querydsl-apt")
+}
+
+test {
+   useJUnitPlatform()
+}

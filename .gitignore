@@ -1,0 +1,20 @@
+# application.properties
+  
+# application.properties
+
+# .DS_Store
+
+.DS_Store
+
+# Log
+
+*.log
+*.gz
+
+# node_modules
+
+node_modules
+
+# package-lock.json
+
+package-lock.json
