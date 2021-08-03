@@ -38,5 +38,5 @@ export default {
   isDesktopPlatform: IsDesktop,
   activeMenu: "home",
   menus: menuData,
-  isLogined: false
+  isLogined: true
 };

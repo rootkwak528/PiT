@@ -153,5 +153,19 @@ public class UserServiceImpl implements UserService {
 		
 		return userRepository.deleteByUserEmail(userEmail);
 	}
+
+	@Override
+	public int validateUserType(String userEmail) {
+		User user = userRepository.findUserByUserEmail(userEmail);
+		if (user.getUserType() == "001") {
+			return 1;
+		}
+		else if (user.getUserType() == "002") {
+			return 2;
+		}
+		else {
+			return 3;
+		}
+	}
 	
 }

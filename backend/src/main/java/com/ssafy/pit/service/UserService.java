@@ -14,4 +14,5 @@ public interface UserService {
 	UserInfoGetRes getUserInfo(String userEmail);
 	int update(User user, UserInfoPutReq userUpdateInfo, MultipartHttpServletRequest request);
 	int delete(String userEmail);
+	int validateUserType(String userEmail);
 }
