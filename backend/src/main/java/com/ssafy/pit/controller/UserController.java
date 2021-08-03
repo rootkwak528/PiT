@@ -96,33 +96,33 @@ public class UserController {
 	
 	// 개인정보 수정
 	@PostMapping("/me")
-	public ResponseEntity<String> updateUser(Authentication authentication, UserInfoPutReq userUpdateInfo, MultipartHttpServletRequest request) {
+	public ResponseEntity<? extends BaseResponseBody> updateUser(Authentication authentication, UserInfoPutReq userUpdateInfo, MultipartHttpServletRequest request) {
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
 		String userEmail = userDetails.getUsername();
 		System.out.println(userUpdateInfo.toString());
 		User user = userService.getUserByUserEmail(userEmail);
 		
 		if(userService.update(user, userUpdateInfo, request) == 1) {
-			return ResponseEntity.status(200).body("회원정보 업데이트가 완료되었습니다.");
+			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "회원정보 업데이트가 완료되었습니다."));
 		}	
 		else if (userService.update(user, userUpdateInfo, request) == 2){
-			return ResponseEntity.status(409).body("중복된 닉네임입니다.");
+			return ResponseEntity.status(409).body(BaseResponseBody.of(409, "중복된 닉네임입니다."));
 		}
 		else {
-			return ResponseEntity.status(404).body("업데이트 과정에서 문제가 발생했습니다.");			
+			return ResponseEntity.status(404).body(BaseResponseBody.of(404, "업데이트 과정에서 문제가 발생했습니다."));			
 		}
 	}
 	
 	@DeleteMapping("/me")
-	public ResponseEntity<String> deleteUser(Authentication authentication) {
+	public ResponseEntity<? extends BaseResponseBody> deleteUser(Authentication authentication) {
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
 		String userEmail = userDetails.getUsername();
 		
 		if(userService.delete(userEmail) == 1) {
-			return ResponseEntity.status(200).body("회원탈퇴에 성공하였습니다.");
+			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "회원탈퇴에 성공하였습니다."));
 		}	
 		else {
-			return ResponseEntity.status(404).body("회원탈퇴중에 문제가 발생하였습니다.");
+			return ResponseEntity.status(404).body(BaseResponseBody.of(404, "회원탈퇴중에 문제가 발생하였습니다."));
 		}
 	}
 }
