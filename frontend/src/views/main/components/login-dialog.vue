@@ -5,7 +5,7 @@
         <el-input v-model="state.form.email" autocomplete="off" @input="onInputForm"></el-input>
       </el-form-item>
       <el-form-item prop="pwd" label="비밀번호" :label-width="state.formLabelWidth">
-        <el-input v-model="state.form.pwd" autocomplete="off" show-password @input="onInputForm"></el-input>
+        <el-input v-model="state.form.pwd" @keyup.enter="clickLogin" autocomplete="off" show-password @input="onInputForm"></el-input>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -83,7 +83,7 @@ export default {
       const emailTest = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/
 
       if(emailTest.test(email) == false){
-        callback(new Error("이메일 형식이 올바르지 않습니다."));
+        callback(new Error("이메일 형식이 올바르지 않습니다"));
       } else {
         callback();
       }
@@ -95,13 +95,13 @@ export default {
       const spe = value.search(/[`~!@#$%^&*|₩₩₩'₩";:₩/?]/gi)
 
       if (value === '') {
-        callback(new Error('필수 입력 항목입니다.'))
+        callback(new Error('비밀번호를 입력해 주세요'))
       } else if (value.length < 9 ) {
-        callback(new Error('최소 9 글자를 입력해야 합니다.'))
+        callback(new Error('최소 9 글자를 입력해야 합니다'))
       } else if (value.length > 16) {
-        callback(new Error('최대 16자까지 입력 가능합니다.'))
+        callback(new Error('최대 16자까지 입력 가능합니다'))
       } else if (num < 0 || eng < 0 || spe < 0) {
-        callback(new Error('비밀번호는 영문, 숫자, 특수문자가 조합되어야 합니다.'))
+        callback(new Error('비밀번호는 영문, 숫자, 특수문자가 조합되어야 합니다'))
       } else {
         callback()
       }
