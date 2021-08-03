@@ -30,7 +30,7 @@ public class QUserVideo extends EntityPathBase<UserVideo> {
 
     public final NumberPath<Integer> videoNo = createNumber("videoNo", Integer.class);
 
-    public final DateTimePath<java.util.Date> videoSavetime = createDateTime("videoSavetime", java.util.Date.class);
+    public final StringPath videoSavetime = createString("videoSavetime");
 
     public final StringPath videoUrl = createString("videoUrl");
 

@@ -28,7 +28,7 @@ public class QPtroom extends EntityPathBase<Ptroom> {
 
     public final NumberPath<Integer> ptroomNo = createNumber("ptroomNo", Integer.class);
 
-    public final DateTimePath<java.util.Date> ptroomSavetime = createDateTime("ptroomSavetime", java.util.Date.class);
+    public final StringPath ptroomSavetime = createString("ptroomSavetime");
 
     public final NumberPath<Integer> ptroomUcnt = createNumber("ptroomUcnt", Integer.class);
 

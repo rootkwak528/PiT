@@ -21,15 +21,17 @@ public class QEvent extends EntityPathBase<Event> {
 
     public final StringPath eventContent = createString("eventContent");
 
-    public final DateTimePath<java.util.Date> eventEndTime = createDateTime("eventEndTime", java.util.Date.class);
+    public final StringPath eventEndTime = createString("eventEndTime");
 
     public final StringPath eventImage = createString("eventImage");
 
     public final NumberPath<Integer> eventNo = createNumber("eventNo", Integer.class);
 
-    public final DateTimePath<java.util.Date> eventStartTime = createDateTime("eventStartTime", java.util.Date.class);
+    public final StringPath eventStartTime = createString("eventStartTime");
 
     public final StringPath eventTitle = createString("eventTitle");
+
+    public final SimplePath<java.security.Timestamp> timestamp = createSimple("timestamp", java.security.Timestamp.class);
 
     public QEvent(String variable) {
         super(Event.class, forVariable(variable));
