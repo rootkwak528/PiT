@@ -44,6 +44,7 @@ public class Event {
 	
 	@Column(name="event_image")
 	String eventImage;
+	
 	@Column(name = "event_reg_date", nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	Timestamp timestamp;
 	

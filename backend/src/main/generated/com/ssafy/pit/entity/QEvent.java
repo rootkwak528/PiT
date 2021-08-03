@@ -31,7 +31,7 @@ public class QEvent extends EntityPathBase<Event> {
 
     public final StringPath eventTitle = createString("eventTitle");
 
-    public final SimplePath<java.security.Timestamp> timestamp = createSimple("timestamp", java.security.Timestamp.class);
+    public final SimplePath<java.security.Timestamp> eventRegDate = createSimple("timestamp", java.security.Timestamp.class);
 
     public QEvent(String variable) {
         super(Event.class, forVariable(variable));
