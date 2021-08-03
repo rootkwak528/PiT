@@ -5,6 +5,7 @@ import SearchResult from "@/views/search-result";
 import ClassDetail from "@/views/classdetail/class-detail";
 import MyClass from "@/views/mypage/myclass";
 import RegisterClass from "@/views/mypage/registerClass";
+import FinishedClass from "@/views/mypage/finishedClass";
 
 const routes = [
   {
@@ -36,6 +37,11 @@ const routes = [
     path: "/rgstClass",
     name: "RegisterClass",
     component: RegisterClass
+  },
+  {
+    path: "/finishedClass",
+    name: "FinishedClass",
+    component: FinishedClass
   }
 ];
 
