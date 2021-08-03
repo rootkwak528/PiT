@@ -83,10 +83,21 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public int update(User user, UserInfoPutReq userUpdateInfo, MultipartHttpServletRequest request) {
-		File uploadDir = new File(uploadPath + File.separator + uploadFolder);
-		if(uploadDir.exists()) uploadDir.mkdir();
-		
 		try {
+			String deleteFileUrl = userRepository.findUserByUserEmail(user.getUserEmail()).getUserProfile();
+			File uploadDir = new File(uploadPath + File.separator + uploadFolder);
+			if(!uploadDir.exists()) uploadDir.mkdir();
+			
+			
+			File file = null;
+	        if(deleteFileUrl != null) {
+	           file = new File(uploadPath + File.separator, deleteFileUrl);
+	           if(file.exists()) {
+	              file.delete();
+	           }
+	        }
+			
+			
 			MultipartFile part = request.getFiles("file").get(0);
 			String fileName = part.getOriginalFilename();
 			UUID uuid = UUID.randomUUID();
@@ -96,7 +107,6 @@ public class UserServiceImpl implements UserService {
 			System.out.println(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
 			part.transferTo(destFile);
 			String fileUrl = uploadFolder + "/" + savingFileName;
-			
 			user.setUserProfile(fileUrl);
 			user.setUserDesc(userUpdateInfo.getUserDesc());
 			user.setUserName(userUpdateInfo.getUserName());
@@ -107,6 +117,7 @@ public class UserServiceImpl implements UserService {
 			return 1;
 		}
 		catch (Exception e) {
+			e.printStackTrace();
 			return 0;
 		}
 		

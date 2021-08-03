@@ -95,11 +95,11 @@ public class UserController {
 	}
 	
 	// 개인정보 수정
-	@PutMapping("/me")
-	public ResponseEntity<String> updateUser(Authentication authentication, @RequestBody UserInfoPutReq userUpdateInfo,MultipartHttpServletRequest request) {
+	@PostMapping("/me")
+	public ResponseEntity<String> updateUser(Authentication authentication, UserInfoPutReq userUpdateInfo, MultipartHttpServletRequest request) {
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
 		String userEmail = userDetails.getUsername();
-		
+		System.out.println(userUpdateInfo.toString());
 		User user = userService.getUserByUserEmail(userEmail);
 		
 		if(userService.update(user, userUpdateInfo, request) == 1) {

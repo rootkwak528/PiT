@@ -13,5 +13,12 @@ public class UserInfoPutReq {
 	String userNickname;
 	String userDesc;
 	String userPhone;
+	@Override
+	public String toString() {
+		return "UserInfoPutReq [userName=" + userName + ", userPwd=" + userPwd + ", userProfile=" + userProfile
+				+ ", userNickname=" + userNickname + ", userDesc=" + userDesc + ", userPhone=" + userPhone + "]";
+	}
+	
+	
 	
 }
