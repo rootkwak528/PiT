@@ -27,6 +27,7 @@ public class EventServiceImpl implements EventService {
 	
 	@Autowired
 	EventRepository eventRepository;
+	
 	@Override
 	public List<Event> getEventInfoList() {
 		return eventRepository.findAll();

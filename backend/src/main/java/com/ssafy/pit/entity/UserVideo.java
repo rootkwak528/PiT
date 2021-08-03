@@ -48,8 +48,7 @@ public class UserVideo {
 	Ptroom ptroom;
 	
 	@Column(name="video_savetime")
-	@Temporal(TemporalType.TIMESTAMP)
-	Date videoSavetime;
+	String videoSavetime;
 	@Column(name="video_url")
 	String videoUrl;
 	

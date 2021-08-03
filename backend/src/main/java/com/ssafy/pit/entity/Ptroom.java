@@ -46,9 +46,9 @@ public class Ptroom {
 	@JoinColumn(name="class_no")
 	Classes classes;
 	
-	@Temporal(TemporalType.TIMESTAMP)
+//	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="ptroom_savetime")
-	Date ptroomSavetime;
+	String ptroomSavetime;
 	@Column(name="ptroom_limit")
 	int ptroomLimit;
 	@Column(name="ptroom_ucnt")
