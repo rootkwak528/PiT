@@ -36,17 +36,20 @@
         </el-menu>
       </el-col>
       <el-col :span="18">
-        <div class="content-wrapper">
+        <div class="content-wrapper classlist">
           <div class="submenu-title">녹화된 영상</div>
           <div class="recordedvideo-card-section">
-            <el-table :data="classContent" style="width: 80%; font-size: 17px;">
+            <el-table
+              :data="classContent"
+              style="width: 80%; font-size: 17px;"
+              @click="mvVideoList"
+            >
               <el-table-column prop="title" label="클래스명"> </el-table-column>
               <el-table-column
                 prop="teacherName"
                 label="강사명"
                 width="100"
                 fixed="right"
-                @click="mv"
               >
               </el-table-column>
             </el-table>
@@ -113,6 +116,9 @@ export default {
     },
     handleDelete(index, row) {
       console.log(index, row);
+    },
+    mvVideoList(prop) {
+      console.log(prop);
     }
   }
 };
