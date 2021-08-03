@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.ssafy.pit.entity.Classes;
 
 @Repository
-public interface ClassRepository extends JpaRepository<Classes, Long> {
+public interface ClassRepository extends JpaRepository<Classes, Integer> {
 //	User findUserByUserEmail(String userEmail);
 //	User findUserByUserNickname(String userNickname);
 //	List<Classes> getAllClasses();
