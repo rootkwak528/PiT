@@ -20,8 +20,8 @@
             </template>
             <el-menu-item-group>
               <el-menu-item index="rgstClass">수강중 클래스</el-menu-item>
-              <el-menu-item index="1-2">수강완료 클래스</el-menu-item>
-              <el-menu-item index="1-3">녹화된 수업</el-menu-item>
+              <el-menu-item index="finishedClass">수강완료 클래스</el-menu-item>
+              <el-menu-item index="recordedVideo">녹화된 수업</el-menu-item>
               <el-menu-item index="1-4">피드백</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
@@ -71,24 +71,28 @@
               </div>
             </div>
             <div class="card-calendar-wrapper">
-              <!-- <el-image
+              <el-image
                 :src="require(`@/assets/images/calendar.png`)"
                 fit="cover"
                 style=""
-              /> -->
-              <VCalendarLibrary />
+              />
+              <!-- <Calendar /> -->
             </div>
           </el-card>
         </div>
       </el-col>
     </el-row>
   </div>
-  <!-- :style="{ backgroundImage: 'url(' + o.thumbnail + ')' }" -->
 </template>
 
 <script>
+import Calendar from "v-calendar";
+
 export default {
   name: "RegisterClass",
+  components: {
+    Calendar
+  },
   data() {
     return {
       classContent: [
@@ -133,7 +137,7 @@ export default {
 
 .content-wrapper {
   vertical-align: middle;
-  margin-left: 20px;
+  margin-left: 40px;
 }
 
 .registerclass-card > .el-card__body {
@@ -148,6 +152,7 @@ export default {
   opacity: 0.5; */
   position: relative;
   margin-bottom: 10px;
+  max-width: 800px;
 }
 
 .card-image-wrapper {
@@ -176,7 +181,7 @@ export default {
 
 .title {
   font-weight: bold;
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .registerclass-card-bottom {
