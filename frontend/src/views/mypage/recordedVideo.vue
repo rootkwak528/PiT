@@ -6,7 +6,7 @@
     <el-row class="tac">
       <el-col :span="6">
         <el-menu
-          default-active="finishedClass"
+          default-active="recordedVideo"
           class="el-menu-vertical-demo"
           @open="open"
           @close="handleClose"
@@ -37,46 +37,19 @@
       </el-col>
       <el-col :span="18">
         <div class="content-wrapper">
-          <div class="submenu-title">수강완료 클래스</div>
-          <!-- <el-row :gutter="10"> -->
-          <!-- <el-col :span="6" v-for="o in classContent" :key="o"> -->
-          <div class="finishedclass-card-section">
-            <el-card
-              shadow="none"
-              v-for="o in classContent"
-              :key="o"
-              :body-style="{
-                padding: '0px',
-                height: '400px',
-                width: '300px'
-              }"
-              style="margin: 5px"
-            >
-              <el-image
-                :src="o.thumbnail"
-                fit="cover"
-                style="width: 300px; height: 200px;"
-              />
-              <div class="finishedclass-card-content">
-                <div>
-                  <div>
-                    {{ o.teacherName }}
-                  </div>
-                  <div class="title">{{ o.title }}</div>
-                  <el-tag size="mini" color="#BEEDED"
-                    >{{ o.classStartDate }} ~ {{ o.classEndDate }}</el-tag
-                  >
-                </div>
-                <div class="finishedclass-card-content-bottom">
-                  <el-button
-                    icon="el-icon-video-play"
-                    class="btn-enter"
-                    style="width: 70%;"
-                    >영상 다시보기</el-button
-                  >
-                </div>
-              </div>
-            </el-card>
+          <div class="submenu-title">녹화된 영상</div>
+          <div class="recordedvideo-card-section">
+            <el-table :data="classContent" style="width: 80%; font-size: 17px;">
+              <el-table-column prop="title" label="클래스명"> </el-table-column>
+              <el-table-column
+                prop="teacherName"
+                label="강사명"
+                width="100"
+                fixed="right"
+                @click="mv"
+              >
+              </el-table-column>
+            </el-table>
           </div>
         </div>
       </el-col>
@@ -135,15 +108,18 @@ export default {
     };
   },
   methods: {
-    format(percentage) {
-      return percentage === 100 ? "Full" : `${percentage}%`;
+    handleEdit(index, row) {
+      console.log(index, row);
+    },
+    handleDelete(index, row) {
+      console.log(index, row);
     }
   }
 };
 </script>
 
 <style>
-.finishedclass-card-section {
+.recordedvideo-card-section {
   display: flex;
   flex-wrap: wrap;
 }
