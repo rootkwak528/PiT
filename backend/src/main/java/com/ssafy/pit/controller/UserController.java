@@ -105,8 +105,11 @@ public class UserController {
 		if(userService.update(user, userUpdateInfo, request) == 1) {
 			return ResponseEntity.status(200).body("회원정보 업데이트가 완료되었습니다.");
 		}	
+		else if (userService.update(user, userUpdateInfo, request) == 2){
+			return ResponseEntity.status(409).body("중복된 닉네임입니다.");
+		}
 		else {
-			return ResponseEntity.status(404).body("업데이트 과정에서 문제가 발생했습니다.");
+			return ResponseEntity.status(404).body("업데이트 과정에서 문제가 발생했습니다.");			
 		}
 	}
 	

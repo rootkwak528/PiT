@@ -19,6 +19,4 @@ public class UserInfoPutReq {
 				+ ", userNickname=" + userNickname + ", userDesc=" + userDesc + ", userPhone=" + userPhone + "]";
 	}
 	
-	
-	
 }

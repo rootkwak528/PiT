@@ -8,6 +8,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -82,8 +83,14 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public int update(User user, UserInfoPutReq userUpdateInfo, MultipartHttpServletRequest request) {
+	public int update(User user, @ModelAttribute UserInfoPutReq userUpdateInfo, MultipartHttpServletRequest request) {
 		try {
+			
+			String userNickname = userUpdateInfo.getUserNickname();
+			if(userRepository.findUserByUserNickname(userNickname) != null) {
+				return 2;
+			};
+			
 			String deleteFileUrl = userRepository.findUserByUserEmail(user.getUserEmail()).getUserProfile();
 			File uploadDir = new File(uploadPath + File.separator + uploadFolder);
 			if(!uploadDir.exists()) uploadDir.mkdir();
@@ -97,7 +104,6 @@ public class UserServiceImpl implements UserService {
 	           }
 	        }
 			
-			
 			MultipartFile part = request.getFiles("file").get(0);
 			String fileName = part.getOriginalFilename();
 			UUID uuid = UUID.randomUUID();
@@ -110,8 +116,8 @@ public class UserServiceImpl implements UserService {
 			user.setUserProfile(fileUrl);
 			user.setUserDesc(userUpdateInfo.getUserDesc());
 			user.setUserName(userUpdateInfo.getUserName());
-			user.setUserNickname(userUpdateInfo.getUserNickname());
 			user.setUserPhone(userUpdateInfo.getUserPhone());
+			user.setUserNickname(userNickname);
 			user.setUserPwd(passwordEncoder.encode(userUpdateInfo.getUserPwd()));
 			userRepository.save(user);
 			return 1;
