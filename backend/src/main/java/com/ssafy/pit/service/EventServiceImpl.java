@@ -1,6 +1,8 @@
 package com.ssafy.pit.service;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,6 +42,70 @@ public class EventServiceImpl implements EventService {
 			
 			File uploadDir = new File(uploadPath + File.separator + uploadFolder);
 			if(!uploadDir.exists()) uploadDir.mkdir();
+			MultipartFile part = request.getFiles("file").get(0);
+			String fileName = part.getOriginalFilename();
+			UUID uuid = UUID.randomUUID();
+			String extension = FilenameUtils.getExtension(fileName);
+			String savingFileName = uuid + "." + extension;
+			File destFile = new File(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
+			System.out.println(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
+			part.transferTo(destFile);
+			String fileUrl = uploadFolder + "/" + savingFileName;
+			event.setEventImage(fileUrl);
+			event.setEventContent(eventInfo.getEventContent());
+			event.setEventTitle(eventInfo.getEventTitle());
+			String startTime = eventInfo.getEventStartTime();
+			String endTime = eventInfo.getEventEndTime();
+
+			SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+			Date eventStartTime = fm.parse(startTime);
+			Date eventEndTime = fm.parse(endTime);
+			
+			
+			event.setEventStartTime(eventStartTime);
+			event.setEventEndTime(eventEndTime);
+			
+			eventRepository.save(event);
+			return 1;
+			
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	@Override
+	public int deleteEvent(int eventNo) {
+		String deleteFileUrl = eventRepository.findUserByEventNo(eventNo).getEventImage();
+		File file = null;
+        if(deleteFileUrl != null) {
+           file = new File(uploadPath + File.separator, deleteFileUrl);
+           if(file.exists()) {
+              file.delete();
+           }
+        }
+		
+		return eventRepository.deleteByEventNo(eventNo);
+	}
+	@Override
+	public int updateEvent(int eventNo, EventInfoReq eventInfo, MultipartHttpServletRequest request) {
+		
+		try {
+			Event event = eventRepository.findUserByEventNo(eventNo);
+			
+			String deleteFileUrl = eventRepository.findUserByEventNo(eventNo).getEventImage();
+			File uploadDir = new File(uploadPath + File.separator + uploadFolder);
+			if(!uploadDir.exists()) uploadDir.mkdir();
+			
+			
+			File file = null;
+	        if(deleteFileUrl != null) {
+	           file = new File(uploadPath + File.separator, deleteFileUrl);
+	           if(file.exists()) {
+	              file.delete();
+	           }
+	        }
 			
 			MultipartFile part = request.getFiles("file").get(0);
 			String fileName = part.getOriginalFilename();
@@ -50,20 +116,27 @@ public class EventServiceImpl implements EventService {
 			System.out.println(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
 			part.transferTo(destFile);
 			String fileUrl = uploadFolder + "/" + savingFileName;
+			String startTime = eventInfo.getEventStartTime();
+			String endTime = eventInfo.getEventEndTime();
 			
 			event.setEventImage(fileUrl);
-			event.setEventContent(eventInfo.getEventContent());
 			event.setEventTitle(eventInfo.getEventTitle());
-			event.setEventStartTime(eventInfo.getEventStartTime());
-			event.setEventEndTime(eventInfo.getEventEndTime());
+			event.setEventContent(eventInfo.getEventContent());
+
+			SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			Date eventStartTime = fm.parse(startTime);
+			Date eventEndTime = fm.parse(endTime);
+			
+			event.setEventStartTime(eventStartTime);
+			event.setEventEndTime(eventEndTime);
 			
 			eventRepository.save(event);
 			return 1;
-			
-			
-		} catch(Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 			return 0;
 		}
+		
 	}
 }
