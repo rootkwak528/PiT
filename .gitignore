@@ -25,4 +25,4 @@ static/
 
 # UserServiceImpl.java - 파일 업로드 경로
 
-UserServiceImpl.java
+backend/src/main/java/com/ssafy/pit/service/UserServiceImpl.java
