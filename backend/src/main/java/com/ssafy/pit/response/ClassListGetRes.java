@@ -15,5 +15,7 @@ public class ClassListGetRes {
 	String classTitle;
 	int classPrice;
 	String classTeacherName;
+	Date classStartDate;
+	Date classEndDate;
 	
 }

@@ -87,7 +87,7 @@ public class ClassController {
 		}
 	}
 	
-	@DeleteMapping("likes/{classNo}")
+	@DeleteMapping("/likes/{classNo}")
 	public ResponseEntity<BaseResponseBody> deleteClassLikes(Authentication authentication, @PathVariable int classNo){
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
 		String userEmail = userDetails.getUsername();
@@ -102,6 +102,36 @@ public class ClassController {
 		}
 		else {
 			return ResponseEntity.status(404).body(BaseResponseBody.of(404, "접근할 수 없는 페이지입니다."));
+		}
+	}
+	
+	@GetMapping("/finishedclass")
+	public ResponseEntity<List<ClassListGetRes>> getFinishedClassList(Authentication authentication) {
+		List<ClassListGetRes> finishedClassList = null;
+		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
+		String userEmail = userDetails.getUsername();
+		int userNo = userDetails.getUser().getUserNo();
+		if(userService.validateUserType(userEmail) == 3 || userService.validateUserType(userEmail) == 2) {
+			finishedClassList = classService.getFinishedClassList(userNo);
+			return ResponseEntity.status(200).body(finishedClassList);
+		}
+		else {
+			return ResponseEntity.status(404).body(finishedClassList);
+		}
+	}
+	
+	@GetMapping("registerclass")
+	public ResponseEntity<List<ClassListGetRes>> getRegisterClassList(Authentication authentication) {
+		List<ClassListGetRes> finishedClassList = null;
+		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
+		String userEmail = userDetails.getUsername();
+		int userNo = userDetails.getUser().getUserNo();
+		if(userService.validateUserType(userEmail) == 3 || userService.validateUserType(userEmail) == 2) {
+			finishedClassList = classService.getFinishedClassList(userNo);
+			return ResponseEntity.status(200).body(finishedClassList);
+		}
+		else {
+			return ResponseEntity.status(404).body(finishedClassList);
 		}
 	}
 	

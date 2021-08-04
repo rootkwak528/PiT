@@ -1,6 +1,8 @@
 package com.ssafy.pit.service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -140,6 +142,52 @@ public class ClassServiceImpl implements ClassService {
 	public int deleteClassLikes(int userNo, int classNo) {
 		int userLikesNo = classRepositorySupport.getUserLikesNo(userNo, classNo);
 		return userLikesRepository.deleteByUserLikesNo(userLikesNo);
+	}
+
+	@Override
+	public List<ClassListGetRes> getFinishedClassList(int userNo) {
+		
+		try {	
+			Date now = new Date();
+			SimpleDateFormat dateToStringFormat = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat stringToDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			
+			List<Classes> userClassList = classRepositorySupport.getUserClassList(userNo);
+			List<ClassListGetRes> finishedClassList = new ArrayList<ClassListGetRes> ();
+			
+			
+			for (Classes classes : userClassList) {
+				// 날짜비교
+				Date endDate = classes.getClassEndDate();
+				String endTime = classes.getClassEndTime();
+				
+				String endDateString = dateToStringFormat.format(endDate) + " " + endTime + ":00:00";
+				Date classEndDate = stringToDateFormat.parse(endDateString);
+				
+				if(now.compareTo(classEndDate) <= 0) {
+					continue;
+				}
+				
+				ClassListGetRes classGetRes = new ClassListGetRes();
+				int classNo = classes.getClassNo();
+				BeanUtils.copyProperties(classes, classGetRes);
+				String classThumbnail = classPhotoRepositorySupport.getThumbnail(classNo);
+				if (classThumbnail != null) {
+					classGetRes.setClassThumbnail(classThumbnail);
+				}
+				else {
+					classGetRes.setClassThumbnail("");
+				}
+				finishedClassList.add(classGetRes);
+			}
+			return finishedClassList;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+		
 	}
 	
 }
