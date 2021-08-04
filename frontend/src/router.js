@@ -3,7 +3,7 @@ import Main from "@/views/main/main.vue";
 import Event from "@/views/event.vue";
 import SearchResult from "@/views/search-result";
 import ClassDetail from "@/views/classdetail/class-detail";
-import MyClass from "@/views/mypage/myclass";
+import MyInfo from "@/views/mypage/myInfo";
 import RegisterClass from "@/views/mypage/registerClass";
 import FinishedClass from "@/views/mypage/finishedClass";
 import RecordedVideo from "@/views/mypage/recordedVideo";
@@ -30,9 +30,9 @@ const routes = [
     component: ClassDetail
   },
   {
-    path: "/myclass",
-    name: "MyClass",
-    component: MyClass
+    path: "/myinfo",
+    name: "MyInfo",
+    component: MyInfo
   },
   {
     path: "/rgstClass",
