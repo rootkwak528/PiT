@@ -80,10 +80,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserInfoGetRes getUserInfo(String userEmail) {
+	public UserInfoGetRes getUserInfo(User user) {
 		UserInfoGetRes userInfo = new UserInfoGetRes();
-		
-		User user = userRepository.findUserByUserEmail(userEmail);
 		BeanUtils.copyProperties(user, userInfo);
 		String userGenderName = codeRepositorySupport.getCodeName("001", user.getUserGender());
 		String userTypeName = codeRepositorySupport.getCodeName("002", user.getUserType());
