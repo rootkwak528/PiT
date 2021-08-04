@@ -26,7 +26,7 @@ public class QUserLikes extends EntityPathBase<UserLikes> {
 
     public final QUser user;
 
-    public final NumberPath<Integer> userClassNo = createNumber("userClassNo", Integer.class);
+    public final NumberPath<Integer> userLikesNo = createNumber("userLikesNo", Integer.class);
 
     public QUserLikes(String variable) {
         this(UserLikes.class, forVariable(variable), INITS);
