@@ -9,11 +9,14 @@ import org.springframework.stereotype.Service;
 
 import com.ssafy.pit.entity.Classes;
 import com.ssafy.pit.entity.Comment;
+import com.ssafy.pit.entity.User;
+import com.ssafy.pit.entity.UserLikes;
 import com.ssafy.pit.repository.ClassPhotoRepositorySupport;
 import com.ssafy.pit.repository.ClassRepository;
 import com.ssafy.pit.repository.ClassRepositorySupport;
 import com.ssafy.pit.repository.CodeRepositorySupport;
 import com.ssafy.pit.repository.CommentRepositorySupport;
+import com.ssafy.pit.repository.UserLikesRepository;
 import com.ssafy.pit.repository.UserRepository;
 import com.ssafy.pit.request.ClassSearchGetReq;
 import com.ssafy.pit.response.ClassDetailGetRes;
@@ -27,7 +30,10 @@ public class ClassServiceImpl implements ClassService {
 
 	@Autowired
 	UserRepository userRepository;
-
+	
+	@Autowired
+	UserLikesRepository userLikesRepository;
+	
 	@Autowired
 	ClassRepositorySupport classRepositorySupport;
 
@@ -58,10 +64,13 @@ public class ClassServiceImpl implements ClassService {
 			String classThumbnail = classPhotoRepositorySupport.getThumbnail(classNo);
 			if (classThumbnail != null) {
 				classGetRes.setClassThumbnail(classThumbnail);
-				classListGetRes.add(classGetRes);
 			}
-		}
+			else {
+				classGetRes.setClassThumbnail("");
+			}
+			classListGetRes.add(classGetRes);
 
+		}
 		return classListGetRes;
 	}
 
@@ -88,6 +97,49 @@ public class ClassServiceImpl implements ClassService {
 		return classDetail;
 	}
 
-	
+	@Override
+	public List<ClassListGetRes> getClassLikesList(int userNo) {
+		List<Classes> classLikesList = classRepositorySupport.getClassLikesList(userNo);
+		List<ClassListGetRes> classListGetRes = new ArrayList<ClassListGetRes>();
+		
+		for (Classes classes : classLikesList) {
+			ClassListGetRes classGetRes = new ClassListGetRes();
+			int classNo = classes.getClassNo();
+			BeanUtils.copyProperties(classes, classGetRes);
+			String classThumbnail = classPhotoRepositorySupport.getThumbnail(classNo);
+			if (classThumbnail != null) {
+				classGetRes.setClassThumbnail(classThumbnail);
+			}
+			else {
+				classGetRes.setClassThumbnail("");
+			}
+			classListGetRes.add(classGetRes);
+		}
+		
+		return classListGetRes;
+	}
+
+	@Override
+	public int registerClassLikes(int userNo, int classNo) {
+		try {			
+			User user = userRepository.findUserByUserNo(userNo);
+			Classes classes = classRepository.findClassByClassNo(classNo);
+			UserLikes userLikes = new UserLikes();
+			userLikes.setUser(user);
+			userLikes.setClasses(classes);
+			userLikesRepository.save(userLikes);
+			return 1;
+		}
+		catch (Exception e) {			
+			return 0;
+		}
+		
+	}
+
+	@Override
+	public int deleteClassLikes(int userNo, int classNo) {
+		int userLikesNo = classRepositorySupport.getUserLikesNo(userNo, classNo);
+		return userLikesRepository.deleteByUserLikesNo(userLikesNo);
+	}
 	
 }

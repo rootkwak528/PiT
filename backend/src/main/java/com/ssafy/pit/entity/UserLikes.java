@@ -22,8 +22,8 @@ public class UserLikes {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="user_class_no")
-	int userClassNo;
+	@Column(name="user_likes_no")
+	int userLikesNo;
 	
 	@JsonBackReference
 	@ManyToOne

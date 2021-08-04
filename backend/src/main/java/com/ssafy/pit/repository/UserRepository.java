@@ -11,6 +11,7 @@ import com.ssafy.pit.entity.User;
 public interface UserRepository extends JpaRepository<User, Integer> {
 	User findUserByUserEmail(String userEmail);
 	User findUserByUserNickname(String userNickname);
+	User findUserByUserNo(int userNo);
 	@Transactional
 	int deleteByUserEmail(String userEmail);
 }

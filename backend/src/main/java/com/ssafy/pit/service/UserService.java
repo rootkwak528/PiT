@@ -11,7 +11,7 @@ public interface UserService {
 	User registerUser(UserRegisterPostReq userRegisterInfo);
 	User getUserByUserEmail(String userEmail);
 	User getUserByUserNickname(String userNickname);
-	UserInfoGetRes getUserInfo(String userEmail);
+	UserInfoGetRes getUserInfo(User user);
 	int update(User user, UserInfoPutReq userUpdateInfo, MultipartHttpServletRequest request);
 	int delete(String userEmail);
 	int validateUserType(String userEmail);
