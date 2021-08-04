@@ -14,6 +14,16 @@ module.exports = {
               loader: "stylus-loader", // compiles Stylus to CSS
             },
           ],
+
+        },
+        {
+          test: /.js$/,
+          loader: 'babel-loader',
+          include: [
+            resolve('src'),
+            resolve('test'),
+            resolve('node_modules/webpack-dev-server/client')
+          ]
         },
       ],
     },
