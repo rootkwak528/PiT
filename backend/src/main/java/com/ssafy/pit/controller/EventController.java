@@ -94,7 +94,6 @@ public class EventController {
 			else {
 				return ResponseEntity.status(404).body(BaseResponseBody.of(404, "이벤트를 수정하는 과정에 문제가 발생하였습니다."));
 			}
-			
 		}
 		else {
 			return ResponseEntity.status(404).body(BaseResponseBody.of(404, "접근할 수 없는 페이지입니다."));

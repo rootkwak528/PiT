@@ -12,5 +12,8 @@ public interface ClassService {
 	List<ClassListGetRes> getClassList(ClassSearchGetReq searchInfo);
 	List<ClassListGetRes> getClassList();
 	ClassDetailGetRes getClassDetail(int classNo);
+	List<ClassListGetRes> getClassLikesList(int userNo);
+	int registerClassLikes(int userNo, int classNo);
+	int deleteClassLikes(int userNo, int classNo);
 	
 }

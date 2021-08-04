@@ -9,7 +9,6 @@ import com.ssafy.pit.entity.Classes;
 
 @Repository
 public interface ClassRepository extends JpaRepository<Classes, Integer> {
-//	User findUserByUserEmail(String userEmail);
-//	User findUserByUserNickname(String userNickname);
+	Classes findClassByClassNo(int classNo);
 //	List<Classes> getAllClasses();
 }

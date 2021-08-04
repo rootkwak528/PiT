@@ -1,5 +1,9 @@
 package com.ssafy.pit.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -30,8 +34,17 @@ public class UserController {
 	
 	// Test Controller
 	@GetMapping("/hello")
-	public ResponseEntity<String> hello(){
-		return ResponseEntity.ok("hello");
+	public ResponseEntity<String> hello() throws ParseException{
+		
+		String startTime = "2021-06-30 14:22:33";
+
+		SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+		Date eventStartTime = fm.parse(startTime);
+		
+		String result = fm.format(eventStartTime);
+		
+		return ResponseEntity.ok(result);
 	}
 	
 	// 유저 등록
@@ -84,8 +97,8 @@ public class UserController {
 	@GetMapping("/me")
 	public ResponseEntity<UserInfoGetRes> getUserInfo(Authentication authentication) {
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
-		String userEmail = userDetails.getUsername();
-		UserInfoGetRes userInfo = userService.getUserInfo(userEmail);
+		User user = userDetails.getUser();
+		UserInfoGetRes userInfo = userService.getUserInfo(user);
 		try {
 			return ResponseEntity.status(200).body(userInfo);
 		}
@@ -98,9 +111,7 @@ public class UserController {
 	@PostMapping("/me")
 	public ResponseEntity<? extends BaseResponseBody> updateUser(Authentication authentication, UserInfoPutReq userUpdateInfo, MultipartHttpServletRequest request) {
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
-		String userEmail = userDetails.getUsername();
-		System.out.println(userUpdateInfo.toString());
-		User user = userService.getUserByUserEmail(userEmail);
+		User user = userDetails.getUser();
 		
 		if(userService.update(user, userUpdateInfo, request) == 1) {
 			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "회원정보 업데이트가 완료되었습니다."));
