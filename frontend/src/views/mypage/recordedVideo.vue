@@ -9,23 +9,30 @@
       </el-col>
 
       <el-col :span="18">
-        <div class="content-wrapper classlist">
-          <div class="submenu-title">녹화된 영상</div>
-          <div class="recordedvideo-card-section">
-            <el-table
-              :data="classContent"
-              style="width: 80%; font-size: 17px;"
-              @click="mvVideoList"
-            >
-              <el-table-column prop="title" label="클래스명"> </el-table-column>
-              <el-table-column
-                prop="teacherName"
-                label="강사명"
-                width="100"
-                fixed="right"
+        <div class="content-wrapper">
+          <div class="classList" v-if="!selectedClassid">
+            <div class="submenu-title">녹화된 영상</div>
+            <div class="recordedvideo-card-section">
+              <el-table
+                :data="classContent"
+                style="width: 80%; font-size: 17px;"
+                @row-click="mvVideoList"
               >
-              </el-table-column>
-            </el-table>
+                <el-table-column prop="title" label="클래스명">
+                </el-table-column>
+                <el-table-column
+                  prop="teacherName"
+                  label="강사명"
+                  width="100"
+                  fixed="right"
+                >
+                </el-table-column>
+              </el-table>
+            </div>
+          </div>
+          <div class="videoList" v-else>
+            <el-page-header @back="goBack" :content="selectedTitle">
+            </el-page-header>
           </div>
         </div>
       </el-col>
@@ -68,8 +75,8 @@ export default {
           thumbnail:
             "http://laza.jalbum.net/Watermark%20Demo/slides/P8220329.jpg",
           title: `SNPE 바디리셋 프로젝트. 척추운동으로 밸런스 회복하기!`,
-          classid: `2222`,
-          teacherName: "김계란",
+          classid: `3333`,
+          teacherName: "김메추리알",
           classStartDate: "2021-08-08",
           classEndDate: "2021-11-08"
         },
@@ -77,23 +84,24 @@ export default {
           thumbnail:
             "http://laza.jalbum.net/Watermark%20Demo/slides/P8220329.jpg",
           title: `SNPE 바디리셋 프로젝트. 척추운동으로 밸런스 회복하기!`,
-          classid: `2222`,
-          teacherName: "김계란",
+          classid: `4444`,
+          teacherName: "김훈제란",
           classStartDate: "2021-08-08",
           classEndDate: "2021-11-08"
         }
-      ]
+      ],
+      selectedClassid: null,
+      selectedTitle: null
     };
   },
   methods: {
-    handleEdit(index, row) {
-      console.log(index, row);
-    },
-    handleDelete(index, row) {
-      console.log(index, row);
-    },
     mvVideoList(prop) {
-      console.log(prop);
+      console.log(prop.classid);
+      this.selectedClassid = prop.classid;
+      this.selectedTitle = prop.title;
+    },
+    goBack() {
+      this.selectedClassid = null;
     }
   }
 };
