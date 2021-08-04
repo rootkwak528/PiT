@@ -34,13 +34,13 @@
 </template>
 
 <script>
-import Calendar from "v-calendar";
+// import Calendar from "v-calendar";
 import MypageSidebar from "./component/mypage-sidebar.vue";
 
 export default {
   name: "RegisterClass",
   components: {
-    Calendar,
+    // Calendar,
     MypageSidebar
   },
   data() {
