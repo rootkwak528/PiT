@@ -7,9 +7,11 @@ import VueAxios from "./common/lib/axios";
 import axios from "./common/lib/axios";
 import i18n from "./common/lib/i18n";
 import router from "./router";
+// import VueVideoPlayer from "vue-video-player";
 // import Calendar from "v-calendar";
 
 import "element-plus/packages/theme-chalk/src/base.scss";
+// import "video.js/dist/video-js.css";
 
 // Element UI Components [시작]
 import {
@@ -180,7 +182,8 @@ const components = [
   ElTooltip,
   ElTransfer,
   ElTree,
-  ElUpload,
+  ElUpload
+  // VueVideoPlayer
   // Calendar
 ];
 
@@ -201,6 +204,7 @@ app.use(VueAxios, axios);
 app.use(store);
 app.use(i18n);
 app.use(router);
+// app.use(VueVideoPlayer);
 // app.use(Calendar);
 
 components.forEach(component => {

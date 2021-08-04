@@ -32,6 +32,8 @@
           </div>
           <div class="videoList" v-else>
             <el-page-header @back="goBack" :content="selectedTitle">
+              <!-- <video-player ref="videoPlayer" :options="playerOptions">
+              </video-player> -->
             </el-page-header>
           </div>
         </div>
@@ -43,12 +45,14 @@
 <script>
 // import Calendar from "v-calendar";
 import MypageSidebar from "./component/mypage-sidebar.vue";
+// import VideoPlayer from "vue-video-player";
 
 export default {
   name: "RegisterClass",
   components: {
     // Calendar,
     MypageSidebar
+    // VideoPlayer
   },
   data() {
     return {
@@ -91,7 +95,26 @@ export default {
         }
       ],
       selectedClassid: null,
-      selectedTitle: null
+      selectedTitle: null,
+      playerOptions: {
+        height: "360",
+        autoplay: false,
+        sources: [
+          {
+            // mp4
+            // type: 'video/mp4',
+            // src: 'http://vjs.zencdn.net/v/oceans.mp4',
+            // flv
+            type: "video/x-flv",
+            src:
+              "https://www.youtube.com/watch?v=eT3c9NDEjWo&ab_channel=webtro1"
+          }
+        ],
+        language: "zh-CN",
+        techOrder: ["flash"],
+        poster:
+          "https://surmon-china.github.io/vue-quill-editor/static/images/surmon-6.jpg"
+      }
     };
   },
   methods: {
