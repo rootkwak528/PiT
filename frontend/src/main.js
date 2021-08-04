@@ -7,7 +7,7 @@ import VueAxios from "./common/lib/axios";
 import axios from "./common/lib/axios";
 import i18n from "./common/lib/i18n";
 import router from "./router";
-import Calendar from "v-calendar";
+// import Calendar from "v-calendar";
 
 import "element-plus/packages/theme-chalk/src/base.scss";
 
@@ -181,7 +181,7 @@ const components = [
   ElTransfer,
   ElTree,
   ElUpload,
-  Calendar
+  // Calendar
 ];
 
 const plugins = [
@@ -201,7 +201,7 @@ app.use(VueAxios, axios);
 app.use(store);
 app.use(i18n);
 app.use(router);
-app.use(Calendar);
+// app.use(Calendar);
 
 components.forEach(component => {
   app.component(component.name, component);
