@@ -11,4 +11,6 @@ public interface EventService {
 	
 	List<Event> getEventInfoList();
 	int registerEvent(EventInfoReq eventInfo, MultipartHttpServletRequest request);
+	int deleteEvent(int eventNo);
+	int updateEvent(int eventNo, EventInfoReq eventInfo, MultipartHttpServletRequest request);
 }

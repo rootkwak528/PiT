@@ -1,4 +1,5 @@
 package com.ssafy.pit.entity;
+import java.security.Timestamp;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -35,9 +36,8 @@ public class Comment {
 	
 	@Column(name="comment_content")
 	String commentContent;
-	
-	@Column(name="comment_write_date")
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "comment_write_date", nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	Date commentWriteDate;
 	
 }

@@ -34,16 +34,16 @@ public class Event {
 	@Column(name="event_content")
 	String eventContent;
 //	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone="Asia/Seoul")
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="event_start_time")
-	@CreationTimestamp
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
 	Date eventStartTime;
-	
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="event_end_time")
-	@CreationTimestamp
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
 	Date eventEndTime;
-	
 	@Column(name="event_image")
 	String eventImage;
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "event_reg_date", nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+	Date eventRegDate;
+	
 }

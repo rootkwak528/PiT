@@ -2,6 +2,9 @@ package com.ssafy.pit.request;
 
 import java.util.Date;
 
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -15,11 +18,12 @@ public class EventInfoReq {
 	
 	String eventTitle;
 	String eventContent;
-	@CreationTimestamp
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-	Date eventStartTime;
-	@CreationTimestamp
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-	Date eventEndTime;
+	String eventStartTime;
+	String eventEndTime;
+	@Override
+	public String toString() {
+		return "EventInfoReq [eventTitle=" + eventTitle + ", eventContent=" + eventContent + ", eventStartTime="
+				+ eventStartTime + ", eventEndTime=" + eventEndTime + "]";
+	}
 	
 }

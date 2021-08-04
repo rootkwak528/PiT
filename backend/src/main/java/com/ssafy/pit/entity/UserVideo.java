@@ -47,8 +47,8 @@ public class UserVideo {
 	@JoinColumn(name="ptroom_no")
 	Ptroom ptroom;
 	
-	@Column(name="video_savetime")
 	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="video_savetime")
 	Date videoSavetime;
 	@Column(name="video_url")
 	String videoUrl;

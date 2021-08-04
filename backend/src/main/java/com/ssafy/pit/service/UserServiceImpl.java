@@ -33,20 +33,20 @@ public class UserServiceImpl implements UserService {
 	// 이미지 생성폴더 이름
 	String uploadFolder = "upload";
 	// 자기 이미지 생성할 경로
-//	String uploadPath = "C:" + File.separator + "Users" + File.separator + "ahnda" + File.separator
-//			+ "ssafy5-study" + File.separator + "Second" + File.separator + "Projects" + File.separator + "CommonProject" 
-//			+ File.separator + "S05P13A204" + File.separator + "backend" + File.separator + "src" + File.separator + "main"
-//			+ File.separator + "resources" + File.separator + "static";
+	String uploadPath = "C:" + File.separator + "Users" + File.separator + "ahnda" + File.separator
+			+ "ssafy5-study" + File.separator + "Second" + File.separator + "Projects" + File.separator + "CommonProject" 
+			+ File.separator + "S05P13A204" + File.separator + "backend" + File.separator + "src" + File.separator + "main"
+			+ File.separator + "resources" + File.separator + "static";
 	
 //	/Users/seoyoseb/SSAFYProjects/S05P13A204/backend/src/main/resources/static
 	
-	String uploadPath = "/Users" + File.separator + "seoyoseb" + File.separator + "SSAFYProjects"
-    		+ File.separator + "S05P13A204"
-            + File.separator + "backend" 
-            + File.separator + "src" 
-            + File.separator + "main"
-            + File.separator + "resources"
-            + File.separator + "static";
+//	String uploadPath = "/Users" + File.separator + "seoyoseb" + File.separator + "SSAFYProjects"
+//    		+ File.separator + "S05P13A204"
+//            + File.separator + "backend" 
+//            + File.separator + "src" 
+//            + File.separator + "main"
+//            + File.separator + "resources"
+//            + File.separator + "static";
 	
 	@Override
 	public User registerUser(UserRegisterPostReq userRegisterInfo) {
@@ -95,9 +95,9 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int update(User user, @ModelAttribute UserInfoPutReq userUpdateInfo, MultipartHttpServletRequest request) {
 		try {
-			
 			String userNickname = userUpdateInfo.getUserNickname();
-			if(userRepository.findUserByUserNickname(userNickname) != null) {
+			if(userRepository.findUserByUserNickname(userNickname) != null && 
+					!user.getUserNickname().equals(userUpdateInfo.getUserNickname())) {
 				return 2;
 			};
 			
@@ -157,10 +157,10 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int validateUserType(String userEmail) {
 		User user = userRepository.findUserByUserEmail(userEmail);
-		if (user.getUserType() == "001") {
+		if (user.getUserType().equals("001")) {
 			return 1;
 		}
-		else if (user.getUserType() == "002") {
+		else if (user.getUserType().equals("002")) {
 			return 2;
 		}
 		else {
