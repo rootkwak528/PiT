@@ -384,7 +384,7 @@ export default {
       onInputForm()
     }
 
-    return { joinForm, joinValid, isEmailAvailable, loading, state, clickRegister, handleClose, checkDuplicatedEmail, checkDuplicatedNickname, onInputForm, onInputEmailForm, onInputNicknameForm }
+    return { joinForm, joinValid, isEmailAvailable, isNicknameAvailable, loading, state, clickRegister, handleClose, checkDuplicatedEmail, checkDuplicatedNickname, onInputForm, onInputEmailForm, onInputNicknameForm }
   }
 };
 </script>

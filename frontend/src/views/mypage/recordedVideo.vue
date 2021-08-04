@@ -5,36 +5,9 @@
   <div>
     <el-row class="tac">
       <el-col :span="6">
-        <el-menu
-          default-active="recordedVideo"
-          class="el-menu-vertical-demo"
-          @open="open"
-          @close="handleClose"
-          active-text-color="#00C0D4"
-          router="true"
-        >
-          <el-submenu index="1">
-            <template #title>
-              <i class="el-icon-notebook-1"></i>
-              <span>내 클래스</span>
-            </template>
-            <el-menu-item-group>
-              <el-menu-item index="rgstClass">수강중 클래스</el-menu-item>
-              <el-menu-item index="finishedClass">수강완료 클래스</el-menu-item>
-              <el-menu-item index="recordedVideo">녹화된 수업</el-menu-item>
-              <el-menu-item index="1-4">피드백</el-menu-item>
-            </el-menu-item-group>
-          </el-submenu>
-          <el-menu-item index="2">
-            <i class="el-icon-star-on"></i>
-            <span>찜한 클래스</span>
-          </el-menu-item>
-          <el-menu-item index="3">
-            <i class="el-icon-user"></i>
-            <span>내 정보</span>
-          </el-menu-item>
-        </el-menu>
+        <mypage-sidebar />
       </el-col>
+
       <el-col :span="18">
         <div class="content-wrapper classlist">
           <div class="submenu-title">녹화된 영상</div>
@@ -62,11 +35,13 @@
 
 <script>
 import Calendar from "v-calendar";
+import MypageSidebar from "./component/mypage-sidebar.vue";
 
 export default {
   name: "RegisterClass",
   components: {
-    Calendar
+    Calendar,
+    MypageSidebar
   },
   data() {
     return {
