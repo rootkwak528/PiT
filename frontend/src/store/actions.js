@@ -38,3 +38,18 @@ export function requestUserInfo() {
     }
   })
 }
+
+// 회원 정보 수정
+export function updateUserInfo({ state }, payload) {
+  const url = `/users/me`
+  let body = payload
+
+  console.log(body.token)
+  // let token = "Bearer " + localStorage.getItem('jwt-auth-token')
+  return $axios.post(url, body, {
+    headers: {
+      'Authorization': body.token,
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+}

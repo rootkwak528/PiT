@@ -20,27 +20,48 @@
             <el-form v-loading="loading" :model="state.form" :rules="state.rules" ref="updateForm" :label-position="state.form.align">
 
               <el-form-item label="분류" :label-width="state.formLabelWidth">
-                <el-label v-model="state.form.type"></el-label>
+                <el-label v-model="state.form.type">{{state.form.type}}</el-label>
               </el-form-item>
               <el-form-item prop="email" label="이메일" :label-width="state.formLabelWidth">
-                <el-input v-model="state.form.email"></el-input>
+                <el-input v-model="state.form.email" disabled>{{state.form.email}}</el-input>
               </el-form-item>
-              <el-form-item label="이름" :label-width="state.formLabelWidth">
-                <el-input v-model="state.form.name"></el-input>
+              <el-form-item prop="name" label="이름" :label-width="state.formLabelWidth">
+                <el-input v-model="state.form.name" @input="onInputForm"></el-input>
               </el-form-item>
-              <el-form-item label="닉네임" :label-width="state.formLabelWidth">
+              <el-form-item prop="nickname" label="닉네임" :label-width="state.formLabelWidth">
                 <el-input style="float:left; width:70%" v-model="state.form.nickname"></el-input>
-                <el-button style="float:right; width:28%">중복확인</el-button>
+                <el-button style="float:right; width:28%" type="primary" @click="checkDuplicatedNickname">중복확인</el-button>
               </el-form-item>
-              <el-form-item label="비밀번호" :label-width="state.formLabelWidth">
-                <el-input v-model="state.form.pwd"></el-input>
+              <el-form-item prop="pwd" label="비밀번호" :label-width="state.formLabelWidth">
+                <el-input v-model="state.form.pwd" show-password @input="onInputForm"></el-input>
               </el-form-item>
-              <el-form-item label="비밀번호 확인" :label-width="state.formLabelWidth">
-                <el-input v-model="state.form.pwdChk"></el-input>
+              <el-form-item prop="pwdChk" label="비밀번호 확인" :label-width="state.formLabelWidth">
+                <el-input v-model="state.form.pwdChk" show-password @input="onInputForm"></el-input>
               </el-form-item>
+              <el-form-item prop="phone" label="휴대전화 번호" :label-width="state.formLabelWidth">
+                <el-input v-model="state.form.phone" @input="onInputForm" placeholder="-를 제외하고 숫자만 입력해주세요">{{state.form.phone}}</el-input>
+              </el-form-item>
+              <el-form-item label="상세 정보" :label-width="state.formLabelWidth">
+                <el-input
+                type="textarea"
+                :rows="6"
+                v-model="state.form.desc"
+                maxlength="200"
+                show-word-limit
+                @input="onInputForm"
+                placeholder="트레이너는 필수 입력 사항입니다"
+                >
+                </el-input>
+              </el-form-item>
+
 
             </el-form>
-
+              <span class="update-footer">
+                <el-button v-if="!updateValid" type="primary" @click="clickUpdateUser" disabled
+                  >수정하기</el-button
+                >
+                <el-button v-else type="primary" @click="clickUpdateUser">수정하기</el-button>
+              </span>
 
 
           </el-col>
@@ -213,7 +234,6 @@ export default {
 
     onMounted(() => {
       console.log(updateForm.value);
-      console.log(localStorage.getItem('jwt-auth-token'));
       requestUserInfo();
     });
 
@@ -221,10 +241,17 @@ export default {
 
       store
         .dispatch("root/requestUserInfo", {
-          token : localStorage.getItem('jwt-auth-token')
+          token : "Bearer" + localStorage.getItem('jwt-auth-token')
         })
-        .then(function(){
-          alert("회원 정보 조회되었습니다.");
+        .then(function(result){
+          state.form.gender = result.data.userGenderName;
+          state.form.desc = result.data.userDesc;
+          state.form.phone = result.data.userPhone;
+          state.form.profile = result.data.userProfile;
+          state.form.type = result.data.userTypeName;
+          state.form.email = result.data.userEmail;
+          state.form.name = result.data.userName;
+          state.form.nickname = result.data.userNickname;
           loading.value = false;
         })
         .catch(function(err){
@@ -233,7 +260,64 @@ export default {
         })
     }
 
-    return { state, updateForm, updateValid, isNicknameAvailable, loading, requestUserInfo }
+    const checkDuplicatedNickname = function(){
+      console.log("닉네임 중복검사 클릭")
+      updateForm.value.validateField('nickname', (err) => {
+        if (err === '') {
+          store.dispatch('root/checkDuplicatedNickname', { userNickname: state.form.nickname })
+          .then(result => {
+            alert('사용 가능한 닉네임입니다.')
+            isNicknameAvailable.value = true
+            onInputForm()
+          })
+          .catch(err => {
+            // 409 error 처리해줘야 함!
+
+              alert(err.response.data.message);
+            });
+        }
+      });
+      console.log(isNicknameAvailable.value);
+    }
+
+    const clickUpdateUser = function(){
+      updateForm.value.validate(valid => {
+        if(valid){
+          loading.value = true;
+          store
+            .dispatch("root/updateUserInfo", {
+              file: state.form.profile,
+              userName: state.form.name,
+              userPwd: state.form.pwd,
+              userNickname: state.form.nickname,
+              userDesc: state.form.desc,
+              userPhone: state.form.phone,
+              token: "Bearer " + localStorage.getItem('jwt-auth-token')
+            })
+            .then(function(){
+              alert("회원정보가 수정되었습니다.")
+              loading.value = false
+            })
+            .catch(function (err){
+              alert(err.response.data.message)
+              loading.value = false
+            })
+        }
+      })
+    }
+
+    const onInputForm = function(){
+      updateForm.value.validate((valid) => {
+        updateValid.value = valid & isNicknameAvailable.value
+      })
+    }
+
+    const onInputNicknameForm = function(){
+      isNicknameAvailable.value = false
+      onInputForm()
+    }
+
+    return { state, updateForm, updateValid, isNicknameAvailable, loading, requestUserInfo, onInputForm, onInputNicknameForm, checkDuplicatedNickname, clickUpdateUser }
   },
 
 };
