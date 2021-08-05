@@ -20,6 +20,12 @@ export function checkDuplicatedNickname({ state }, payload) {
   return $axios.get(url)
 }
 
+// 닉네임 중복 체크 (회원 정보 수정 시)
+export function checkDuplicatedUpdateNickname({ state }, payload) {
+  const url = `/users/me/nickname/${payload.userNickname}`
+  return $axios.get(url)
+}
+
 // 로그인
 export function requestLogin({ state }, payload) {
   const url = `/auth/login`

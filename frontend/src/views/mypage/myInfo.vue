@@ -66,7 +66,7 @@
                 <el-button
                   style="float:right; width:28%"
                   type="primary"
-                  @click="checkDuplicatedNickname"
+                  @click="checkDuplicatedUpdateNickname"
                   >중복확인</el-button
                 >
               </el-form-item>
@@ -344,18 +344,18 @@ export default {
         });
     };
 
-    const checkDuplicatedNickname = function() {
+    const checkDuplicatedUpdateNickname = function() {
       console.log("닉네임 중복검사 클릭");
       updateForm.value.validateField("nickname", err => {
         if (err === "") {
           store
-            .dispatch("root/checkDuplicatedNickname", {
+            .dispatch("root/checkDuplicatedUpdateNickname", {
               userNickname: state.form.nickname
             })
             .then(result => {
               alert("사용 가능한 닉네임입니다.");
               isNicknameAvailable.value = true;
-              onInputForm();
+              // onInputForm();
             })
             .catch(err => {
               // 409 error 처리해줘야 함!
@@ -373,7 +373,7 @@ export default {
           loading.value = true;
           store
             .dispatch("root/updateUserInfo", {
-              file: state.form.profile,
+              userProfile: state.form.profile,
               userName: state.form.name,
               userPwd: state.form.pwd,
               userNickname: state.form.nickname,
@@ -395,7 +395,8 @@ export default {
 
     const onInputForm = function() {
       updateForm.value.validate(valid => {
-        updateValid.value = valid & isNicknameAvailable.value;
+        // updateValid.value = valid & isNicknameAvailable.value;
+        updateValid.value = valid;
       });
     };
 
@@ -413,7 +414,7 @@ export default {
       requestUserInfo,
       onInputForm,
       onInputNicknameForm,
-      checkDuplicatedNickname,
+      checkDuplicatedUpdateNickname,
       clickUpdateUser
     };
   }
