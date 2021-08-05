@@ -20,10 +20,6 @@ public class EventInfoReq {
 	String eventContent;
 	String eventStartTime;
 	String eventEndTime;
-	@Override
-	public String toString() {
-		return "EventInfoReq [eventTitle=" + eventTitle + ", eventContent=" + eventContent + ", eventStartTime="
-				+ eventStartTime + ", eventEndTime=" + eventEndTime + "]";
-	}
+	String eventImage;
 	
 }

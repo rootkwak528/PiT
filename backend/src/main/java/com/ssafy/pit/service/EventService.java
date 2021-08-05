@@ -10,7 +10,7 @@ import com.ssafy.pit.request.EventInfoReq;
 public interface EventService {
 	
 	List<Event> getEventInfoList();
-	int registerEvent(EventInfoReq eventInfo, MultipartHttpServletRequest request);
+	int registerEvent(EventInfoReq eventInfo);
 	int deleteEvent(int eventNo);
-	int updateEvent(int eventNo, EventInfoReq eventInfo, MultipartHttpServletRequest request);
+	int updateEvent(int eventNo, EventInfoReq eventInfo);
 }

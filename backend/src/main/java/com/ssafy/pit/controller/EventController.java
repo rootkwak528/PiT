@@ -7,12 +7,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.ssafy.pit.common.auth.PitUserDetails;
 import com.ssafy.pit.common.response.BaseResponseBody;
@@ -44,11 +44,11 @@ public class EventController {
 	
 	@PostMapping("")
 	public ResponseEntity<BaseResponseBody> registerEvent(Authentication authentication, 
-			@ModelAttribute EventInfoReq eventInfo, MultipartHttpServletRequest request) {
+			@RequestBody EventInfoReq eventInfo) {
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
 		String userEmail = userDetails.getUsername();
 		if(userService.validateUserType(userEmail) == 1) {
-			if(eventService.registerEvent(eventInfo, request) == 1) {
+			if(eventService.registerEvent(eventInfo) == 1) {
 				return ResponseEntity.status(200).body(BaseResponseBody.of(200, "이벤트 등록에 성공하였습니다."));				
 			}
 			else {				
@@ -81,14 +81,14 @@ public class EventController {
 
 	}
 	
-	@PostMapping("/{eventNo}")
+	@PutMapping("/{eventNo}")
 	public ResponseEntity<BaseResponseBody> updateEvent(Authentication authentication, 
-			@PathVariable int eventNo, @ModelAttribute EventInfoReq eventInfo, MultipartHttpServletRequest request) {
+			@PathVariable int eventNo, @RequestBody EventInfoReq eventInfo) {
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
 		String userEmail = userDetails.getUsername();
 		
 		if(userService.validateUserType(userEmail) == 1) {
-			if(eventService.updateEvent(eventNo, eventInfo, request) == 1) {
+			if(eventService.updateEvent(eventNo, eventInfo) == 1) {
 				return ResponseEntity.status(200).body(BaseResponseBody.of(200, "해당 이벤트 정보를 수정하였습니다."));				
 			}
 			else {

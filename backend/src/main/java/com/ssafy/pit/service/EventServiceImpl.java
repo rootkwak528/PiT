@@ -35,23 +35,23 @@ public class EventServiceImpl implements EventService {
 		return eventRepository.findAll();
 	}
 	@Override
-	public int registerEvent(EventInfoReq eventInfo, MultipartHttpServletRequest request) {
+	public int registerEvent(EventInfoReq eventInfo) {
 		
 		try {
 			Event event = new Event();
 			
-			File uploadDir = new File(uploadPath + File.separator + uploadFolder);
-			if(!uploadDir.exists()) uploadDir.mkdir();
-			MultipartFile part = request.getFiles("file").get(0);
-			String fileName = part.getOriginalFilename();
-			UUID uuid = UUID.randomUUID();
-			String extension = FilenameUtils.getExtension(fileName);
-			String savingFileName = uuid + "." + extension;
-			File destFile = new File(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
-			System.out.println(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
-			part.transferTo(destFile);
-			String fileUrl = uploadFolder + "/" + savingFileName;
-			event.setEventImage(fileUrl);
+//			File uploadDir = new File(uploadPath + File.separator + uploadFolder);
+//			if(!uploadDir.exists()) uploadDir.mkdir();
+//			MultipartFile part = request.getFiles("file").get(0);
+//			String fileName = part.getOriginalFilename();
+//			UUID uuid = UUID.randomUUID();
+//			String extension = FilenameUtils.getExtension(fileName);
+//			String savingFileName = uuid + "." + extension;
+//			File destFile = new File(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
+//			System.out.println(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
+//			part.transferTo(destFile);
+//			String fileUrl = uploadFolder + "/" + savingFileName;
+			event.setEventImage(eventInfo.getEventImage());
 			event.setEventContent(eventInfo.getEventContent());
 			event.setEventTitle(eventInfo.getEventTitle());
 			String startTime = eventInfo.getEventStartTime();
@@ -61,7 +61,6 @@ public class EventServiceImpl implements EventService {
 
 			Date eventStartTime = fm.parse(startTime);
 			Date eventEndTime = fm.parse(endTime);
-			
 			
 			event.setEventStartTime(eventStartTime);
 			event.setEventEndTime(eventEndTime);
@@ -89,40 +88,40 @@ public class EventServiceImpl implements EventService {
 		return eventRepository.deleteByEventNo(eventNo);
 	}
 	@Override
-	public int updateEvent(int eventNo, EventInfoReq eventInfo, MultipartHttpServletRequest request) {
+	public int updateEvent(int eventNo, EventInfoReq eventInfo) {
 		
 		try {
 			Event event = eventRepository.findUserByEventNo(eventNo);
 			
-			String deleteFileUrl = eventRepository.findUserByEventNo(eventNo).getEventImage();
-			File uploadDir = new File(uploadPath + File.separator + uploadFolder);
-			if(!uploadDir.exists()) uploadDir.mkdir();
+//			String deleteFileUrl = eventRepository.findUserByEventNo(eventNo).getEventImage();
+//			File uploadDir = new File(uploadPath + File.separator + uploadFolder);
+//			if(!uploadDir.exists()) uploadDir.mkdir();
+//			
+//			
+//			File file = null;
+//	        if(deleteFileUrl != null) {
+//	           file = new File(uploadPath + File.separator, deleteFileUrl);
+//	           if(file.exists()) {
+//	              file.delete();
+//	           }
+//	        }
 			
+//			MultipartFile part = request.getFiles("file").get(0);
+//			String fileName = part.getOriginalFilename();
+//			UUID uuid = UUID.randomUUID();
+//			String extension = FilenameUtils.getExtension(fileName);
+//			String savingFileName = uuid + "." + extension;
+//			File destFile = new File(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
+//			System.out.println(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
+//			part.transferTo(destFile);
+//			String fileUrl = uploadFolder + "/" + savingFileName;
 			
-			File file = null;
-	        if(deleteFileUrl != null) {
-	           file = new File(uploadPath + File.separator, deleteFileUrl);
-	           if(file.exists()) {
-	              file.delete();
-	           }
-	        }
-			
-			MultipartFile part = request.getFiles("file").get(0);
-			String fileName = part.getOriginalFilename();
-			UUID uuid = UUID.randomUUID();
-			String extension = FilenameUtils.getExtension(fileName);
-			String savingFileName = uuid + "." + extension;
-			File destFile = new File(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
-			System.out.println(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
-			part.transferTo(destFile);
-			String fileUrl = uploadFolder + "/" + savingFileName;
-			String startTime = eventInfo.getEventStartTime();
-			String endTime = eventInfo.getEventEndTime();
-			
-			event.setEventImage(fileUrl);
+			event.setEventImage(eventInfo.getEventImage());
 			event.setEventTitle(eventInfo.getEventTitle());
 			event.setEventContent(eventInfo.getEventContent());
 
+			String startTime = eventInfo.getEventStartTime();
+			String endTime = eventInfo.getEventEndTime();
 			SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date eventStartTime = fm.parse(startTime);
 			Date eventEndTime = fm.parse(endTime);
