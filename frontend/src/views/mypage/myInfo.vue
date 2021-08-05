@@ -13,7 +13,7 @@
           <el-col :span="8">
             <el-upload
               class="avatar-uploader"
-              action="https://jsonplaceholder.typicode.com/posts/"
+              action="v1/users/image"
               :show-file-list="false"
               :on-success="handleAvatarSuccess"
               :before-upload="beforeAvatarUpload"
