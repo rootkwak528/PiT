@@ -11,8 +11,6 @@
       <el-col :span="18">
         <div class="content-wrapper">
           <div class="submenu-title">수강완료 클래스</div>
-          <!-- <el-row :gutter="10"> -->
-          <!-- <el-col :span="6" v-for="o in classContent" :key="o"> -->
           <div class="finishedclass-card-section">
             <el-card
               shadow="none"
