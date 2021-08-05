@@ -12,10 +12,9 @@
 
         <el-row class="tac">
           <el-col :span="8">
-            프로필 사진이다 내 얼굴!!!!!!!
+            프로필 사진 ㅠㅠ
           </el-col>
           <el-col :span="16">
-
 
             <el-form v-loading="loading" :model="state.form" :rules="state.rules" ref="updateForm" :label-position="state.form.align">
 
@@ -30,7 +29,7 @@
               </el-form-item>
               <el-form-item prop="nickname" label="닉네임" :label-width="state.formLabelWidth">
                 <el-input style="float:left; width:70%" v-model="state.form.nickname"></el-input>
-                <el-button style="float:right; width:28%" type="primary" @click="checkDuplicatedNickname">중복확인</el-button>
+                <el-button class="form-btn" style="float:right; width:28%" @click="checkDuplicatedNickname">중복확인</el-button>
               </el-form-item>
               <el-form-item prop="pwd" label="비밀번호" :label-width="state.formLabelWidth">
                 <el-input v-model="state.form.pwd" show-password @input="onInputForm"></el-input>
@@ -56,12 +55,12 @@
 
 
             </el-form>
-              <span class="update-footer">
-                <el-button v-if="!updateValid" type="primary" @click="clickUpdateUser" disabled
-                  >수정하기</el-button
-                >
-                <el-button v-else type="primary" @click="clickUpdateUser">수정하기</el-button>
-              </span>
+            <span class="update-footer">
+              <el-button v-if="!updateValid" class="form-btn" @click="clickUpdateUser" disabled
+                >수정하기</el-button
+              >
+              <el-button v-else class="form-btn" @click="clickUpdateUser">수정하기</el-button>
+            </span>
 
 
           </el-col>
@@ -106,6 +105,7 @@ export default {
       pwd : 비밀번호 validation 필요
       pwdChk : 비밀번호 validation 필요
     */
+
     const validateEmail = (rule, value, callback) => {
       const email = value
       const emailTest = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/
@@ -317,7 +317,18 @@ export default {
       onInputForm()
     }
 
-    return { state, updateForm, updateValid, isNicknameAvailable, loading, requestUserInfo, onInputForm, onInputNicknameForm, checkDuplicatedNickname, clickUpdateUser }
+    return {
+      state,
+      updateForm,
+      updateValid,
+      isNicknameAvailable,
+      loading,
+      requestUserInfo,
+      onInputForm,
+      onInputNicknameForm,
+      checkDuplicatedNickname,
+      clickUpdateUser
+    }
   },
 
 };
@@ -329,5 +340,13 @@ export default {
   font-weight: bold;
   margin-top: 50px;
   margin-bottom: 50px;
+}
+.form-btn{
+  color: white;
+  background-color: #00C0D4;
+}
+.form-btn:hover{
+  color: #00C0D4;
+  background-color: white;
 }
 </style>
