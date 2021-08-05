@@ -56,7 +56,7 @@
           <span class="el-dropdown-link">
             <img
               id="profileImg"
-              :src="require(`@/assets/images/profile-default.png`)"
+              src="blob:http://localhost:8083/f82a0a59-698b-4dc2-abb0-c6aff9199872"
               alt="profile"
               style="width:100%; max-width:200px; height: 40px; cursor: pointer"
             />
@@ -87,7 +87,7 @@
   </el-row>
 </template>
 <script>
-import { reactive, computed } from "vue";
+import { reactive, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import SearchDialog from "./search-dialog.vue";
@@ -127,7 +127,9 @@ export default {
     const store = useStore();
     const router = useRouter();
     const state = reactive({
+
       searchValue: null,
+      profileUrl: "",
       isCollapse: true,
       menuItems: computed(() => {
         const MenuItems = store.getters["root/getMenus"];
@@ -208,6 +210,28 @@ export default {
     console.log("main-header isLogined : " + state.isLogined);
     //}
 
+    onMounted(() => {
+      requestUserInfo();
+    });
+
+    const requestUserInfo = function() {
+      store
+        .dispatch("root/requestUserInfo", {
+          token: "Bearer" + localStorage.getItem("jwt-auth-token")
+        })
+        .then(function(result) {
+
+          state.profileUrl = result.data.userProfile;
+
+          console.log("수정 전 profile : " + state.form.profile)
+          loading.value = false;
+        })
+        .catch(function(err) {
+          alert(err.response.data.message);
+          loading.value = false;
+        });
+    };
+
     return {
       state,
       menuSelect,
@@ -219,7 +243,8 @@ export default {
       logout,
       mvCart,
       mvMyclass,
-      checkAlert
+      checkAlert,
+      requestUserInfo
     };
   }
 };
