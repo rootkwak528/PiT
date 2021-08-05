@@ -27,5 +27,8 @@ public class ClassDetailGetRes {
 	int classTcnt;
 	int classPrice;
 	String classTeacherName;
+	String classDay;
+	int classUcnt;
+	int classLimit;
 	
 }
