@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
 	CodeRepositorySupport codeRepositorySupport;
 	
 	// 이미지 생성폴더 이름
-	String uploadFolder = "upload";
+//	String uploadFolder = "upload";
 	// 자기 이미지 생성할 경로
 //	String uploadPath = "C:" + File.separator + "Users" + File.separator + "ahnda" + File.separator
 //			+ "ssafy5-study" + File.separator + "Second" + File.separator + "Projects" + File.separator + "CommonProject" 
@@ -40,13 +40,13 @@ public class UserServiceImpl implements UserService {
 	
 //	/Users/seoyoseb/SSAFYProjects/S05P13A204/backend/src/main/resources/static
 	
-	String uploadPath = "/Users" + File.separator + "seoyoseb" + File.separator + "SSAFYProjects"
-    		+ File.separator + "S05P13A204"
-            + File.separator + "backend" 
-            + File.separator + "src" 
-            + File.separator + "main"
-            + File.separator + "resources"
-            + File.separator + "static";
+//	String uploadPath = "/Users" + File.separator + "seoyoseb" + File.separator + "SSAFYProjects"
+//    		+ File.separator + "S05P13A204"
+//            + File.separator + "backend" 
+//            + File.separator + "src" 
+//            + File.separator + "main"
+//            + File.separator + "resources"
+//            + File.separator + "static";
 	
 	@Override
 	public User registerUser(UserRegisterPostReq userRegisterInfo) {
@@ -91,7 +91,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public int update(User user, @ModelAttribute UserInfoPutReq userUpdateInfo, MultipartHttpServletRequest request) {
+	public int update(User user, UserInfoPutReq userUpdateInfo) {
 		try {
 			String userNickname = userUpdateInfo.getUserNickname();
 			if(userRepository.findUserByUserNickname(userNickname) != null && 
@@ -99,36 +99,41 @@ public class UserServiceImpl implements UserService {
 				return 2;
 			};
 			
-			String deleteFileUrl = userRepository.findUserByUserEmail(user.getUserEmail()).getUserProfile();
-			File uploadDir = new File(uploadPath + File.separator + uploadFolder);
-			if(!uploadDir.exists()) uploadDir.mkdir();
-			
-			
-			File file = null;
-	        if(deleteFileUrl != null) {
-	           file = new File(uploadPath + File.separator, deleteFileUrl);
-	           if(file.exists()) {
-	              file.delete();
-	           }
-	        }
-			
-			MultipartFile part = request.getFiles("file").get(0);
-			String fileName = part.getOriginalFilename();
-			UUID uuid = UUID.randomUUID();
-			String extension = FilenameUtils.getExtension(fileName);
-			String savingFileName = uuid + "." + extension;
-			File destFile = new File(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
-			System.out.println(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
-			part.transferTo(destFile);
-			String fileUrl = uploadFolder + "/" + savingFileName;
-			user.setUserProfile(fileUrl);
-			user.setUserDesc(userUpdateInfo.getUserDesc());
-			user.setUserName(userUpdateInfo.getUserName());
-			user.setUserPhone(userUpdateInfo.getUserPhone());
-			user.setUserNickname(userNickname);
-			user.setUserPwd(passwordEncoder.encode(userUpdateInfo.getUserPwd()));
+			userUpdateInfo.setUserPwd(passwordEncoder.encode(userUpdateInfo.getUserPwd()));
+			BeanUtils.copyProperties(userUpdateInfo, user);
 			userRepository.save(user);
 			return 1;
+			
+//			String deleteFileUrl = userRepository.findUserByUserEmail(user.getUserEmail()).getUserProfile();
+//			File uploadDir = new File(uploadPath + File.separator + uploadFolder);
+//			if(!uploadDir.exists()) uploadDir.mkdir();
+//			
+//			
+//			File file = null;
+//	        if(deleteFileUrl != null) {
+//	           file = new File(uploadPath + File.separator, deleteFileUrl);
+//	           if(file.exists()) {
+//	              file.delete();
+//	           }
+//	        }
+//			
+//			MultipartFile part = request.getFiles("file").get(0);
+//			String fileName = part.getOriginalFilename();
+//			UUID uuid = UUID.randomUUID();
+//			String extension = FilenameUtils.getExtension(fileName);
+//			String savingFileName = uuid + "." + extension;
+//			File destFile = new File(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
+//			System.out.println(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
+//			part.transferTo(destFile);
+//			String fileUrl = uploadFolder + "/" + savingFileName;
+//			user.setUserProfile(fileUrl);
+//			user.setUserDesc(userUpdateInfo.getUserDesc());
+//			user.setUserName(userUpdateInfo.getUserName());
+//			user.setUserPhone(userUpdateInfo.getUserPhone());
+//			user.setUserNickname(userNickname);
+//			user.setUserPwd(passwordEncoder.encode(userUpdateInfo.getUserPwd()));
+//			userRepository.save(user);
+//			return 1;
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -140,14 +145,14 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public int delete(String userEmail) {
-		String deleteFileUrl = userRepository.findUserByUserEmail(userEmail).getUserProfile();
-		File file = null;
-        if(deleteFileUrl != null) {
-           file = new File(uploadPath + File.separator, deleteFileUrl);
-           if(file.exists()) {
-              file.delete();
-           }
-        }
+//		String deleteFileUrl = userRepository.findUserByUserEmail(userEmail).getUserProfile();
+//		File file = null;
+//        if(deleteFileUrl != null) {
+//           file = new File(uploadPath + File.separator, deleteFileUrl);
+//           if(file.exists()) {
+//              file.delete();
+//           }
+//        }
 		
 		return userRepository.deleteByUserEmail(userEmail);
 	}
