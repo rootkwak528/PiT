@@ -84,15 +84,25 @@ public class UserController {
 	
 	// 닉네임 중복확인
 	@GetMapping("/nickname/{userNickname}")
-	public ResponseEntity<? extends BaseResponseBody> checkDuplicatedNickname(@RequestBody @PathVariable String userNickname){
+	public ResponseEntity<? extends BaseResponseBody> checkDuplicatedNickname(@PathVariable String userNickname){
 		User user = userService.getUserByUserNickname(userNickname);
 		if (user != null) {
-			return ResponseEntity.status(409).body(BaseResponseBody.of(409, "중복된 닉네임입니다."));
-		}
-		else if(user.getUserNickname().equals(userNickname)) {
 			return ResponseEntity.status(409).body(BaseResponseBody.of(409, "현재 사용중인 닉네임입니다."));
 		}
-		
+		else {
+			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "사용할 수 있는 닉네입니다."));
+		}
+	}
+	
+	// 개인정보 페이지에서 닉네임 중복확인
+	@GetMapping("/me/nickname/{userNickname}")
+	public ResponseEntity<? extends BaseResponseBody> checkDuplicatedUpdateNickname(Authentication authentication, @PathVariable String userNickname){
+		User user = userService.getUserByUserNickname(userNickname);
+		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
+		String nickName = userDetails.getUser().getUserNickname();
+		if (user != null && !nickName.equals(userNickname)) {
+			return ResponseEntity.status(409).body(BaseResponseBody.of(409, "중복된 닉네임입니다."));
+		}
 		else {
 			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "사용할 수 있는 닉네입니다."));
 		}
