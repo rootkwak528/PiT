@@ -13,7 +13,7 @@
           <el-col :span="8">
             <el-upload
               class="avatar-uploader"
-              action="https://jsonplaceholder.typicode.com/posts/"
+              action="v1/users/image"
               :show-file-list="false"
               :on-success="handleAvatarSuccess"
               :before-upload="beforeAvatarUpload"
@@ -194,6 +194,7 @@ export default {
       pwd : 비밀번호 validation 필요
       pwdChk : 비밀번호 validation 필요
     */
+
     const validateEmail = (rule, value, callback) => {
       const email = value;
       const emailTest = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
@@ -425,5 +426,13 @@ export default {
   font-weight: bold;
   margin-top: 50px;
   margin-bottom: 50px;
+}
+.form-btn{
+  color: white;
+  background-color: #00C0D4;
+}
+.form-btn:hover{
+  color: #00C0D4;
+  background-color: white;
 }
 </style>

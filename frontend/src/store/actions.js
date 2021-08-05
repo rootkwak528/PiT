@@ -53,3 +53,9 @@ export function updateUserInfo({ state }, payload) {
     }
   })
 }
+
+// 클래스 전체 목록 조회
+export function getClassList({ state }, payload) {
+  const url = `/class`
+  return $axios.get(url)
+}

@@ -10,8 +10,8 @@
     </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <el-button v-if="!loginValid" type="primary" @click="clickLogin" disabled>로그인</el-button>
-        <el-button v-else type="primary" @click="clickLogin">로그인</el-button>
+        <el-button v-if="!loginValid" class="form-btn" @click="clickLogin" disabled>로그인</el-button>
+        <el-button v-else class="form-btn" @click="clickLogin">로그인</el-button>
       </span>
     </template>
   </el-dialog>
@@ -48,6 +48,14 @@
 }
 .login-dialog .dialog-footer .el-button {
   width: 120px;
+}
+.form-btn{
+  color: white;
+  background-color: #00C0D4;
+}
+.form-btn:hover{
+  color: #00C0D4;
+  background-color: white;
 }
 </style>
 
