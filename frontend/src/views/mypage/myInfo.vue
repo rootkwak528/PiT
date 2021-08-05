@@ -18,7 +18,7 @@
               :on-success="handleAvatarSuccess"
               :before-upload="beforeAvatarUpload"
             >
-              <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+              <img v-if="state.form.profile" :src="state.form.profile" class="avatar" />
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
           </el-col>
@@ -157,28 +157,7 @@ export default {
       default: true
     }
   },
-  data() {
-    return {
-      imageUrl: ""
-    };
-  },
-  methods: {
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
-    },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === "image/jpeg";
-      const isLt2M = file.size / 1024 / 1024 < 2;
 
-      if (!isJPG) {
-        this.$message.error("Avatar picture must be JPG format!");
-      }
-      if (!isLt2M) {
-        this.$message.error("Avatar picture size can not exceed 2MB!");
-      }
-      return isJPG && isLt2M;
-    }
-  },
   setup(props, { emit }) {
     const store = useStore();
     const updateForm = ref(null);
@@ -314,8 +293,27 @@ export default {
         desc: [{ validator: validateDesc, trigger: "blur" }],
         phone: [{ required: true, validator: validatePhone, trigger: "blur" }]
       },
-      formLabelWidth: "120px"
+      formLabelWidth: "120px",
+
     });
+
+    const handleAvatarSuccess = function(res, file) {
+      state.form.profile = URL.createObjectURL(file.raw);
+      console.log("업로드 후 profile : " + state.form.profile);
+    };
+
+    const beforeAvatarUpload = function(file) {
+      const isJPG = file.type === "image/jpeg";
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isJPG) {
+        this.$message.error("Avatar picture must be JPG format!");
+      }
+      if (!isLt2M) {
+        this.$message.error("Avatar picture size can not exceed 2MB!");
+      }
+      return isJPG && isLt2M;
+    };
 
     onMounted(() => {
       console.log(updateForm.value);
@@ -336,6 +334,7 @@ export default {
           state.form.email = result.data.userEmail;
           state.form.name = result.data.userName;
           state.form.nickname = result.data.userNickname;
+          console.log("수정 전 profile : " + state.form.profile)
           loading.value = false;
         })
         .catch(function(err) {
@@ -384,6 +383,9 @@ export default {
             .then(function() {
               alert("회원정보가 수정되었습니다.");
               loading.value = false;
+              store.state.profileUrl = state.form.profile;
+              console.log(state.form.profile);
+              console.log(store.state.profileUrl);
             })
             .catch(function(err) {
               alert(err.response.data.message);
@@ -415,7 +417,9 @@ export default {
       onInputForm,
       onInputNicknameForm,
       checkDuplicatedUpdateNickname,
-      clickUpdateUser
+      clickUpdateUser,
+      handleAvatarSuccess,
+      beforeAvatarUpload
     };
   }
 };
