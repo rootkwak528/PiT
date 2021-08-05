@@ -127,9 +127,8 @@ export default {
     const store = useStore();
     const router = useRouter();
     const state = reactive({
-
       searchValue: null,
-      profileUrl: "",
+
       isCollapse: true,
       menuItems: computed(() => {
         const MenuItems = store.getters["root/getMenus"];
@@ -144,7 +143,8 @@ export default {
         return menuArray;
       }),
       activeIndex: computed(() => store.getters["root/getActiveMenuIndex"]),
-      isLogined: computed(() => store.getters["root/getIsLogined"])
+      isLogined: computed(() => store.getters["root/getIsLogined"]),
+      profileUrl: computed(() => store.getters["root/getProfileUrl"])
     });
 
     if (state.activeIndex === -1) {
@@ -211,24 +211,11 @@ export default {
     //}
 
     onMounted(() => {
-      requestUserInfo()
-    })
+      console.log(store.state.profileUrl);
+      //requestUserInfo()
+    });
 
-    const requestUserInfo = function() {
-      store
-        .dispatch("root/requestUserInfo")
-        .then(function(result) {
-
-          state.profileUrl = result.data.userProfile;
-
-          console.log("왜 캐치해..? profile : " + state.form.profile)
-          loading.value = false;
-        })
-        .catch(function(err) {
-          alert(err.response.data.message);
-          loading.value = false;
-        });
-    };
+    const requestUserInfo = function() {};
 
     return {
       state,

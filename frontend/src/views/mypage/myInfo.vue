@@ -18,7 +18,11 @@
               :on-success="handleAvatarSuccess"
               :before-upload="beforeAvatarUpload"
             >
-              <img v-if="state.form.profile" :src="state.form.profile" class="avatar" />
+              <img
+                v-if="state.form.profile"
+                :src="state.form.profile"
+                class="avatar"
+              />
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
           </el-col>
@@ -293,8 +297,7 @@ export default {
         desc: [{ validator: validateDesc, trigger: "blur" }],
         phone: [{ required: true, validator: validatePhone, trigger: "blur" }]
       },
-      formLabelWidth: "120px",
-
+      formLabelWidth: "120px"
     });
 
     const handleAvatarSuccess = function(res, file) {
@@ -334,7 +337,7 @@ export default {
           state.form.email = result.data.userEmail;
           state.form.name = result.data.userName;
           state.form.nickname = result.data.userNickname;
-          console.log("수정 전 profile : " + state.form.profile)
+          console.log("수정 전 profile : " + state.form.profile);
           loading.value = false;
         })
         .catch(function(err) {
@@ -349,7 +352,7 @@ export default {
         if (err === "") {
           store
             .dispatch("root/checkDuplicatedUpdateNickname", {
-              userNickname: state.form.nickname,
+              userNickname: state.form.nickname
             })
             .then(result => {
               alert("사용 가능한 닉네임입니다.");
@@ -384,6 +387,7 @@ export default {
               alert("회원정보가 수정되었습니다.");
               loading.value = false;
               store.state.profileUrl = state.form.profile;
+              store.commit("root/setProfileUrl", store.state.profileUrl);
               console.log(state.form.profile);
               console.log(store.state.profileUrl);
             })
@@ -432,12 +436,12 @@ export default {
   margin-top: 50px;
   margin-bottom: 50px;
 }
-.form-btn{
+.form-btn {
   color: white;
-  background-color: #00C0D4;
+  background-color: #00c0d4;
 }
-.form-btn:hover{
-  color: #00C0D4;
+.form-btn:hover {
+  color: #00c0d4;
   background-color: white;
 }
 </style>
