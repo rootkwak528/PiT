@@ -25,10 +25,10 @@ public class ClassDetailGetRes {
 	String classLevelName;
 	String classMaterial;
 	int classTcnt;
+	int classUcnt;
+	int classLimit;
 	int classPrice;
 	String classTeacherName;
 	String classDay;
-	int classUcnt;
-	int classLimit;
 	
 }

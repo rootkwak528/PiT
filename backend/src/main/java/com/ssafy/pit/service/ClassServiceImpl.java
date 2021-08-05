@@ -149,23 +149,27 @@ public class ClassServiceImpl implements ClassService {
 	public List<ClassListGetRes> getFinishedClassList(int userNo) {
 		
 		try {	
-			Date now = new Date();
-			SimpleDateFormat dateToStringFormat = new SimpleDateFormat("yyyy-MM-dd");
-			SimpleDateFormat stringToDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//			Date now = new Date();
+//			SimpleDateFormat dateToStringFormat = new SimpleDateFormat("yyyy-MM-dd");
+//			SimpleDateFormat stringToDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			
 			List<Classes> userClassList = classRepositorySupport.getUserClassList(userNo);
 			List<ClassListGetRes> finishedClassList = new ArrayList<ClassListGetRes> ();
 			
 			
 			for (Classes classes : userClassList) {
-				// 날짜비교
-				Date endDate = classes.getClassEndDate();
-				String endTime = classes.getClassEndTime();
+//				// 날짜비교
+//				Date endDate = classes.getClassEndDate();
+//				String endTime = classes.getClassEndTime();
+//				
+//				String endDateString = dateToStringFormat.format(endDate) + " " + endTime + ":00:00";
+//				Date classEndDate = stringToDateFormat.parse(endDateString);
+//				
+//				if(now.compareTo(classEndDate) <= 0) {
+//					continue;
+//				}
 				
-				String endDateString = dateToStringFormat.format(endDate) + " " + endTime + ":00:00";
-				Date classEndDate = stringToDateFormat.parse(endDateString);
-				
-				if(now.compareTo(classEndDate) <= 0) {
+				if(classes.getClassTcnt() > classes.getClassCcnt()) {
 					continue;
 				}
 				
@@ -192,9 +196,9 @@ public class ClassServiceImpl implements ClassService {
 	@Override
 	public List<RegisterClassGetRes> getRegisterClassList(int userNo) {
 		try {	
-			Date now = new Date();
-			SimpleDateFormat dateToStringFormat = new SimpleDateFormat("yyyy-MM-dd");
-			SimpleDateFormat stringToDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//			Date now = new Date();
+//			SimpleDateFormat dateToStringFormat = new SimpleDateFormat("yyyy-MM-dd");
+//			SimpleDateFormat stringToDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			
 			List<Classes> userClassList = classRepositorySupport.getUserClassList(userNo);
 			List<RegisterClassGetRes> registerClassList = new ArrayList<RegisterClassGetRes> ();
@@ -202,19 +206,23 @@ public class ClassServiceImpl implements ClassService {
 			
 			for (Classes classes : userClassList) {
 				// 날짜비교
-				Date endDate = classes.getClassEndDate();
-				Date startDate = classes.getClassStartDate();
-				String endTime = classes.getClassEndTime();
-				String startTime = classes.getClassStartTime();
+//				Date endDate = classes.getClassEndDate();
+//				Date startDate = classes.getClassStartDate();
+//				String endTime = classes.getClassEndTime();
+//				String startTime = classes.getClassStartTime();
+//				
+//				
+//				String startDateString = dateToStringFormat.format(startDate) + " " + startTime + ":00:00";
+//				String endDateString = dateToStringFormat.format(endDate) + " " + endTime + ":00:00";
+//				Date classStartDate = stringToDateFormat.parse(startDateString);
+//				Date classEndDate = stringToDateFormat.parse(endDateString);
+//				
+//				// 현재 날짜가 클래스 수업 마지막 날짜보다 크다면 이미 수강이 완료된 것이므로 Continue
+//				if(now.compareTo(classEndDate) > 0) {
+//					continue;
+//				}
 				
-				
-				String startDateString = dateToStringFormat.format(startDate) + " " + startTime + ":00:00";
-				String endDateString = dateToStringFormat.format(endDate) + " " + endTime + ":00:00";
-				Date classStartDate = stringToDateFormat.parse(startDateString);
-				Date classEndDate = stringToDateFormat.parse(endDateString);
-				
-				// 현재 날짜가 클래스 수업 마지막 날짜보다 크다면 이미 수강이 완료된 것이므로 Continue
-				if(now.compareTo(classEndDate) > 0) {
+				if(classes.getClassTcnt() <= classes.getClassCcnt()) {
 					continue;
 				}
 				
@@ -228,6 +236,12 @@ public class ClassServiceImpl implements ClassService {
 				else {
 					registerClass.setClassThumbnail("");
 				}
+				float totalCnt = classes.getClassTcnt();
+				float classCnt = classes.getClassCcnt();
+				float classPercentage = Math.round((classCnt/totalCnt)*10000) / (float) 100.0;
+				
+				registerClass.setClassPercentage(classPercentage);
+				
 				registerClassList.add(registerClass);
 			}
 			return registerClassList;

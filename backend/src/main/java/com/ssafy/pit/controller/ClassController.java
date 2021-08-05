@@ -121,7 +121,7 @@ public class ClassController {
 		}
 	}
 	
-	@GetMapping("registerclass")
+	@GetMapping("/registerclass")
 	public ResponseEntity<List<RegisterClassGetRes>> getRegisterClassList(Authentication authentication) {
 		List<RegisterClassGetRes> registerClassList = null;
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
