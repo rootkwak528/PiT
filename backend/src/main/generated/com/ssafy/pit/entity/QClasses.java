@@ -42,6 +42,8 @@ public class QClasses extends EntityPathBase<Classes> {
 
     public final NumberPath<Integer> classNo = createNumber("classNo", Integer.class);
 
+    public final StringPath classPermission = createString("classPermission");
+
     public final ListPath<ClassPhoto, QClassPhoto> classPhotos = this.<ClassPhoto, QClassPhoto>createList("classPhotos", ClassPhoto.class, QClassPhoto.class, PathInits.DIRECT2);
 
     public final NumberPath<Integer> classPrice = createNumber("classPrice", Integer.class);
@@ -52,7 +54,7 @@ public class QClasses extends EntityPathBase<Classes> {
 
     public final NumberPath<Integer> classTcnt = createNumber("classTcnt", Integer.class);
 
-    public final StringPath ClassTeacherName = createString("ClassTeacherName");
+    public final StringPath classTeacherName = createString("classTeacherName");
 
     public final StringPath classTitle = createString("classTitle");
 

@@ -44,8 +44,4 @@ public class UserClass {
 	@JoinColumn(name="class_no")
 	Classes classes;
 	
-	
-	@Column(name="class_permission")
-	String classPermission;
-	
 }

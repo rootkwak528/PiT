@@ -24,8 +24,6 @@ public class QUserClass extends EntityPathBase<UserClass> {
 
     public final QClasses classes;
 
-    public final StringPath classPermission = createString("classPermission");
-
     public final ListPath<Comment, QComment> Comments = this.<Comment, QComment>createList("Comments", Comment.class, QComment.class, PathInits.DIRECT2);
 
     public final QUser user;
