@@ -23,7 +23,12 @@ export function checkDuplicatedNickname({ state }, payload) {
 // 닉네임 중복 체크 (회원 정보 수정 시)
 export function checkDuplicatedUpdateNickname({ state }, payload) {
   const url = `/users/me/nickname/${payload.userNickname}`
-  return $axios.get(url)
+  let token = "Bearer " + localStorage.getItem('jwt-auth-token')
+  return $axios.get(url, {
+    headers: {
+      'Authorization' : token
+    }
+  })
 }
 
 // 로그인
@@ -49,13 +54,11 @@ export function requestUserInfo() {
 export function updateUserInfo({ state }, payload) {
   const url = `/users/me`
   let body = payload
-
   console.log(body.token)
   // let token = "Bearer " + localStorage.getItem('jwt-auth-token')
-  return $axios.post(url, body, {
+  return $axios.put(url, body, {
     headers: {
       'Authorization': body.token,
-      'Content-Type': 'multipart/form-data'
     }
   })
 }

@@ -350,12 +350,12 @@ export default {
         if (err === "") {
           store
             .dispatch("root/checkDuplicatedUpdateNickname", {
-              userNickname: state.form.nickname
+              userNickname: state.form.nickname,
             })
             .then(result => {
               alert("사용 가능한 닉네임입니다.");
               isNicknameAvailable.value = true;
-              // onInputForm();
+              onInputForm();
             })
             .catch(err => {
               // 409 error 처리해줘야 함!
