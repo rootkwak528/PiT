@@ -1,23 +1,4 @@
 <template>
-  <!-- <el-row style="margin-top: 20px">
-    <el-col :span="6" v-for="classItem in state.list" :key="classItem">
-      <router-link
-        :to="`/classdetail?classid=${classItem.classNo}`"
-        style="text-decoration: none; color: inherit;"
-      >
-        <el-card :body-style="{ padding: '0px' }">
-          <img :src="classItem.classThumbnail" class="image" />
-          <div style="padding: 14px; height: 100px; text-overflow: ellipsis;">
-            <p>{{ classItem.classTitle }}</p>
-            <div class="bottom">
-              월 {{ classItem.classPrice }}원 (5개월)<br />
-              <el-button type="text" style="color: #00C0D4">선물하기</el-button>
-            </div>
-          </div>
-        </el-card>
-      </router-link>
-    </el-col>
-  </el-row> -->
   <div class="class-card-wrapper">
     <el-card
       shadow="none"
@@ -37,14 +18,18 @@
       />
       <div class="class-card-content">
         <div>
-          <div>
-            {{ classItem.teacherName }}
+          <div style="height: 80px;">
+            <div>
+              {{ classItem.classTeacherName }}
+            </div>
+            <div class="title">{{ classItem.classTitle }}</div>
           </div>
-          <div class="title">{{ classItem.classTitle }}</div>
-          <el-tag size="mini" color="#BEEDED"
-            >{{ classItem.classStartDate }} ~
-            {{ classItem.classEndDate }}</el-tag
-          >
+          <div class="class-card-tag">
+            <el-tag size="mini" color="#BEEDED">
+              {{ classItem.classStartDate }} ~
+              {{ classItem.classEndDate }}
+            </el-tag>
+          </div>
         </div>
         <div class="finishedclass-card-content-bottom">
           월 {{ classItem.classPrice }}원
@@ -86,16 +71,10 @@ export default {
               result.data[i].classStartDate.split("-")[1]
             );
             var endMonth = parseInt(result.data[i].classEndDate.split("-")[1]);
-
-            // state.pricePerMonth.push(
-
-            // );
             result.data[i].classPrice = Math.ceil(
               result.data[i].classPrice / (endMonth - startMonth + 1)
             );
           }
-          //console.log(state.pricePerMonth);
-          //state.list.push(pricePerMonth);
         })
         .catch(function(err) {
           alert(err.response);
@@ -122,5 +101,11 @@ export default {
   flex-direction: column;
   justify-content: space-between;
   padding: 10px;
+}
+
+.class-card-tag {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
 }
 </style>
