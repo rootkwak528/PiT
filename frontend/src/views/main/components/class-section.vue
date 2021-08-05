@@ -1,33 +1,33 @@
 <template>
   <el-row style="margin-top: 20px">
-    <el-col :span="6" v-for="o in classContent" :key="o">
+    <el-col :span="6" v-for="classItem in state.list" :key="classItem">
       <router-link
-        :to="`/classdetail?classid=${o.classid}`"
+        :to="`/classdetail?classid=${classItem.classNo}`"
         style="text-decoration: none; color: inherit;"
       >
         <el-card :body-style="{ padding: '0px' }">
-          <img :src="o.thumbnail" class="image" />
+          <img :src="classItem.classThumbnail" class="image" />
           <div style="padding: 14px; height: 100px; text-overflow: ellipsis;">
-            <p>{{ o.title }}</p>
+            <p>{{ classItem.classTitle }}</p>
             <div class="bottom">
-              월 {{ o.price }}원 (5개월)<br />
+              월 {{ classItem.classPrice }}원 (5개월)<br />
               <el-button type="text" style="color: #00C0D4">선물하기</el-button>
             </div>
           </div>
         </el-card>
       </router-link>
     </el-col>
-    <el-col :span="6" v-for="o in classContent" :key="o" @click="clickClass">
+    <el-col :span="6" v-for="o in state.list" :key="o" @click="clickClass">
       <router-link
-        :to="`/classdetail?classid=${o.classid}`"
+        :to="`/classdetail?classid=${o.classNo}`"
         style="text-decoration: none; color: inherit;"
       >
         <el-card :body-style="{ padding: '0px' }">
-          <img :src="o.thumbnail" class="image" />
+          <img :src="o.classThumbnail" class="image" />
           <div style="padding: 14px; height: 100px; text-overflow: ellipsis;">
-            <p>{{ o.title }}</p>
+            <p>{{ o.classTitle }}</p>
             <div class="bottom">
-              월 {{ o.price }}원 (5개월)<br />
+              월 {{ o.classPrice }}원 (5개월)<br />
               <el-button type="text" style="color: #00C0D4">선물하기</el-button>
             </div>
           </div>
@@ -38,6 +38,10 @@
 </template>
 
 <script>
+import { reactive } from '@vue/reactivity';
+import { useStore } from 'vuex';
+import { onMounted } from '@vue/runtime-core';
+
 export default {
   name: "ClassSection",
   data() {
@@ -74,7 +78,33 @@ export default {
       ]
     };
   },
-  setup() {}
+  setup() {
+    const store = useStore();
+
+    const state = reactive({
+      list: [],
+    });
+
+    onMounted(() => {
+      getClassList();
+    });
+
+    const getClassList = function() {
+      store
+        .dispatch("root/getClassList")
+        .then(function(result) {
+          state.list = result.data
+        })
+        .catch(function(err){
+          alert(err.response.data.message);
+        })
+    }
+
+    return {
+      state,
+      getClassList,
+    }
+  }
 };
 </script>
 
