@@ -17,6 +17,7 @@ import com.ssafy.pit.common.response.BaseResponseBody;
 import com.ssafy.pit.request.ClassSearchGetReq;
 import com.ssafy.pit.response.ClassDetailGetRes;
 import com.ssafy.pit.response.ClassListGetRes;
+import com.ssafy.pit.response.RegisterClassGetRes;
 import com.ssafy.pit.service.ClassService;
 import com.ssafy.pit.service.UserService;
 
@@ -121,17 +122,17 @@ public class ClassController {
 	}
 	
 	@GetMapping("registerclass")
-	public ResponseEntity<List<ClassListGetRes>> getRegisterClassList(Authentication authentication) {
-		List<ClassListGetRes> finishedClassList = null;
+	public ResponseEntity<List<RegisterClassGetRes>> getRegisterClassList(Authentication authentication) {
+		List<RegisterClassGetRes> registerClassList = null;
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
 		String userEmail = userDetails.getUsername();
 		int userNo = userDetails.getUser().getUserNo();
 		if(userService.validateUserType(userEmail) == 3 || userService.validateUserType(userEmail) == 2) {
-			finishedClassList = classService.getFinishedClassList(userNo);
-			return ResponseEntity.status(200).body(finishedClassList);
+			registerClassList = classService.getRegisterClassList(userNo);
+			return ResponseEntity.status(200).body(registerClassList);
 		}
 		else {
-			return ResponseEntity.status(404).body(finishedClassList);
+			return ResponseEntity.status(404).body(registerClassList);
 		}
 	}
 	

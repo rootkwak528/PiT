@@ -23,6 +23,7 @@ import com.ssafy.pit.repository.UserRepository;
 import com.ssafy.pit.request.ClassSearchGetReq;
 import com.ssafy.pit.response.ClassDetailGetRes;
 import com.ssafy.pit.response.ClassListGetRes;
+import com.ssafy.pit.response.RegisterClassGetRes;
 
 @Service("classService")
 public class ClassServiceImpl implements ClassService {
@@ -186,7 +187,55 @@ public class ClassServiceImpl implements ClassService {
 			e.printStackTrace();
 			return null;
 		}
-		
+	}
+
+	@Override
+	public List<RegisterClassGetRes> getRegisterClassList(int userNo) {
+		try {	
+			Date now = new Date();
+			SimpleDateFormat dateToStringFormat = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat stringToDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			
+			List<Classes> userClassList = classRepositorySupport.getUserClassList(userNo);
+			List<RegisterClassGetRes> registerClassList = new ArrayList<RegisterClassGetRes> ();
+			
+			
+			for (Classes classes : userClassList) {
+				// 날짜비교
+				Date endDate = classes.getClassEndDate();
+				Date startDate = classes.getClassStartDate();
+				String endTime = classes.getClassEndTime();
+				String startTime = classes.getClassStartTime();
+				
+				
+				String startDateString = dateToStringFormat.format(startDate) + " " + startTime + ":00:00";
+				String endDateString = dateToStringFormat.format(endDate) + " " + endTime + ":00:00";
+				Date classStartDate = stringToDateFormat.parse(startDateString);
+				Date classEndDate = stringToDateFormat.parse(endDateString);
+				
+				// 현재 날짜가 클래스 수업 마지막 날짜보다 크다면 이미 수강이 완료된 것이므로 Continue
+				if(now.compareTo(classEndDate) > 0) {
+					continue;
+				}
+				
+				RegisterClassGetRes registerClass = new RegisterClassGetRes();
+				int classNo = classes.getClassNo();
+				BeanUtils.copyProperties(classes, registerClass);
+				String classThumbnail = classPhotoRepositorySupport.getThumbnail(classNo);
+				if (classThumbnail != null) {
+					registerClass.setClassThumbnail(classThumbnail);
+				}
+				else {
+					registerClass.setClassThumbnail("");
+				}
+				registerClassList.add(registerClass);
+			}
+			return registerClassList;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 		
 	}
 	
