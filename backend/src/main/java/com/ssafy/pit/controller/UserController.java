@@ -109,15 +109,15 @@ public class UserController {
 	}
 	
 	// 개인정보 수정
-	@PostMapping("/me")
-	public ResponseEntity<? extends BaseResponseBody> updateUser(Authentication authentication, UserInfoPutReq userUpdateInfo, MultipartHttpServletRequest request) {
+	@PutMapping("/me")
+	public ResponseEntity<? extends BaseResponseBody> updateUser(Authentication authentication, @RequestBody UserInfoPutReq userUpdateInfo) {
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
 		User user = userDetails.getUser();
 		
-		if(userService.update(user, userUpdateInfo, request) == 1) {
+		if(userService.update(user, userUpdateInfo) == 1) {
 			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "회원정보 업데이트가 완료되었습니다."));
 		}	
-		else if (userService.update(user, userUpdateInfo, request) == 2){
+		else if (userService.update(user, userUpdateInfo) == 2){
 			return ResponseEntity.status(409).body(BaseResponseBody.of(409, "중복된 닉네임입니다."));
 		}
 		else {

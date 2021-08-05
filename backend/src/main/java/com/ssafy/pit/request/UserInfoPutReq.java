@@ -12,5 +12,6 @@ public class UserInfoPutReq {
 	String userNickname;
 	String userDesc;
 	String userPhone;
-
+	String userProfile;
+	
 }
