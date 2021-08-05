@@ -7,6 +7,7 @@ import VueAxios from "./common/lib/axios";
 import axios from "./common/lib/axios";
 import i18n from "./common/lib/i18n";
 import router from "./router";
+// @ts-ignore
 // import VueVideoPlayer from "vue-video-player";
 // import Calendar from "v-calendar";
 

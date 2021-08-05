@@ -9,63 +9,131 @@
       </el-col>
 
       <el-col :span="18">
-
         <el-row class="tac">
           <el-col :span="8">
-            프로필 사진 ㅠㅠ
+            <el-upload
+              class="avatar-uploader"
+              action="https://jsonplaceholder.typicode.com/posts/"
+              :show-file-list="false"
+              :on-success="handleAvatarSuccess"
+              :before-upload="beforeAvatarUpload"
+            >
+              <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
           </el-col>
           <el-col :span="16">
-
-            <el-form v-loading="loading" :model="state.form" :rules="state.rules" ref="updateForm" :label-position="state.form.align">
-
+            <el-form
+              v-loading="loading"
+              :model="state.form"
+              :rules="state.rules"
+              ref="updateForm"
+              :label-position="state.form.align"
+            >
               <el-form-item label="분류" :label-width="state.formLabelWidth">
-                <el-label v-model="state.form.type">{{state.form.type}}</el-label>
+                <el-label v-model="state.form.type">{{
+                  state.form.type
+                }}</el-label>
               </el-form-item>
-              <el-form-item prop="email" label="이메일" :label-width="state.formLabelWidth">
-                <el-input v-model="state.form.email" disabled>{{state.form.email}}</el-input>
+              <el-form-item
+                prop="email"
+                label="이메일"
+                :label-width="state.formLabelWidth"
+              >
+                <el-input v-model="state.form.email" disabled>{{
+                  state.form.email
+                }}</el-input>
               </el-form-item>
-              <el-form-item prop="name" label="이름" :label-width="state.formLabelWidth">
-                <el-input v-model="state.form.name" @input="onInputForm"></el-input>
-              </el-form-item>
-              <el-form-item prop="nickname" label="닉네임" :label-width="state.formLabelWidth">
-                <el-input style="float:left; width:70%" v-model="state.form.nickname"></el-input>
-                <el-button class="form-btn" style="float:right; width:28%" @click="checkDuplicatedNickname">중복확인</el-button>
-              </el-form-item>
-              <el-form-item prop="pwd" label="비밀번호" :label-width="state.formLabelWidth">
-                <el-input v-model="state.form.pwd" show-password @input="onInputForm"></el-input>
-              </el-form-item>
-              <el-form-item prop="pwdChk" label="비밀번호 확인" :label-width="state.formLabelWidth">
-                <el-input v-model="state.form.pwdChk" show-password @input="onInputForm"></el-input>
-              </el-form-item>
-              <el-form-item prop="phone" label="휴대전화 번호" :label-width="state.formLabelWidth">
-                <el-input v-model="state.form.phone" @input="onInputForm" placeholder="-를 제외하고 숫자만 입력해주세요">{{state.form.phone}}</el-input>
-              </el-form-item>
-              <el-form-item label="상세 정보" :label-width="state.formLabelWidth">
+              <el-form-item
+                prop="name"
+                label="이름"
+                :label-width="state.formLabelWidth"
+              >
                 <el-input
-                type="textarea"
-                :rows="6"
-                v-model="state.form.desc"
-                maxlength="200"
-                show-word-limit
-                @input="onInputForm"
-                placeholder="트레이너는 필수 입력 사항입니다"
+                  v-model="state.form.name"
+                  @input="onInputForm"
+                ></el-input>
+              </el-form-item>
+              <el-form-item
+                prop="nickname"
+                label="닉네임"
+                :label-width="state.formLabelWidth"
+              >
+                <el-input
+                  style="float:left; width:70%"
+                  v-model="state.form.nickname"
+                ></el-input>
+                <el-button
+                  style="float:right; width:28%"
+                  type="primary"
+                  @click="checkDuplicatedNickname"
+                  >중복확인</el-button
+                >
+              </el-form-item>
+              <el-form-item
+                prop="pwd"
+                label="비밀번호"
+                :label-width="state.formLabelWidth"
+              >
+                <el-input
+                  v-model="state.form.pwd"
+                  show-password
+                  @input="onInputForm"
+                ></el-input>
+              </el-form-item>
+              <el-form-item
+                prop="pwdChk"
+                label="비밀번호 확인"
+                :label-width="state.formLabelWidth"
+              >
+                <el-input
+                  v-model="state.form.pwdChk"
+                  show-password
+                  @input="onInputForm"
+                ></el-input>
+              </el-form-item>
+              <el-form-item
+                prop="phone"
+                label="휴대전화 번호"
+                :label-width="state.formLabelWidth"
+              >
+                <el-input
+                  v-model="state.form.phone"
+                  @input="onInputForm"
+                  placeholder="-를 제외하고 숫자만 입력해주세요"
+                  >{{ state.form.phone }}</el-input
+                >
+              </el-form-item>
+              <el-form-item
+                label="상세 정보"
+                :label-width="state.formLabelWidth"
+              >
+                <el-input
+                  type="textarea"
+                  :rows="6"
+                  v-model="state.form.desc"
+                  maxlength="200"
+                  show-word-limit
+                  @input="onInputForm"
+                  placeholder="트레이너는 필수 입력 사항입니다"
                 >
                 </el-input>
               </el-form-item>
-
-
             </el-form>
             <span class="update-footer">
-              <el-button v-if="!updateValid" class="form-btn" @click="clickUpdateUser" disabled
+              <el-button
+                v-if="!updateValid"
+                type="primary"
+                @click="clickUpdateUser"
+                disabled
                 >수정하기</el-button
               >
-              <el-button v-else class="form-btn" @click="clickUpdateUser">수정하기</el-button>
+              <el-button v-else type="primary" @click="clickUpdateUser"
+                >수정하기</el-button
+              >
             </span>
-
-
           </el-col>
         </el-row>
-
       </el-col>
     </el-row>
   </div>
@@ -73,7 +141,7 @@
 
 <script>
 import { reactive, computed, ref, onMounted } from "vue";
-import { useStore } from 'vuex';
+import { useStore } from "vuex";
 import MypageSidebar from "./component/mypage-sidebar.vue";
 
 export default {
@@ -89,13 +157,34 @@ export default {
       default: true
     }
   },
+  data() {
+    return {
+      imageUrl: ""
+    };
+  },
+  methods: {
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === "image/jpeg";
+      const isLt2M = file.size / 1024 / 1024 < 2;
 
+      if (!isJPG) {
+        this.$message.error("Avatar picture must be JPG format!");
+      }
+      if (!isLt2M) {
+        this.$message.error("Avatar picture size can not exceed 2MB!");
+      }
+      return isJPG && isLt2M;
+    }
+  },
   setup(props, { emit }) {
     const store = useStore();
-    const updateForm = ref(null)
-    const updateValid = ref(false)
-    const isNicknameAvailable = ref(false)
-    const loading = ref(false)
+    const updateForm = ref(null);
+    const updateValid = ref(false);
+    const isNicknameAvailable = ref(false);
+    const loading = ref(false);
 
     /*
       type
@@ -107,10 +196,10 @@ export default {
     */
 
     const validateEmail = (rule, value, callback) => {
-      const email = value
-      const emailTest = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/
+      const email = value;
+      const emailTest = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
 
-      if(emailTest.test(email) == false){
+      if (emailTest.test(email) == false) {
         callback(new Error("이메일 형식이 올바르지 않습니다"));
       } else {
         callback();
@@ -138,9 +227,9 @@ export default {
     };
 
     const validatePwd = (rule, value, callback) => {
-      const num = value.search(/[0-9]/g)
-      const eng = value.search(/[a-z]/ig)
-      const spe = value.search(/[`~!@#$%^&*|₩₩₩'₩";:₩/?]/gi)
+      const num = value.search(/[0-9]/g);
+      const eng = value.search(/[a-z]/gi);
+      const spe = value.search(/[`~!@#$%^&*|₩₩₩'₩";:₩/?]/gi);
 
       if (value === "") {
         callback(new Error("비밀번호를 입력해 주세요"));
@@ -158,9 +247,9 @@ export default {
     };
 
     const validatePwdChk = (rule, value, callback) => {
-      const num = value.search(/[0-9]/g)
-      const eng = value.search(/[a-z]/ig)
-      const spe = value.search(/[`~!@#$%^&*|₩₩₩'₩";:₩/?]/gi)
+      const num = value.search(/[0-9]/g);
+      const eng = value.search(/[a-z]/gi);
+      const spe = value.search(/[`~!@#$%^&*|₩₩₩'₩";:₩/?]/gi);
 
       if (value === "") {
         callback(new Error("비밀번호를 입력해 주세요"));
@@ -169,9 +258,11 @@ export default {
       } else if (value.length > 16) {
         callback(new Error("최대 16자까지 입력 가능합니다"));
       } else if (num < 0 || eng < 0 || spe < 0) {
-        callback(new Error('비밀번호는 영문, 숫자, 특수문자가 조합되어야 합니다'))
+        callback(
+          new Error("비밀번호는 영문, 숫자, 특수문자가 조합되어야 합니다")
+        );
       } else if (value !== state.form.pwd) {
-        callback(new Error('입력한 비밀번호와 일치하지 않습니다'))
+        callback(new Error("입력한 비밀번호와 일치하지 않습니다"));
       } else {
         callback();
       }
@@ -198,38 +289,32 @@ export default {
 
     const state = reactive({
       form: {
-        gender: '',
-        desc: '',
-        phone: '',
-        profile: '',
-        type: '',
-        email: '',
-        name: '',
-        nickname: '',
-        pwd: '',
-        pwdChk: '',
-        align: 'left',
+        gender: "",
+        desc: "",
+        phone: "",
+        profile: "",
+        type: "",
+        email: "",
+        name: "",
+        nickname: "",
+        pwd: "",
+        pwdChk: "",
+        align: "left"
       },
       rules: {
-        email: [
-          { required: true, validator: validateEmail, trigger: 'blur' }
-        ],
-        name: [
-          { required: true, validator: validateName, trigger: 'blur' }
-        ],
+        email: [{ required: true, validator: validateEmail, trigger: "blur" }],
+        name: [{ required: true, validator: validateName, trigger: "blur" }],
         nickname: [
           { required: true, validator: validateNickname, trigger: "blur" }
         ],
-        pwd: [
-          { required: true, validator: validatePwd, trigger: 'blur' }
-        ],
+        pwd: [{ required: true, validator: validatePwd, trigger: "blur" }],
         pwdChk: [
-          { required: true, validator: validatePwdChk, trigger: 'blur' }
+          { required: true, validator: validatePwdChk, trigger: "blur" }
         ],
         desc: [{ validator: validateDesc, trigger: "blur" }],
         phone: [{ required: true, validator: validatePhone, trigger: "blur" }]
       },
-      formLabelWidth: "120px",
+      formLabelWidth: "120px"
     });
 
     onMounted(() => {
@@ -238,12 +323,11 @@ export default {
     });
 
     const requestUserInfo = function() {
-
       store
         .dispatch("root/requestUserInfo", {
-          token : "Bearer" + localStorage.getItem('jwt-auth-token')
+          token: "Bearer" + localStorage.getItem("jwt-auth-token")
         })
-        .then(function(result){
+        .then(function(result) {
           state.form.gender = result.data.userGenderName;
           state.form.desc = result.data.userDesc;
           state.form.phone = result.data.userPhone;
@@ -254,35 +338,38 @@ export default {
           state.form.nickname = result.data.userNickname;
           loading.value = false;
         })
-        .catch(function(err){
+        .catch(function(err) {
           alert(err.response.data.message);
           loading.value = false;
-        })
-    }
+        });
+    };
 
-    const checkDuplicatedNickname = function(){
-      console.log("닉네임 중복검사 클릭")
-      updateForm.value.validateField('nickname', (err) => {
-        if (err === '') {
-          store.dispatch('root/checkDuplicatedNickname', { userNickname: state.form.nickname })
-          .then(result => {
-            alert('사용 가능한 닉네임입니다.')
-            isNicknameAvailable.value = true
-            onInputForm()
-          })
-          .catch(err => {
-            // 409 error 처리해줘야 함!
+    const checkDuplicatedNickname = function() {
+      console.log("닉네임 중복검사 클릭");
+      updateForm.value.validateField("nickname", err => {
+        if (err === "") {
+          store
+            .dispatch("root/checkDuplicatedNickname", {
+              userNickname: state.form.nickname
+            })
+            .then(result => {
+              alert("사용 가능한 닉네임입니다.");
+              isNicknameAvailable.value = true;
+              onInputForm();
+            })
+            .catch(err => {
+              // 409 error 처리해줘야 함!
 
               alert(err.response.data.message);
             });
         }
       });
       console.log(isNicknameAvailable.value);
-    }
+    };
 
-    const clickUpdateUser = function(){
+    const clickUpdateUser = function() {
       updateForm.value.validate(valid => {
-        if(valid){
+        if (valid) {
           loading.value = true;
           store
             .dispatch("root/updateUserInfo", {
@@ -292,30 +379,30 @@ export default {
               userNickname: state.form.nickname,
               userDesc: state.form.desc,
               userPhone: state.form.phone,
-              token: "Bearer " + localStorage.getItem('jwt-auth-token')
+              token: "Bearer " + localStorage.getItem("jwt-auth-token")
             })
-            .then(function(){
-              alert("회원정보가 수정되었습니다.")
-              loading.value = false
+            .then(function() {
+              alert("회원정보가 수정되었습니다.");
+              loading.value = false;
             })
-            .catch(function (err){
-              alert(err.response.data.message)
-              loading.value = false
-            })
+            .catch(function(err) {
+              alert(err.response.data.message);
+              loading.value = false;
+            });
         }
-      })
-    }
+      });
+    };
 
-    const onInputForm = function(){
-      updateForm.value.validate((valid) => {
-        updateValid.value = valid & isNicknameAvailable.value
-      })
-    }
+    const onInputForm = function() {
+      updateForm.value.validate(valid => {
+        updateValid.value = valid & isNicknameAvailable.value;
+      });
+    };
 
-    const onInputNicknameForm = function(){
-      isNicknameAvailable.value = false
-      onInputForm()
-    }
+    const onInputNicknameForm = function() {
+      isNicknameAvailable.value = false;
+      onInputForm();
+    };
 
     return {
       state,
@@ -328,9 +415,8 @@ export default {
       onInputNicknameForm,
       checkDuplicatedNickname,
       clickUpdateUser
-    }
-  },
-
+    };
+  }
 };
 </script>
 
