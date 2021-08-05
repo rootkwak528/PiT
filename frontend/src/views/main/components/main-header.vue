@@ -56,7 +56,7 @@
           <span class="el-dropdown-link">
             <img
               id="profileImg"
-              src="blob:http://localhost:8083/f82a0a59-698b-4dc2-abb0-c6aff9199872"
+              :src="state.profileUrl"
               alt="profile"
               style="width:100%; max-width:200px; height: 40px; cursor: pointer"
             />
@@ -211,19 +211,17 @@ export default {
     //}
 
     onMounted(() => {
-      requestUserInfo();
-    });
+      requestUserInfo()
+    })
 
     const requestUserInfo = function() {
       store
-        .dispatch("root/requestUserInfo", {
-          token: "Bearer" + localStorage.getItem("jwt-auth-token")
-        })
+        .dispatch("root/requestUserInfo")
         .then(function(result) {
 
           state.profileUrl = result.data.userProfile;
 
-          console.log("수정 전 profile : " + state.form.profile)
+          console.log("왜 캐치해..? profile : " + state.form.profile)
           loading.value = false;
         })
         .catch(function(err) {
