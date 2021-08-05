@@ -21,15 +21,18 @@
     "v-calendar": "^3.0.0-alpha.5",
     "vue": "^3.0.0",
     "vue-axios": "^3.2.4",
+    "vue-core-video-player": "^0.2.0",
     "vue-element-loading": "^3.0.1",
     "vue-i18n": "^9.1.6",
     "vue-loading": "^0.1.4",
     "vue-router": "^4.0.6",
+    "vue-video-player": "^5.0.2",
     "vuex": "^4.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.14.0",
     "@babel/preset-env": "^7.14.1",
+    "@types/node": "^16.4.12",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
@@ -42,6 +45,7 @@
     "html-webpack-plugin": "^4.5.2",
     "prettier": "^1.19.1",
     "stylus": "^0.54.8",
+    "video.js": "^7.14.3",
     "vue-cli-plugin-vuetify": "~2.4.0",
     "webpack": "^4.46.0",
     "webpack-cli": "^4.7.0"

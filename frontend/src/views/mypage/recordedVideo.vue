@@ -46,12 +46,17 @@
 // import Calendar from "v-calendar";
 import MypageSidebar from "./component/mypage-sidebar.vue";
 // import VideoPlayer from "vue-video-player";
+// import VueCoreVideoPlayer from "vue-core-video-player";
+//import "video.js/dist/video-js.css";
+
+//import { videoPlayer } from "vue-video-player";
 
 export default {
   name: "RegisterClass",
   components: {
     // Calendar,
     MypageSidebar
+    //videoPlayer
     // VideoPlayer
   },
   data() {
@@ -114,7 +119,8 @@ export default {
         techOrder: ["flash"],
         poster:
           "https://surmon-china.github.io/vue-quill-editor/static/images/surmon-6.jpg"
-      }
+      },
+      imageUrl: ""
     };
   },
   methods: {
@@ -125,6 +131,21 @@ export default {
     },
     goBack() {
       this.selectedClassid = null;
+    },
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === "image/jpeg";
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isJPG) {
+        this.$message.error("Avatar picture must be JPG format!");
+      }
+      if (!isLt2M) {
+        this.$message.error("Avatar picture size can not exceed 2MB!");
+      }
+      return isJPG && isLt2M;
     }
   }
 };
