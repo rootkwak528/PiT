@@ -1,5 +1,6 @@
 package com.ssafy.pit.controller;
 
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -122,6 +123,16 @@ public class UserController {
 		else {
 			return ResponseEntity.status(404).body(BaseResponseBody.of(404, "업데이트 과정에서 문제가 발생했습니다."));			
 		}
+	}
+	
+	//유저 아바타 테스트
+	@PostMapping("/image")
+	public ResponseEntity<? extends BaseResponseBody> image(String url) {
+		System.out.println("이미지 진입");
+		System.out.println(url);
+			
+		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "테스트"));
+		
 	}
 	
 	@DeleteMapping("/me")
