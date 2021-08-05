@@ -32,7 +32,7 @@ public class ClassRepositorySupport {
 	QUserClass qUserClass = QUserClass.userClass;
 	
 	public List<Classes> getClassList() {
-		return query.selectFrom(qClass).fetch();
+		return query.selectFrom(qClass).where(qClass.classPermission.eq("001")).fetch();
 		
 	}
 	
@@ -44,7 +44,7 @@ public class ClassRepositorySupport {
 	public List<Classes> getClassLikesList(int userNo) {
 		List<Classes> classList = query.selectFrom(qClass).where(qClass.classNo.in(
 				JPAExpressions.select(qUserLikes.classes.classNo).from(qUserLikes).where(qUserLikes.user.userNo.eq(userNo))
-				)).fetch();
+				), qClass.classPermission.eq("001")).fetch();
 		
 		return classList;
 	}
@@ -58,7 +58,7 @@ public class ClassRepositorySupport {
 	public List<Classes> getUserClassList(int userNo) {
 		List<Classes> classList = query.selectFrom(qClass).where(qClass.classNo.in(
 				JPAExpressions.select(qUserClass.classes.classNo).from(qUserClass).where(qUserClass.user.userNo.eq(userNo))
-				)).fetch();
+				),qClass.classPermission.eq("001")).fetch();
 		return classList;
 	}
 	

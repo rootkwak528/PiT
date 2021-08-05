@@ -127,6 +127,10 @@ public class ClassServiceImpl implements ClassService {
 		try {			
 			User user = userRepository.findUserByUserNo(userNo);
 			Classes classes = classRepository.findClassByClassNo(classNo);
+			if(!classes.getClassPermission().equals("001")) {
+				return 0;
+			}
+			
 			UserLikes userLikes = new UserLikes();
 			userLikes.setUser(user);
 			userLikes.setClasses(classes);
