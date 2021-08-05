@@ -3,7 +3,7 @@
     <el-form v-loading="loading" :model="state.form" :rules="state.rules" ref="joinForm" :label-position="state.form.align">
       <el-form-item prop="email" label="아이디(이메일)" :label-width="state.formLabelWidth">
         <el-input style="float:left; width:70%" v-model="state.form.email" autocomplete="off" @input="onInputEmailForm"></el-input>
-        <el-button style="float:right; width:28%" type="primary" @click="checkDuplicatedEmail">중복 확인</el-button>
+        <el-button style="float:right; width:28%" class="form-btn" @click="checkDuplicatedEmail">중복 확인</el-button>
       </el-form-item>
       <el-form-item prop="pwd" label="비밀번호" :label-width="state.formLabelWidth">
         <el-input v-model="state.form.pwd" autocomplete="off" show-password @input="onInputForm"></el-input>
@@ -32,7 +32,7 @@
       </el-form-item>
       <el-form-item prop="nickname" label="닉네임" :label-width="state.formLabelWidth">
         <el-input style="float:left; width:70%" v-model="state.form.nickname" autocomplete="off" @input="onInputNicknameForm"></el-input>
-        <el-button style="float:right; width:28%" type="primary" @click="checkDuplicatedNickname">중복 확인</el-button>
+        <el-button style="float:right; width:28%" class="form-btn" @click="checkDuplicatedNickname">중복 확인</el-button>
       </el-form-item>
       <el-form-item prop="job" label="분류" :label-width="state.formLabelWidth">
         <el-radio v-model="state.form.type" label="002">트레이너</el-radio>
@@ -67,10 +67,10 @@
     </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <el-button v-if="!joinValid" type="primary" @click="clickRegister" disabled
+        <el-button v-if="!joinValid" class="form-btn" @click="clickRegister" disabled
           >가입하기</el-button
         >
-        <el-button v-else type="primary" @click="clickRegister">가입하기</el-button>
+        <el-button v-else class="form-btn" @click="clickRegister">가입하기</el-button>
       </span>
     </template>
   </el-dialog>
@@ -105,6 +105,14 @@
 }
 .join-dialog .dialog-footer .el-button {
   width: 120px;
+}
+.form-btn{
+  color: white;
+  background-color: #00C0D4;
+}
+.form-btn:hover{
+  color: #00C0D4;
+  background-color: white;
 }
 </style>
 <script>
