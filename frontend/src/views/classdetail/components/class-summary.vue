@@ -2,7 +2,7 @@
   <el-card class="summary-card">
     <template #header>
       <div class="card-header">
-        <div class="title">{{ classInfo.title }}</div>
+        <div class="title">{{ state.form.classTitle }}</div>
       </div>
     </template>
     <div style="">
@@ -17,11 +17,11 @@
           <div><i class="el-icon-star-off" /> 수업 수</div>
         </div>
         <div class="info-content-child" style="margin-left: 15px">
-          <div>{{ classInfo.classType }}</div>
-          <div>{{ classInfo.classMaterial }}</div>
-          <div>{{ classInfo.classLevel }}</div>
+          <div>{{ state.form.classTypeName }}</div>
+          <div>{{ state.form.classMaterial }}</div>
+          <div>{{ state.form.classLevelName }}</div>
           <div>3달</div>
-          <div>{{ classInfo.classTcnt }}</div>
+          <div>{{ state.form.classTcnt }}</div>
         </div>
       </div>
       <el-divider />
@@ -30,12 +30,12 @@
           <div><i class="el-icon-coin" /> 금액</div>
         </div>
         <div class="info-content-child" style="margin-left: 15px">
-          <div>총 {{ classInfo.classPrice }}원</div>
+          <div>총 {{ state.form.classPrice }}원</div>
         </div>
       </div>
       <div class="price-per-month">
         <div></div>
-        <div>월 {{ classInfo.classPrice / period }}원</div>
+        <div>월 {{ state.form.classPricePerMonth }}원</div>
       </div>
       <button class="btn-submit">신청하기</button>
     </div>
@@ -43,6 +43,9 @@
 </template>
 
 <script>
+import { useStore } from "vuex";
+import { reactive, computed, ref, onMounted } from "vue";
+
 export default {
   name: "ClassSummary",
   props: {
@@ -54,49 +57,46 @@ export default {
     const state = reactive({
       form: {
         classTitle: "",
-        classDesc: "",
-        classCurri: ""
+        classStartDate: "",
+        classEndDate: "",
+        classTypeName: "",
+        classMaterial: "",
+        classLevelName: "",
+        classTcnt: "",
+        classPrice: "",
+        classPricePerMonth: ""
       }
     });
 
-    onMounted(() => {
-      getClassDetail();
-    });
+    store
+      .dispatch("root/getClassDetail", { classNo: props.classNo })
+      .then(function(result) {
+        state.form.classTitle = result.data.classTitle;
+        state.form.classStartDate = result.data.classStartDate;
+        state.form.classEndDate = result.data.classEndDate;
+        state.form.classTypeName = result.data.classTypeName;
+        state.form.classMaterial = result.data.classMaterial;
+        state.form.classLevelName = result.data.classLevelName;
+        state.form.classTcnt = result.data.classTcnt;
+        state.form.classPrice = result.data.classPrice;
 
-    const getClassDetail = function() {
-      store
-        .dispatch("root/getClassDetail", { classNo: props.classNo })
-        .then(function(result) {
-          console.log(result.data.classTitle);
-          state.form.classTitle = result.data.classTitle;
-          state.form.classDesc = result.data.classDesc;
-          state.form.classCurri = result.data.classCurri;
-          console.log(state.form.classTitle);
-        })
-        .catch(function() {});
-    };
-  },
-  data() {
-    return {
-      classInfo: {
-        title: "달심쌤과 함께 퇴근 후 요가퐈이야",
-        classStartDate: "2021-08-08",
-        classEndDate: "2021-11-08",
-        classType: "요가",
-        classMaterial: "요가매트, 요가복",
-        classLevel: "초보",
-        classTcnt: "24",
-        classPrice: "300000"
-      },
-      period: 3 // 임시변수 -> 나중에 DB에서 받아온 Date로 계산
-    };
+        var startMonth = parseInt(result.data.classStartDate.split("-")[1]);
+        var endMonth = parseInt(result.data.classEndDate.split("-")[1]);
+        state.form.classPricePerMonth = Math.ceil(
+          result.data.classPrice / (endMonth - startMonth + 1)
+        );
+      })
+      .catch(function(err) {
+        console.log(err);
+      });
+    return { state };
   }
 };
 </script>
 
 <style>
 .summary-card {
-  height: 530px;
+  height: 550px;
 }
 
 .card-header {
