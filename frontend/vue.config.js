@@ -2,7 +2,10 @@
 // Vue3 관련 설정 파일
 module.exports = {
   devServer: {
-    https: false,
+    // Invalid Host Error 및 HTTPS 관련
+    disableHostCheck: true,
+    https: true,
+    
     port: 8083,
     open: true,
     proxy: {
