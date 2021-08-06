@@ -18,7 +18,11 @@
               :on-success="handleAvatarSuccess"
               :before-upload="beforeAvatarUpload"
             >
-              <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+              <img
+                v-if="state.form.profile"
+                :src="state.form.profile"
+                class="avatar"
+              />
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
           </el-col>
@@ -66,7 +70,7 @@
                 <el-button
                   style="float:right; width:28%"
                   type="primary"
-                  @click="checkDuplicatedNickname"
+                  @click="checkDuplicatedUpdateNickname"
                   >중복확인</el-button
                 >
               </el-form-item>
@@ -157,28 +161,7 @@ export default {
       default: true
     }
   },
-  data() {
-    return {
-      imageUrl: ""
-    };
-  },
-  methods: {
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
-    },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === "image/jpeg";
-      const isLt2M = file.size / 1024 / 1024 < 2;
 
-      if (!isJPG) {
-        this.$message.error("Avatar picture must be JPG format!");
-      }
-      if (!isLt2M) {
-        this.$message.error("Avatar picture size can not exceed 2MB!");
-      }
-      return isJPG && isLt2M;
-    }
-  },
   setup(props, { emit }) {
     const store = useStore();
     const updateForm = ref(null);
@@ -317,6 +300,24 @@ export default {
       formLabelWidth: "120px"
     });
 
+    const handleAvatarSuccess = function(res, file) {
+      state.form.profile = URL.createObjectURL(file.raw);
+      console.log("업로드 후 profile : " + state.form.profile);
+    };
+
+    const beforeAvatarUpload = function(file) {
+      const isJPG = file.type === "image/jpeg";
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isJPG) {
+        this.$message.error("Avatar picture must be JPG format!");
+      }
+      if (!isLt2M) {
+        this.$message.error("Avatar picture size can not exceed 2MB!");
+      }
+      return isJPG && isLt2M;
+    };
+
     onMounted(() => {
       console.log(updateForm.value);
       requestUserInfo();
@@ -336,6 +337,7 @@ export default {
           state.form.email = result.data.userEmail;
           state.form.name = result.data.userName;
           state.form.nickname = result.data.userNickname;
+          console.log("수정 전 profile : " + state.form.profile);
           loading.value = false;
         })
         .catch(function(err) {
@@ -344,12 +346,12 @@ export default {
         });
     };
 
-    const checkDuplicatedNickname = function() {
+    const checkDuplicatedUpdateNickname = function() {
       console.log("닉네임 중복검사 클릭");
       updateForm.value.validateField("nickname", err => {
         if (err === "") {
           store
-            .dispatch("root/checkDuplicatedNickname", {
+            .dispatch("root/checkDuplicatedUpdateNickname", {
               userNickname: state.form.nickname
             })
             .then(result => {
@@ -373,7 +375,7 @@ export default {
           loading.value = true;
           store
             .dispatch("root/updateUserInfo", {
-              file: state.form.profile,
+              userProfile: state.form.profile,
               userName: state.form.name,
               userPwd: state.form.pwd,
               userNickname: state.form.nickname,
@@ -384,6 +386,10 @@ export default {
             .then(function() {
               alert("회원정보가 수정되었습니다.");
               loading.value = false;
+              store.state.profileUrl = state.form.profile;
+              store.commit("root/setProfileUrl", store.state.profileUrl);
+              console.log(state.form.profile);
+              console.log(store.state.profileUrl);
             })
             .catch(function(err) {
               alert(err.response.data.message);
@@ -395,7 +401,8 @@ export default {
 
     const onInputForm = function() {
       updateForm.value.validate(valid => {
-        updateValid.value = valid & isNicknameAvailable.value;
+        // updateValid.value = valid & isNicknameAvailable.value;
+        updateValid.value = valid;
       });
     };
 
@@ -413,8 +420,10 @@ export default {
       requestUserInfo,
       onInputForm,
       onInputNicknameForm,
-      checkDuplicatedNickname,
-      clickUpdateUser
+      checkDuplicatedUpdateNickname,
+      clickUpdateUser,
+      handleAvatarSuccess,
+      beforeAvatarUpload
     };
   }
 };
@@ -427,12 +436,35 @@ export default {
   margin-top: 50px;
   margin-bottom: 50px;
 }
-.form-btn{
+.form-btn {
   color: white;
-  background-color: #00C0D4;
+  background-color: #00c0d4;
 }
-.form-btn:hover{
-  color: #00C0D4;
+.form-btn:hover {
+  color: #00c0d4;
   background-color: white;
 }
+.avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409eff;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+  }
 </style>

@@ -1,61 +1,77 @@
 // API
-import $axios from 'axios'
+import $axios from "axios";
 
 // 회원가입
 export function register({ state }, payload) {
-  const url = '/users'
-  let body = payload
-  return $axios.post(url, body)
+  const url = "/users";
+  let body = payload;
+  return $axios.post(url, body);
 }
 
 // 이메일 중복 체크
 export function checkDuplicatedEmail({ state }, payload) {
-  const url = `/users/email/${payload.userEmail}`
-  return $axios.get(url)
+  const url = `/users/email/${payload.userEmail}`;
+  return $axios.get(url);
 }
 
 // 닉네임 중복 체크
 export function checkDuplicatedNickname({ state }, payload) {
-  const url = `/users/nickname/${payload.userNickname}`
-  return $axios.get(url)
+  const url = `/users/nickname/${payload.userNickname}`;
+  return $axios.get(url);
+}
+
+// 닉네임 중복 체크 (회원 정보 수정 시)
+export function checkDuplicatedUpdateNickname({ state }, payload) {
+  const url = `/users/me/nickname/${payload.userNickname}`;
+  let token = "Bearer " + localStorage.getItem("jwt-auth-token");
+  return $axios.get(url, {
+    headers: {
+      Authorization: token
+    }
+  });
 }
 
 // 로그인
 export function requestLogin({ state }, payload) {
-  const url = `/auth/login`
-  let body = payload
-  return $axios.post(url, body)
+  const url = `/auth/login`;
+  let body = payload;
+  return $axios.post(url, body);
 }
 
 // 회원 정보 조회
 export function requestUserInfo() {
   // console.log('requestUserInfo token : ' + token)
-  const url = `/users/me`
-  let token = "Bearer " + localStorage.getItem('jwt-auth-token')
+  const url = `/users/me`;
+  let token = "Bearer " + localStorage.getItem("jwt-auth-token");
   return $axios.get(url, {
     headers: {
-      'Authorization' : token
+      Authorization: token
     }
-  })
+  });
 }
 
 // 회원 정보 수정
 export function updateUserInfo({ state }, payload) {
-  const url = `/users/me`
-  let body = payload
-
-  console.log(body.token)
+  const url = `/users/me`;
+  let body = payload;
+  console.log(body.token);
   // let token = "Bearer " + localStorage.getItem('jwt-auth-token')
-  return $axios.post(url, body, {
+  return $axios.put(url, body, {
     headers: {
-      'Authorization': body.token,
-      'Content-Type': 'multipart/form-data'
+      Authorization: body.token
     }
-  })
+  });
 }
 
 // 클래스 전체 목록 조회
 export function getClassList({ state }) {
-  const url = `/class`
-  return $axios.get(url)
+  const url = `/class`;
+  return $axios.get(url);
+}
+
+// 클래스 상세 조회
+export function getClassDetail({}, payload) {
+  let body = payload;
+  const url = `/class/${body.classNo}`;
+  return $axios.get(url);
 }

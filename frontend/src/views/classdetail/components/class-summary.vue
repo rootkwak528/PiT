@@ -46,7 +46,35 @@
 export default {
   name: "ClassSummary",
   props: {
-    classid: String //백에 접근해서 클래스 정보 받아오기 위한 클래스id
+    classNo: String
+  },
+  setup(props) {
+    const store = useStore();
+
+    const state = reactive({
+      form: {
+        classTitle: "",
+        classDesc: "",
+        classCurri: ""
+      }
+    });
+
+    onMounted(() => {
+      getClassDetail();
+    });
+
+    const getClassDetail = function() {
+      store
+        .dispatch("root/getClassDetail", { classNo: props.classNo })
+        .then(function(result) {
+          console.log(result.data.classTitle);
+          state.form.classTitle = result.data.classTitle;
+          state.form.classDesc = result.data.classDesc;
+          state.form.classCurri = result.data.classCurri;
+          console.log(state.form.classTitle);
+        })
+        .catch(function() {});
+    };
   },
   data() {
     return {
@@ -62,8 +90,7 @@ export default {
       },
       period: 3 // 임시변수 -> 나중에 DB에서 받아온 Date로 계산
     };
-  },
-  setup() {}
+  }
 };
 </script>
 

@@ -56,7 +56,7 @@
           <span class="el-dropdown-link">
             <img
               id="profileImg"
-              :src="require(`@/assets/images/profile-default.png`)"
+              :src="state.profileUrl"
               alt="profile"
               style="width:100%; max-width:200px; height: 40px; cursor: pointer"
             />
@@ -87,7 +87,7 @@
   </el-row>
 </template>
 <script>
-import { reactive, computed } from "vue";
+import { reactive, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import SearchDialog from "./search-dialog.vue";
@@ -128,6 +128,7 @@ export default {
     const router = useRouter();
     const state = reactive({
       searchValue: null,
+
       isCollapse: true,
       menuItems: computed(() => {
         const MenuItems = store.getters["root/getMenus"];
@@ -142,7 +143,8 @@ export default {
         return menuArray;
       }),
       activeIndex: computed(() => store.getters["root/getActiveMenuIndex"]),
-      isLogined: computed(() => store.getters["root/getIsLogined"])
+      isLogined: computed(() => store.getters["root/getIsLogined"]),
+      profileUrl: computed(() => store.getters["root/getProfileUrl"])
     });
 
     if (state.activeIndex === -1) {
@@ -208,6 +210,13 @@ export default {
     console.log("main-header isLogined : " + state.isLogined);
     //}
 
+    onMounted(() => {
+      console.log(store.state.profileUrl);
+      //requestUserInfo()
+    });
+
+    const requestUserInfo = function() {};
+
     return {
       state,
       menuSelect,
@@ -219,7 +228,8 @@ export default {
       logout,
       mvCart,
       mvMyclass,
-      checkAlert
+      checkAlert,
+      requestUserInfo
     };
   }
 };

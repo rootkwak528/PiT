@@ -1,88 +1,63 @@
 <template>
-  <el-row style="margin-top: 20px">
-    <el-col :span="6" v-for="classItem in state.list" :key="classItem">
+  <div class="class-card-wrapper">
+    <el-card
+      shadow="none"
+      v-for="classItem in state.list"
+      :key="classItem"
+      :body-style="{
+        padding: '0px',
+        height: '400px',
+        width: '300px'
+      }"
+      style="margin: 5px"
+    >
       <router-link
-        :to="`/classdetail?classid=${classItem.classNo}`"
+        :to="`/classdetail?classNo=${classItem.classNo}`"
         style="text-decoration: none; color: inherit;"
       >
-        <el-card :body-style="{ padding: '0px' }">
-          <img :src="classItem.classThumbnail" class="image" />
-          <div style="padding: 14px; height: 100px; text-overflow: ellipsis;">
-            <p>{{ classItem.classTitle }}</p>
-            <div class="bottom">
-              월 {{ classItem.classPrice }}원 (5개월)<br />
-              <el-button type="text" style="color: #00C0D4">선물하기</el-button>
+        <el-image
+          :src="classItem.classThumbnail"
+          fit="cover"
+          style="width: 300px; height: 200px;"
+        />
+        <div class="class-card-content">
+          <div>
+            <div style="height: 80px;">
+              <div>
+                {{ classItem.classTeacherName }}
+              </div>
+              <div class="title">{{ classItem.classTitle }}</div>
+            </div>
+            <div class="class-card-tag">
+              <el-tag size="mini" color="#BEEDED">
+                {{ classItem.classStartDate }} ~
+                {{ classItem.classEndDate }}
+              </el-tag>
             </div>
           </div>
-        </el-card>
-      </router-link>
-    </el-col>
-    <el-col :span="6" v-for="o in state.list" :key="o" @click="clickClass">
-      <router-link
-        :to="`/classdetail?classid=${o.classNo}`"
-        style="text-decoration: none; color: inherit;"
-      >
-        <el-card :body-style="{ padding: '0px' }">
-          <img :src="o.classThumbnail" class="image" />
-          <div style="padding: 14px; height: 100px; text-overflow: ellipsis;">
-            <p>{{ o.classTitle }}</p>
-            <div class="bottom">
-              월 {{ o.classPrice }}원 (5개월)<br />
-              <el-button type="text" style="color: #00C0D4">선물하기</el-button>
-            </div>
+          <div class="class-card-content-bottom">
+            월 {{ classItem.classPrice }}원
           </div>
-        </el-card>
+        </div>
       </router-link>
-    </el-col>
-  </el-row>
+    </el-card>
+  </div>
 </template>
 
 <script>
-import { reactive } from '@vue/reactivity';
-import { useStore } from 'vuex';
-import { onMounted } from '@vue/runtime-core';
+import { reactive } from "@vue/reactivity";
+import { useStore } from "vuex";
+import { onMounted } from "@vue/runtime-core";
 
 export default {
   name: "ClassSection",
   data() {
-    return {
-      classContent: [
-        {
-          thumbnail:
-            "https://cdn.class101.net/images/119a8385-66ea-471a-a4a2-bee3e519c4da/375xauto.webp",
-          title: `홈트계의 끝판왕 '힙으뜸'`,
-          price: `46,800`,
-          classid: `1111`
-        },
-        {
-          thumbnail:
-            "http://laza.jalbum.net/Watermark%20Demo/slides/P8220329.jpg",
-          title: `SNPE 바디리셋 프로젝트. 척추운동으로 밸런스 회복하기!`,
-          price: `46,800`,
-          classid: `2222`
-        },
-        {
-          thumbnail:
-            "https://cdn57.androidauthority.net/wp-content/uploads/2020/04/oneplus-8-pro-ultra-wide-sample-twitter-1.jpg",
-          title: `천재 사업가 '대학생김머신'의 무엇이든 팔 수 있는 쇼핑몰 창업가이드`,
-          price: `46,800`,
-          classid: `3333`
-        },
-        {
-          thumbnail:
-            "https://cdn.mos.cms.futurecdn.net/aehTwFrsn44UTg9T3shPEi.jpg",
-          title: `이성과 감성을 넘나들다. 시선을 사로잡는 브랜드 디자인`,
-          price: `46,800`,
-          classid: `4444`
-        }
-      ]
-    };
+    return {};
   },
   setup() {
     const store = useStore();
-
     const state = reactive({
-      list: [],
+      list: []
     });
 
     onMounted(() => {
@@ -93,47 +68,56 @@ export default {
       store
         .dispatch("root/getClassList")
         .then(function(result) {
-          state.list = result.data
+          state.list = result.data;
+
+          for (var i = 0; i < state.list.length; i++) {
+            var startMonth = parseInt(
+              result.data[i].classStartDate.split("-")[1]
+            );
+            var endMonth = parseInt(result.data[i].classEndDate.split("-")[1]);
+            result.data[i].classPrice = Math.ceil(
+              result.data[i].classPrice / (endMonth - startMonth + 1)
+            );
+          }
         })
-        .catch(function(err){
-          alert(err.response.data.message);
-        })
-    }
+        .catch(function(err) {
+          alert(err.response);
+        });
+    };
 
     return {
       state,
-      getClassList,
-    }
+      getClassList
+    };
   }
 };
 </script>
 
 <style>
-p {
-  font-size: 15px;
-  margin: 0;
-  /* height: 50px; */
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.class-card-wrapper {
+  display: flex;
+  flex-wrap: wrap;
 }
 
-.bottom {
-  font-size: 14px;
-  width: 100%;
-  height: 40px;
-  margin-top: 20px;
-  line-height: 12px;
-  /* display: flex;
+.class-card-content {
+  height: 170px;
+  display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  align-items: center;
-  text-overflow: ellipsis;
-  overflow: hidden; */
+  padding: 10px;
 }
 
-.image {
-  width: 100%;
-  height: 207px;
-  display: block;
+.class-card-tag {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.class-card-content-bottom {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  font-size: 20px;
+  font-weight: bold;
 }
 </style>
