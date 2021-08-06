@@ -10,7 +10,7 @@
     <el-submenu index="1">
       <template #title>
         <i class="el-icon-notebook-1"></i>
-        <span>내 클래스</span>
+        <span>마이클래스</span>
       </template>
       <el-menu-item-group>
         <el-menu-item index="rgstClass">수강중 클래스</el-menu-item>
@@ -25,7 +25,7 @@
     </el-menu-item>
     <el-menu-item index="/myinfo">
       <i class="el-icon-user"></i>
-      <span>내 정보</span>
+      <span>마이페이지</span>
     </el-menu-item>
   </el-menu>
 </template>
