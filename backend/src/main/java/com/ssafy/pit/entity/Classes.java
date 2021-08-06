@@ -108,7 +108,7 @@ public class Classes {
 	@Column(name="class_teacher_name")
 	String classTeacherName;
 	
-	@Column(name="class_permission", columnDefinition = "char(3) default '002'")
+	@Column(name="class_permission", columnDefinition = "char(5) default '002'")
 	String classPermission;
 	
 	

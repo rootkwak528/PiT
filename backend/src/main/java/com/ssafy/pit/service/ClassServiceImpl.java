@@ -61,6 +61,10 @@ public class ClassServiceImpl implements ClassService {
 		List<ClassListGetRes> classListGetRes = new ArrayList();
 
 		for (Classes classes : classesList) {
+			if(!classes.getClassPermission().equals("001")) {
+				continue;
+			}
+			
 			ClassListGetRes classGetRes = new ClassListGetRes();
 			int classNo = classes.getClassNo();
 			BeanUtils.copyProperties(classes, classGetRes);
@@ -80,6 +84,10 @@ public class ClassServiceImpl implements ClassService {
 	@Override
 	public ClassDetailGetRes getClassDetail(int classNo) {
 		Classes classes = classRepositorySupport.getClassDetail(classNo);
+		if(!classes.getClassPermission().equals("001")) {
+			return null;
+		}
+		
 		ClassDetailGetRes classDetail = new ClassDetailGetRes();
 		// classes -> classDetail로 복제 (title, desc, curri, startdate, enddate, material, tcnt, price, starttime, endtime, teachernmae)
 		BeanUtils.copyProperties(classes, classDetail);
@@ -106,6 +114,10 @@ public class ClassServiceImpl implements ClassService {
 		List<ClassListGetRes> classListGetRes = new ArrayList<ClassListGetRes>();
 		
 		for (Classes classes : classLikesList) {
+			if(!classes.getClassPermission().equals("001")) {
+				continue;
+			}
+			
 			ClassListGetRes classGetRes = new ClassListGetRes();
 			int classNo = classes.getClassNo();
 			BeanUtils.copyProperties(classes, classGetRes);
@@ -173,7 +185,7 @@ public class ClassServiceImpl implements ClassService {
 //					continue;
 //				}
 				
-				if(classes.getClassTcnt() > classes.getClassCcnt()) {
+				if(classes.getClassTcnt() > classes.getClassCcnt() || !classes.getClassPermission().equals("001")) {
 					continue;
 				}
 				
@@ -226,7 +238,7 @@ public class ClassServiceImpl implements ClassService {
 //					continue;
 //				}
 				
-				if(classes.getClassTcnt() <= classes.getClassCcnt()) {
+				if(classes.getClassTcnt() <= classes.getClassCcnt() || !classes.getClassPermission().equals("001")) {
 					continue;
 				}
 				
