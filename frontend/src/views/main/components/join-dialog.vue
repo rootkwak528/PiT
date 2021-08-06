@@ -1,15 +1,58 @@
 <template>
-  <el-dialog custom-class="join-dialog" title="회원가입" v-model="state.dialogVisible" @close="handleClose">
-    <el-form v-loading="loading" :model="state.form" :rules="state.rules" ref="joinForm" :label-position="state.form.align">
-      <el-form-item prop="email" label="아이디(이메일)" :label-width="state.formLabelWidth">
-        <el-input style="float:left; width:70%" v-model="state.form.email" autocomplete="off" @input="onInputEmailForm"></el-input>
-        <el-button style="float:right; width:28%" class="form-btn" @click="checkDuplicatedEmail">중복 확인</el-button>
+  <el-dialog
+    custom-class="join-dialog"
+    title="회원가입"
+    v-model="state.dialogVisible"
+    @close="handleClose"
+  >
+    <el-form
+      v-loading="loading"
+      :model="state.form"
+      :rules="state.rules"
+      ref="joinForm"
+      :label-position="state.form.align"
+    >
+      <el-form-item
+        prop="email"
+        label="아이디(이메일)"
+        :label-width="state.formLabelWidth"
+      >
+        <el-input
+          style="float:left; width:70%"
+          v-model="state.form.email"
+          autocomplete="off"
+          @input="onInputEmailForm"
+        ></el-input>
+        <el-button
+          style="float:right; width:28%"
+          class="form-btn"
+          @click="checkDuplicatedEmail"
+          >중복 확인</el-button
+        >
       </el-form-item>
-      <el-form-item prop="pwd" label="비밀번호" :label-width="state.formLabelWidth">
-        <el-input v-model="state.form.pwd" autocomplete="off" show-password @input="onInputForm"></el-input>
+      <el-form-item
+        prop="pwd"
+        label="비밀번호"
+        :label-width="state.formLabelWidth"
+      >
+        <el-input
+          v-model="state.form.pwd"
+          autocomplete="off"
+          show-password
+          @input="onInputForm"
+        ></el-input>
       </el-form-item>
-      <el-form-item prop="pwdChk" label="비밀번호 확인" :label-width="state.formLabelWidth">
-        <el-input v-model="state.form.pwdChk" autocomplete="off" show-password @input="onInputForm"></el-input>
+      <el-form-item
+        prop="pwdChk"
+        label="비밀번호 확인"
+        :label-width="state.formLabelWidth"
+      >
+        <el-input
+          v-model="state.form.pwdChk"
+          autocomplete="off"
+          show-password
+          @input="onInputForm"
+        ></el-input>
       </el-form-item>
       <el-form-item
         prop="gender"
@@ -30,9 +73,23 @@
           @input="onInputForm"
         ></el-input>
       </el-form-item>
-      <el-form-item prop="nickname" label="닉네임" :label-width="state.formLabelWidth">
-        <el-input style="float:left; width:70%" v-model="state.form.nickname" autocomplete="off" @input="onInputNicknameForm"></el-input>
-        <el-button style="float:right; width:28%" class="form-btn" @click="checkDuplicatedNickname">중복 확인</el-button>
+      <el-form-item
+        prop="nickname"
+        label="닉네임"
+        :label-width="state.formLabelWidth"
+      >
+        <el-input
+          style="float:left; width:70%"
+          v-model="state.form.nickname"
+          autocomplete="off"
+          @input="onInputNicknameForm"
+        ></el-input>
+        <el-button
+          style="float:right; width:28%"
+          class="form-btn"
+          @click="checkDuplicatedNickname"
+          >중복 확인</el-button
+        >
       </el-form-item>
       <el-form-item prop="job" label="분류" :label-width="state.formLabelWidth">
         <el-radio v-model="state.form.type" label="002">트레이너</el-radio>
@@ -67,10 +124,16 @@
     </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <el-button v-if="!joinValid" class="form-btn" @click="clickRegister" disabled
+        <el-button
+          v-if="!joinValid"
+          class="form-btn"
+          @click="clickRegister"
+          disabled
           >가입하기</el-button
         >
-        <el-button v-else class="form-btn" @click="clickRegister">가입하기</el-button>
+        <el-button v-else class="form-btn" @click="clickRegister"
+          >가입하기</el-button
+        >
       </span>
     </template>
   </el-dialog>
@@ -106,12 +169,12 @@
 .join-dialog .dialog-footer .el-button {
   width: 120px;
 }
-.form-btn{
+.form-btn {
   color: white;
-  background-color: #00C0D4;
+  background-color: #00c0d4;
 }
-.form-btn:hover{
-  color: #00C0D4;
+.form-btn:hover {
+  color: #00c0d4;
   background-color: white;
 }
 </style>
@@ -132,11 +195,11 @@ export default {
   setup(props, { emit }) {
     const store = useStore();
     // 마운드 이후 바인딩 될 예정 - 컨텍스트에 노출시켜야함. <return>
-    const joinForm = ref(null)
-    const joinValid = ref(false)
-    const isEmailAvailable = ref(false)
-    const isNicknameAvailable = ref(false)
-    const loading = ref(false)
+    const joinForm = ref(null);
+    const joinValid = ref(false);
+    const isEmailAvailable = ref(false);
+    const isNicknameAvailable = ref(false);
+    const loading = ref(false);
 
     /*
       // Element UI Validator
@@ -145,12 +208,12 @@ export default {
     */
 
     const validateGender = (rule, value, callback) => {
-      if (value === ""){
+      if (value === "") {
         callback(new Error("성별을 선택해주세요"));
       } else {
         callback();
       }
-    }
+    };
 
     const validateName = (rule, value, callback) => {
       if (value === "") {
@@ -163,10 +226,10 @@ export default {
     };
 
     const validateEmail = (rule, value, callback) => {
-      const email = value
-      const emailTest = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/
+      const email = value;
+      const emailTest = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
 
-      if(emailTest.test(email) == false){
+      if (emailTest.test(email) == false) {
         callback(new Error("이메일 형식이 올바르지 않습니다"));
       } else {
         callback();
@@ -174,9 +237,9 @@ export default {
     };
 
     const validatePwd = (rule, value, callback) => {
-      const num = value.search(/[0-9]/g)
-      const eng = value.search(/[a-z]/ig)
-      const spe = value.search(/[`~!@#$%^&*|₩₩₩'₩";:₩/?]/gi)
+      const num = value.search(/[0-9]/g);
+      const eng = value.search(/[a-z]/gi);
+      const spe = value.search(/[`~!@#$%^&*|₩₩₩'₩";:₩/?]/gi);
 
       if (value === "") {
         callback(new Error("비밀번호를 입력해 주세요"));
@@ -194,9 +257,9 @@ export default {
     };
 
     const validatePwdChk = (rule, value, callback) => {
-      const num = value.search(/[0-9]/g)
-      const eng = value.search(/[a-z]/ig)
-      const spe = value.search(/[`~!@#$%^&*|₩₩₩'₩";:₩/?]/gi)
+      const num = value.search(/[0-9]/g);
+      const eng = value.search(/[a-z]/gi);
+      const spe = value.search(/[`~!@#$%^&*|₩₩₩'₩";:₩/?]/gi);
 
       if (value === "") {
         callback(new Error("비밀번호를 입력해 주세요"));
@@ -205,9 +268,11 @@ export default {
       } else if (value.length > 16) {
         callback(new Error("최대 16자까지 입력 가능합니다"));
       } else if (num < 0 || eng < 0 || spe < 0) {
-        callback(new Error('비밀번호는 영문, 숫자, 특수문자가 조합되어야 합니다'))
+        callback(
+          new Error("비밀번호는 영문, 숫자, 특수문자가 조합되어야 합니다")
+        );
       } else if (value !== state.form.pwd) {
-        callback(new Error('입력한 비밀번호와 일치하지 않습니다'))
+        callback(new Error("입력한 비밀번호와 일치하지 않습니다"));
       } else {
         callback();
       }
@@ -244,33 +309,27 @@ export default {
 
     const state = reactive({
       form: {
-        gender: '',
-        name: '',
-        email: '',
-        pwd: '',
-        pwdChk: '',
-        type: '',
-        profile: '',
-        nickname: '',
-        desc: '',
-        phone: '',
-        align: 'left'
+        gender: "",
+        name: "",
+        email: "",
+        pwd: "",
+        pwdChk: "",
+        type: "",
+        profile: "",
+        nickname: "",
+        desc: "",
+        phone: "",
+        align: "left"
       },
       rules: {
         gender: [
-          { required: true, validator: validateGender, trigger: 'blur' }
+          { required: true, validator: validateGender, trigger: "blur" }
         ],
-        name: [
-          { required: true, validator: validateName, trigger: 'blur' }
-        ],
-        email: [
-          { required: true, validator: validateEmail, trigger: 'blur' }
-        ],
-        pwd: [
-          { required: true, validator: validatePwd, trigger: 'blur' }
-        ],
+        name: [{ required: true, validator: validateName, trigger: "blur" }],
+        email: [{ required: true, validator: validateEmail, trigger: "blur" }],
+        pwd: [{ required: true, validator: validatePwd, trigger: "blur" }],
         pwdChk: [
-          { required: true, validator: validatePwdChk, trigger: 'blur' }
+          { required: true, validator: validatePwdChk, trigger: "blur" }
         ],
         type: [{ required: true, trigger: "blur" }],
         nickname: [
@@ -323,31 +382,34 @@ export default {
       });
     };
 
-    const handleClose = function () {
-      state.form.gender = ''
-      state.form.name = ''
-      state.form.email = ''
-      state.form.pwd = ''
-      state.form.pwdChk = ''
-      state.form.type = ''
-      state.form.nickname = ''
-      state.form.desc = ''
-      state.form.phone = ''
-      emit('closeJoinDialog')
-    }
+    const handleClose = function() {
+      state.form.gender = "";
+      state.form.name = "";
+      state.form.email = "";
+      state.form.pwd = "";
+      state.form.pwdChk = "";
+      state.form.type = "";
+      state.form.nickname = "";
+      state.form.desc = "";
+      state.form.phone = "";
+      emit("closeJoinDialog");
+    };
 
-    const checkDuplicatedEmail = function () {
-      console.log("이메일 중복검사 클릭")
-      joinForm.value.validateField('email', (err) => {
-        if (err === '') {
-          store.dispatch('root/checkDuplicatedEmail', { userEmail: state.form.email })
-          .then(result => {
-            alert('사용 가능한 이메일입니다.')
-            isEmailAvailable.value = true
-            onInputForm()
-          })
-          .catch(err => {
-            // 409 error 처리해줘야 함!
+    const checkDuplicatedEmail = function() {
+      console.log("이메일 중복검사 클릭");
+      joinForm.value.validateField("email", err => {
+        if (err === "") {
+          store
+            .dispatch("root/checkDuplicatedEmail", {
+              userEmail: state.form.email
+            })
+            .then(result => {
+              alert("사용 가능한 이메일입니다.");
+              isEmailAvailable.value = true;
+              onInputForm();
+            })
+            .catch(err => {
+              // 409 error 처리해줘야 함!
 
               alert(err.response.data.message);
             });
@@ -356,19 +418,20 @@ export default {
       console.log(isEmailAvailable.value);
     };
 
-    const checkDuplicatedNickname = function () {
-      console.log("닉네임 중복검사 클릭")
-      joinForm.value.validateField('nickname', (err) => {
-        if (err === '') {
-          store.dispatch('root/checkDuplicatedNickname', { userNickname: state.form.nickname })
-          .then(result => {
-            alert('사용 가능한 닉네임입니다.')
-            isNicknameAvailable.value = true
-            onInputForm()
-          })
-          .catch(err => {
-            // 409 error 처리해줘야 함!
-
+    const checkDuplicatedNickname = function() {
+      console.log("닉네임 중복검사 클릭");
+      joinForm.value.validateField("nickname", err => {
+        if (err === "") {
+          store
+            .dispatch("root/checkDuplicatedNickname", {
+              userNickname: state.form.nickname
+            })
+            .then(result => {
+              alert("사용 가능한 닉네임입니다.");
+              isNicknameAvailable.value = true;
+              onInputForm();
+            })
+            .catch(err => {
               alert(err.response.data.message);
             });
         }
@@ -376,24 +439,38 @@ export default {
       console.log(isNicknameAvailable.value);
     };
 
-    const onInputForm = function () {
-      joinForm.value.validate((valid) => {
-        joinValid.value = valid & isEmailAvailable.value & isNicknameAvailable.value
-      })
-    }
+    const onInputForm = function() {
+      joinForm.value.validate(valid => {
+        joinValid.value =
+          valid & isEmailAvailable.value & isNicknameAvailable.value;
+      });
+    };
 
-    const onInputEmailForm = function () {
-      isEmailAvailable.value = false
-      onInputForm()
-    }
+    const onInputEmailForm = function() {
+      isEmailAvailable.value = false;
+      onInputForm();
+    };
 
-    const onInputNicknameForm = function (){
-      isNicknameAvailable.value = false
-      onInputForm()
-    }
+    const onInputNicknameForm = function() {
+      isNicknameAvailable.value = false;
+      onInputForm();
+    };
 
-    return { joinForm, joinValid, isEmailAvailable, isNicknameAvailable, loading, state, clickRegister, handleClose, checkDuplicatedEmail, checkDuplicatedNickname, onInputForm, onInputEmailForm, onInputNicknameForm }
+    return {
+      joinForm,
+      joinValid,
+      isEmailAvailable,
+      isNicknameAvailable,
+      loading,
+      state,
+      clickRegister,
+      handleClose,
+      checkDuplicatedEmail,
+      checkDuplicatedNickname,
+      onInputForm,
+      onInputEmailForm,
+      onInputNicknameForm
+    };
   }
 };
 </script>
-

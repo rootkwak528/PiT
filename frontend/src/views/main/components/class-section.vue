@@ -11,30 +11,35 @@
       }"
       style="margin: 5px"
     >
-      <el-image
-        :src="classItem.classThumbnail"
-        fit="cover"
-        style="width: 300px; height: 200px;"
-      />
-      <div class="class-card-content">
-        <div>
-          <div style="height: 80px;">
-            <div>
-              {{ classItem.classTeacherName }}
+      <router-link
+        :to="`/classdetail?classNo=${classItem.classNo}`"
+        style="text-decoration: none; color: inherit;"
+      >
+        <el-image
+          :src="classItem.classThumbnail"
+          fit="cover"
+          style="width: 300px; height: 200px;"
+        />
+        <div class="class-card-content">
+          <div>
+            <div style="height: 80px;">
+              <div>
+                {{ classItem.classTeacherName }}
+              </div>
+              <div class="title">{{ classItem.classTitle }}</div>
             </div>
-            <div class="title">{{ classItem.classTitle }}</div>
+            <div class="class-card-tag">
+              <el-tag size="mini" color="#BEEDED">
+                {{ classItem.classStartDate }} ~
+                {{ classItem.classEndDate }}
+              </el-tag>
+            </div>
           </div>
-          <div class="class-card-tag">
-            <el-tag size="mini" color="#BEEDED">
-              {{ classItem.classStartDate }} ~
-              {{ classItem.classEndDate }}
-            </el-tag>
+          <div class="class-card-content-bottom">
+            월 {{ classItem.classPrice }}원
           </div>
         </div>
-        <div class="finishedclass-card-content-bottom">
-          월 {{ classItem.classPrice }}원
-        </div>
-      </div>
+      </router-link>
     </el-card>
   </div>
 </template>
@@ -52,8 +57,7 @@ export default {
   setup() {
     const store = useStore();
     const state = reactive({
-      list: [],
-      pricePerMonth: []
+      list: []
     });
 
     onMounted(() => {
@@ -105,7 +109,15 @@ export default {
 
 .class-card-tag {
   display: flex;
-  flex-direction: column;
-  justify-content: end;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.class-card-content-bottom {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  font-size: 20px;
+  font-weight: bold;
 }
 </style>

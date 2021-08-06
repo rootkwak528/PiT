@@ -4,37 +4,17 @@
       <div>
         <h2>클래스 설명</h2>
         <el-divider />
-        <h3>{{ classInfo.title }}</h3>
-        <p>{{ classInfo.description }}</p>
+        <h3>{{ state.form.classTitle }}</h3>
+        <p>{{ state.form.classDesc }}</p>
         <el-divider />
         <h3>커리큘럼</h3>
-        <pre>{{ classInfo.curriculum }}</pre>
+        <pre>{{ state.form.classCurri }}</pre>
         <el-divider />
         <h3>커뮤니티</h3>
-        <!-- <div class="rate">
-          <div style="margin-right: 20px">수강생 별점</div>
-          <el-rate
-            v-model="value"
-            disabled
-            show-score
-            text-color="#00C0D4"
-            score-template="{value} / 5"
-          >
-          </el-rate>
-        </div> -->
-        <!-- <div> -->
         <div v-for="o in community" :key="o">
           <el-card class="box-card">
             <div class="rate">
               <div style="margin-right: 20px">{{ o.userid }}</div>
-              <!-- <el-rate
-                  v-model="o.rate"
-                  disabled
-                  show-score
-                  text-color="#00C0D4"
-                  score-template="{value} / 5"
-                >
-                </el-rate> -->
               <div>{{ o.reviewCreateDate }}</div>
             </div>
             <div>
@@ -42,39 +22,19 @@
             </div>
           </el-card>
         </div>
-        <!-- </div> -->
       </div>
     </el-tab-pane>
     <el-tab-pane label="커리큘럼" name="curriculum"
       ><h3>커리큘럼</h3>
-      <pre>{{ classInfo.curriculum }}</pre></el-tab-pane
+      <pre>{{ state.form.classCurri }}</pre></el-tab-pane
     >
     <el-tab-pane label="커뮤니티" name="review"
       ><h3>커뮤니티</h3>
-      <!-- <div class="rate">
-        <div style="margin-right: 20px">수강생 별점</div>
-        <el-rate
-          v-model="value"
-          disabled
-          show-score
-          text-color="#00C0D4"
-          score-template="{value} / 5"
-        >
-        </el-rate>
-      </div> -->
       <div>
         <div v-for="o in community" :key="o">
           <el-card class="box-card">
             <div class="rate">
               <div style="margin-right: 20px">{{ o.userid }}</div>
-              <!-- <el-rate
-                  v-model="o.rate"
-                  disabled
-                  show-score
-                  text-color="#00C0D4"
-                  score-template="{value} / 5"
-                >
-                </el-rate> -->
               <div>{{ o.reviewCreateDate }}</div>
             </div>
             <div>
@@ -88,30 +48,83 @@
 </template>
 
 <script>
+import { reactive, computed, ref, onMounted } from "vue";
+import { useStore } from "vuex";
+
 export default {
   name: "ClassContent",
+  props: {
+    classNo: String
+  },
+  setup(props) {
+    const store = useStore();
+    const state = reactive({
+      form: {
+        classTitle: "",
+        classDesc: "",
+        classCurri: ""
+      }
+    });
+
+    onMounted(() => {
+      getClassDetail();
+    });
+
+    const getClassDetail = function() {
+      store
+        .dispatch("root/getClassDetail", { classNo: props.classNo })
+        .then(function(result) {
+          console.log(result.data.classTitle);
+          state.form.classTitle = result.data.classTitle;
+          state.form.classDesc = result.data.classDesc;
+          state.form.classCurri = result.data.classCurri;
+          console.log(state.form.classTitle);
+        })
+        .catch(function() {});
+    };
+
+    // store.dispatch("root/requestUserInfo", {
+    //   token: "Bearer" + localStorage.getItem("jwt-auth-token")
+    // })
+    // .then(function(result) {
+    //   state.form.profile = result.data.userProfile;
+    //   // console.log(
+    //   //   "로그인 성공 profile url : " + state.form.profile
+    //   // );
+    //   store.state.profileUrl = state.form.profile;
+    //   store.commit("root/setProfileUrl", store.state.profileUrl);
+    //   // console.log("login.vue 에서 url: " + store.state.profileUrl);
+    //   loading.value = false;
+    // })
+    // .catch(function(err) {
+    //   alert(err.response.data.message);
+    //   loading.value = false;
+    // });
+
+    return { getClassDetail };
+  },
   data() {
     return {
       activeName: "classDescript",
-      classInfo: {
-        title: "달심쌤과 함께 퇴근 후 요가퐈이야",
-        description:
-          "퇴근 이후에 코어 근육 강화를 위한 요가 수업입니다. 늦은 저녁 시간에 강의가 진행됩니다.",
-        curriculum: `1주차 : 수강생의 상태 파악
-2주차 : ~~
-3주차 : ~~
-4주차 : ~~
+      //       classInfo: {
+      //         title: "달심쌤과 함께 퇴근 후 요가퐈이야",
+      //         description:
+      //           "퇴근 이후에 코어 근육 강화를 위한 요가 수업입니다. 늦은 저녁 시간에 강의가 진행됩니다.",
+      //         curriculum: `1주차 : 수강생의 상태 파악
+      // 2주차 : ~~
+      // 3주차 : ~~
+      // 4주차 : ~~
 
-5주차 : ~~
-6주차 : ~~
-7주차 : ~~
-8주차 : ~~
+      // 5주차 : ~~
+      // 6주차 : ~~
+      // 7주차 : ~~
+      // 8주차 : ~~
 
-9주차 : ~~
-10주차 : ~~
-11주차 : ~~
-12주차 : ~~`
-      },
+      // 9주차 : ~~
+      // 10주차 : ~~
+      // 11주차 : ~~
+      // 12주차 : ~~`
+      //       },
       value: 3.7,
       community: [
         {
@@ -134,22 +147,11 @@ export default {
         }
       ]
     };
-  },
-  methods: {
-    handleClick(tab, event) {
-      //console.log(tab, event);
-    }
   }
 };
 </script>
 
 <style>
-.rate {
-  display: flex;
-  margin-bottom: 20px;
-  /* justify-content: space-between; */
-}
-
 .text {
   font-size: 14px;
 }
