@@ -1,8 +1,11 @@
 <template>
   <gallery style="margin-bottom: 40px;" />
   <div class="content">
-    <class-content :classNo="this.$route.query.classNo" style="width: 68%" />
-    <!-- <class-summary :classNo="this.$route.query.classNo" /> -->
+    <class-content :classNo="this.$route.query.classNo" style="width: 68%;" />
+    <class-summary
+      :classNo="this.$route.query.classNo"
+      style="margin-left: 30px;"
+    />
   </div>
 </template>
 
