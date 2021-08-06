@@ -101,7 +101,7 @@ export default {
     //   loading.value = false;
     // });
 
-    return { getClassDetail };
+    return { getClassDetail, state };
   },
   data() {
     return {
