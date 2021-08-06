@@ -55,8 +55,15 @@
         <el-dropdown trigger="click">
           <span class="el-dropdown-link">
             <img
+              v-if="state.profileUrl"
               id="profileImg"
               :src="state.profileUrl"
+              alt="profile"
+              style="width:100%; max-width:200px; height: 40px; cursor: pointer"
+            />
+            <img
+              v-else
+              :src="require('@/assets/images/profile-default.png')"
               alt="profile"
               style="width:100%; max-width:200px; height: 40px; cursor: pointer"
             />

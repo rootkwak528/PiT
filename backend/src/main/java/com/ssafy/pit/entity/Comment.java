@@ -36,7 +36,7 @@ public class Comment {
 	
 	@Column(name="comment_content")
 	String commentContent;
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	@Column(name = "comment_write_date", nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	Date commentWriteDate;
 	
