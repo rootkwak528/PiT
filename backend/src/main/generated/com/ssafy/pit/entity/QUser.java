@@ -18,9 +18,13 @@ public class QUser extends EntityPathBase<User> {
 
     private static final long serialVersionUID = 2013170492L;
 
+    private static final PathInits INITS = PathInits.DIRECT2;
+
     public static final QUser user = new QUser("user");
 
     public final ListPath<Classes, QClasses> classesList = this.<Classes, QClasses>createList("classesList", Classes.class, QClasses.class, PathInits.DIRECT2);
+
+    public final QComment comment;
 
     public final ListPath<PtroomUser, QPtroomUser> ptroomUsers = this.<PtroomUser, QPtroomUser>createList("ptroomUsers", PtroomUser.class, QPtroomUser.class, PathInits.DIRECT2);
 
@@ -51,15 +55,24 @@ public class QUser extends EntityPathBase<User> {
     public final ListPath<UserVideo, QUserVideo> userVideos = this.<UserVideo, QUserVideo>createList("userVideos", UserVideo.class, QUserVideo.class, PathInits.DIRECT2);
 
     public QUser(String variable) {
-        super(User.class, forVariable(variable));
+        this(User.class, forVariable(variable), INITS);
     }
 
     public QUser(Path<? extends User> path) {
-        super(path.getType(), path.getMetadata());
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
     public QUser(PathMetadata metadata) {
-        super(User.class, metadata);
+        this(metadata, PathInits.getFor(metadata, INITS));
+    }
+
+    public QUser(PathMetadata metadata, PathInits inits) {
+        this(User.class, metadata, inits);
+    }
+
+    public QUser(Class<? extends User> type, PathMetadata metadata, PathInits inits) {
+        super(type, metadata, inits);
+        this.comment = inits.isInitialized("comment") ? new QComment(forProperty("comment"), inits.get("comment")) : null;
     }
 
 }

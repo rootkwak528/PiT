@@ -1,8 +1,6 @@
 package com.ssafy.pit.service;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -23,6 +21,7 @@ import com.ssafy.pit.repository.UserRepository;
 import com.ssafy.pit.request.ClassSearchGetReq;
 import com.ssafy.pit.response.ClassDetailGetRes;
 import com.ssafy.pit.response.ClassListGetRes;
+import com.ssafy.pit.response.CommentRes;
 import com.ssafy.pit.response.RegisterClassGetRes;
 
 @Service("classService")
@@ -94,7 +93,18 @@ public class ClassServiceImpl implements ClassService {
 		
 		// comments 가져오기
 		List<Comment> comments = commentRepositorySupport.getCommentList(classNo);
-		classDetail.setComments(comments);
+		List <CommentRes> commentReses = new ArrayList<CommentRes>();
+		
+		for(Comment comment: comments) {
+			CommentRes commentRes = new CommentRes();
+			commentRes.setCommentWriteDate(comment.getCommentWriteDate());
+			commentRes.setCommentContent(comment.getCommentContent());
+			String userNickname = comment.getUser().getUserNickname();
+			commentRes.setUserNickname(userNickname);
+			commentReses.add(commentRes);
+		}
+		
+		classDetail.setComments(commentReses);
 		
 		// pohot 가져오기
 		List<String> photoUrls = classPhotoRepositorySupport.getPhotoList(classNo);

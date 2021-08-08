@@ -1,5 +1,4 @@
 package com.ssafy.pit.entity;
-import java.security.Timestamp;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -9,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -36,8 +36,14 @@ public class Comment {
 	
 	@Column(name="comment_content")
 	String commentContent;
+	
 	@Temporal(TemporalType.DATE)
 	@Column(name = "comment_write_date", nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	Date commentWriteDate;
+	
+	@JsonBackReference
+	@OneToOne
+	@JoinColumn(name="user_no")
+	User user;
 	
 }

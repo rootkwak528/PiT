@@ -32,6 +32,11 @@ public class User {
 	@Column(name="user_no")
 	int userNo;
 	
+	@JsonBackReference
+	@OneToOne
+	Comment comment;
+	
+	
 	@JsonManagedReference
 	@OneToMany(mappedBy="user")
 	List<UserClass> userClasses = new ArrayList<UserClass>();
@@ -62,8 +67,10 @@ public class User {
 	String userType;
 	@Column(name="user_profile")
 	String userProfile;
+	
 	@Column(name="user_nickname")
 	String userNickname;
+	
 	@Column(name="user_desc")
 	String userDesc;
 	@Column(name="user_phone")
