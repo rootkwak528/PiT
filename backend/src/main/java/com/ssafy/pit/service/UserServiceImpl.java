@@ -89,7 +89,20 @@ public class UserServiceImpl implements UserService {
 		userInfo.setUserTypeName(userTypeName);
 		return userInfo;
 	}
-
+	
+	@Override
+	public int update(User user, String profile) {
+		try {
+			user.setUserProfile(profile);
+			userRepository.save(user);
+			return 1;
+		}
+		catch (Exception e) {
+			return 0;
+		}
+	}
+	
+	
 	@Override
 	public int update(User user, UserInfoPutReq userUpdateInfo) {
 		try {

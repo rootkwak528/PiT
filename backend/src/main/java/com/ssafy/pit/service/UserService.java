@@ -13,6 +13,7 @@ public interface UserService {
 	User getUserByUserNickname(String userNickname);
 	UserInfoGetRes getUserInfo(User user);
 	int update(User user, UserInfoPutReq userUpdateInfo);
+	int update(User user, String profile);
 	int delete(String userEmail);
-	int validateUserType(String userEmail);
+	int validateUserType(String userEmail) throws Exception;
 }
