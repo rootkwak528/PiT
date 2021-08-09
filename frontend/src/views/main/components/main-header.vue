@@ -54,19 +54,21 @@
         </div>
         <el-dropdown trigger="click">
           <span class="el-dropdown-link">
-            <img
+            <div class="profile">
+              <img
               v-if="state.profileUrl"
               id="profileImg"
               :src="state.profileUrl"
               alt="profile"
-              style="width:100%; max-width:200px; height: 40px; cursor: pointer"
+              style="width:100%; max-width:200px; height: 40px; cursor: pointer; border-radius: 50%;"
             />
             <img
               v-else
               :src="require('@/assets/images/profile-default.png')"
               alt="profile"
-              style="width:100%; max-width:200px; height: 40px; cursor: pointer"
+              style="width:100%; max-width:200px; height: 40px; cursor: pointer; border-radius: 50%;"
             />
+            </div>
           </span>
           <template #dropdown>
             <el-dropdown-menu>
@@ -273,5 +275,8 @@ export default {
   margin-right: 30px;
   cursor: pointer;
   margin-top: 10px;
+}
+.profile {
+  text-align: center;
 }
 </style>
