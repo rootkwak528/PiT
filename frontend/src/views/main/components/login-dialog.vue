@@ -169,10 +169,6 @@ export default {
       isLogined: computed(() => store.getters["root/getIsLogined"])
     });
 
-    onMounted(() => {
-      console.log(loginForm.value);
-    });
-
     const clickLogin = function() {
       // 로그인 클릭 시 validate 체크 후 그 결과 값에 따라, 로그인 API 호출 또는 경고창 표시
       console.log("로그인 클릭");
@@ -192,23 +188,21 @@ export default {
               localStorage.setItem("jwt-auth-token", result.data.accessToken);
               store.commit("root/setIsLogined", true);
 
+              //프로필url 조회
               store
                 .dispatch("root/requestUserInfo", {
                   token: "Bearer" + localStorage.getItem("jwt-auth-token")
                 })
                 .then(function(result) {
                   state.form.profile = result.data.userProfile;
-                  // console.log(
-                  //   "로그인 성공 profile url : " + state.form.profile
-                  // );
                   store.state.profileUrl = state.form.profile;
                   store.commit("root/setProfileUrl", store.state.profileUrl);
-                  // console.log("login.vue 에서 url: " + store.state.profileUrl);
                   loading.value = false;
                 })
                 .catch(function(err) {
                   alert(err.response.data.message);
                   loading.value = false;
+
                 });
               loading.value = false;
               emit("closeLoginDialog");
@@ -216,7 +210,7 @@ export default {
             .catch(function(err) {
               alert(err.response.data.message);
               loading.value = false;
-              emit("closeLoginDialog");
+              state.form.pwd = "";
             });
         } else {
           alert("Validate error!");

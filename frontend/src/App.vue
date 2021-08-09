@@ -33,6 +33,7 @@ import Main from "./views/main/main.vue";
 import MainHeader from "./views/main/components/main-header";
 import MainFooter from "./views/main/components/main-footer";
 import Navbar from "./views/main/components/navbar.vue";
+import { useStore } from "vuex";
 
 export default {
   name: "App",
@@ -73,46 +74,75 @@ export default {
     searchDialogOpen: false
   }),
 
-  created() {
-    //this.$store.state.isLogined = true
-    //console.log("ddddddddddddddddd " + this.$store.state.activeMenu);
+  setup() {
+    const store = useStore();
+
     if (localStorage.getItem("jwt-auth-token")) {
       if (
         localStorage.getItem("jwt-auth-token") != "" &&
         localStorage.getItem("jwt-auth-token") != null
       ) {
-        // this.$store.state.isLogined = true
-        // this.$store.dispatch('root/requestUserInfo', { token: localStorage.getItem('jwt-auth-token') })
-        //   .then(function (result) {
-        //     alert('유저 정보 조회 성공')
-        //     console.log(result.data)
-        //   })
-        //   .catch(function (err) {
-        //     console.log(err)
-        //     if(err.response.data.statusCode == 401){
-        //       // 임시코드
-        //       if(err.response.data.message == "SignatureVerificationException" || err.response.data.message == "JWTDecodeException"){
-        //         alert("세션이 유효하지 않습니다.")
-        //         localStorage.removeItem('jwt-auth-token')
-        //         store.commit('root/setIsLogined')
-        //         router.push('/')
-        //       }else if(err.response.data.message == "TokenExpiredException"){
-        //         alert("세션이 만료되었습니다.")
-        //         localStorage.removeItem('jwt-auth-token')
-        //         store.commit('root/setIsLogined')
-        //         router.push('/')
-        //       }
-        //     }else if(err.response.data.statusCode == 403){
-        //       if(err.response.data.message == "Forbidden"){
-        //         alert("접근 권한이 없습니다.")
-        //       }
-        //     }
-        //   })
+        store.commit("root/setIsLogined", true);
+        // 유저 정보 가져와서 프로필 데이터를 스토어에 커밋해보자.
+        store.dispatch("root/requestUserInfo", {
+          token: localStorage.getItem("jwt-auth-token")
+        })
+        .then(function(result){
+          console.log(result.data);
+          store.commit("root/setProfileUrl", result.data.userProfile);
+        })
+
+
       }
-    } else {
-      localStorage.setItem("jwt-auth-token", "");
     }
-    //console.log(this.$store.state.isLogined);
+    return { store };
   }
+  // created() {
+  //   this.$store.state.isLogined = true
+  //   console.log("ddddddddddddddddd " + this.$store.state.activeMenu);
+  //   if (localStorage.getItem("jwt-auth-token")) {
+  //     if (
+  //       localStorage.getItem("jwt-auth-token") != "" &&
+  //       localStorage.getItem("jwt-auth-token") != null
+  //     ) {
+  //       this.$store.state.isLogined = true;
+  //       console.log(
+  //         "dddddddddddddddddddddddddddddd" + this.$store.state.isLogined
+  //       );
+  //       this.$store
+  //         .dispatch("root/requestUserInfo", {
+  //           token: localStorage.getItem("jwt-auth-token")
+  //         })
+  //         .then(function(result) {
+  //           alert("유저 정보 조회 성공");
+  //           console.log(result.data);
+  //         })
+  //         .catch(function(err) {
+  //           console.log(err);
+  //           // if(err.response.data.statusCode == 401){
+  //           //   // 임시코드
+  //           //   if(err.response.data.message == "SignatureVerificationException" || err.response.data.message == "JWTDecodeException"){
+  //           //     alert("세션이 유효하지 않습니다.")
+  //           //     localStorage.removeItem('jwt-auth-token')
+  //           //     store.commit('root/setIsLogined')
+  //           //     router.push('/')
+  //           //   }else if(err.response.data.message == "TokenExpiredException"){
+  //           //     alert("세션이 만료되었습니다.")
+  //           //     localStorage.removeItem('jwt-auth-token')
+  //           //     store.commit('root/setIsLogined')
+  //           //     router.push('/')
+  //           //   }
+  //           // }else if(err.response.data.statusCode == 403){
+  //           //   if(err.response.data.message == "Forbidden"){
+  //           //     alert("접근 권한이 없습니다.")
+  //           //   }
+  //           // }
+  //         });
+  //     }
+  //   } else {
+  //     localStorage.setItem("jwt-auth-token", "");
+  //   }
+  //   //console.log(this.$store.state.isLogined);
+  // }
 };
 </script>

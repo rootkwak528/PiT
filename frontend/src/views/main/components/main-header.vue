@@ -135,7 +135,6 @@ export default {
     const router = useRouter();
     const state = reactive({
       searchValue: null,
-
       isCollapse: true,
       menuItems: computed(() => {
         const MenuItems = store.getters["root/getMenus"];
@@ -158,15 +157,6 @@ export default {
       state.activeIndex = 0;
       store.commit("root/setMenuActive", 0);
     }
-
-    const menuSelect = function(param) {
-      store.commit("root/setMenuActive", param);
-      const MenuItems = store.getters["root/getMenus"];
-      let keys = Object.keys(MenuItems);
-      router.push({
-        name: keys[param]
-      });
-    };
 
     const search = () => {
       if (state.searchValue === null) {
@@ -195,9 +185,10 @@ export default {
     };
 
     const logout = function() {
-      console.log("logout clicked!!");
       localStorage.removeItem("jwt-auth-token");
-      store.commit("root/setIsLogined");
+      store.commit("root/setIsLogined", false);
+      //store.state.isLogined = false;
+      console.log("logout clicked!! : " + store.state.isLogined);
       router.push("/");
     };
 
@@ -213,20 +204,10 @@ export default {
       alert("피드백 알림 확인");
     };
 
-    //const checkLogin = ()=>{
-    console.log("main-header isLogined : " + state.isLogined);
-    //}
-
-    onMounted(() => {
-      console.log(store.state.profileUrl);
-      //requestUserInfo()
-    });
-
     const requestUserInfo = function() {};
 
     return {
       state,
-      menuSelect,
       search,
       clickLogin,
       clickJoin,

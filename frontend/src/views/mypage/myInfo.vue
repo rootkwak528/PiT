@@ -144,7 +144,7 @@
 </template>
 
 <script>
-import { reactive, computed, ref, onMounted } from "vue";
+import { reactive, computed, ref, onMounted, message } from "vue";
 import { useStore } from "vuex";
 import MypageSidebar from "./component/mypage-sidebar.vue";
 
@@ -160,6 +160,20 @@ export default {
       type: Boolean,
       default: true
     }
+  },
+
+  methods: {
+    // beforeAvatarUpload(file){
+    //   const isJPG = file.type === "image/jpeg";
+    //   const isLt2M = file.size / 1024 / 1024 < 2;
+    //   if (!isJPG) {
+    //     this.$message.error("Avatar picture must be JPG format!");
+    //   }
+    //   if (!isLt2M) {
+    //     this.$message.error("Avatar picture size can not exceed 2MB!");
+    //   }
+    //   return isJPG && isLt2M;
+    // }
   },
 
   setup(props, { emit }) {
@@ -310,10 +324,12 @@ export default {
       const isLt2M = file.size / 1024 / 1024 < 2;
 
       if (!isJPG) {
-        this.$message.error("Avatar picture must be JPG format!");
+        message.Error("Avatar picture must be JPG format!");
+        //this.$message.error("Avatar picture must be JPG format!");
       }
       if (!isLt2M) {
-        this.$message.error("Avatar picture size can not exceed 2MB!");
+        message.error("Avatar picture size can not exceed 2MB!");
+        // this.$message.error("Avatar picture size can not exceed 2MB!");
       }
       return isJPG && isLt2M;
     };
@@ -341,7 +357,8 @@ export default {
           loading.value = false;
         })
         .catch(function(err) {
-          alert(err.response.data.message);
+          //alert(err.response.data.message);
+          //error 코드 == 403 -> 접근못하게
           loading.value = false;
         });
     };
@@ -445,26 +462,26 @@ export default {
   background-color: white;
 }
 .avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-  .avatar-uploader .el-upload:hover {
-    border-color: #409eff;
-  }
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 178px;
-    height: 178px;
-    line-height: 178px;
-    text-align: center;
-  }
-  .avatar {
-    width: 178px;
-    height: 178px;
-    display: block;
-  }
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
 </style>
