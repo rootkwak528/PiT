@@ -15,5 +15,5 @@ public interface UserService {
 	int update(User user, UserInfoPutReq userUpdateInfo);
 	int update(User user, String profile);
 	int delete(String userEmail);
-	int validateUserType(String userEmail) throws Exception;
+	int validateUserType(String userEmail);
 }
