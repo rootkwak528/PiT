@@ -88,7 +88,6 @@ export default {
           token: localStorage.getItem("jwt-auth-token")
         })
         .then(function(result){
-          console.log(result.data);
           store.commit("root/setProfileUrl", result.data.userProfile);
         })
 

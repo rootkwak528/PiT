@@ -10,22 +10,35 @@
 
       <el-col :span="18">
         <el-row class="tac">
+
           <el-col :span="8">
-            <el-upload
-              class="avatar-uploader"
-              action="v1/users/image"
-              :show-file-list="false"
-              :on-success="handleAvatarSuccess"
-              :before-upload="beforeAvatarUpload"
-            >
-              <img
-                v-if="state.form.profile"
-                :src="state.form.profile"
-                class="avatar"
-              />
-              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-            </el-upload>
+
+            <div class="profile">
+              <el-upload
+                class="avatar-uploader"
+                action="v1/users/image"
+                :show-file-list="false"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload"
+              >
+                <img
+                  v-if="state.form.profile"
+                  :src="state.form.profile"
+                  class="avatar"
+                />
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+              </el-upload>
+              <el-button v-if="state.form.profile" class="form-btn" @click="clickDeleteProfile"
+                >프로필 삭제
+              </el-button>
+              <el-button v-else class="form-btn" @click="clickDeleteProfile" disabled
+                >프로필 삭제
+              </el-button>
+
+            </div>
+
           </el-col>
+
           <el-col :span="16">
             <el-form
               v-loading="loading"
@@ -69,7 +82,7 @@
                 ></el-input>
                 <el-button
                   style="float:right; width:28%"
-                  type="primary"
+                  class="form-btn"
                   @click="checkDuplicatedUpdateNickname"
                   >중복확인</el-button
                 >
@@ -127,12 +140,12 @@
             <span class="update-footer">
               <el-button
                 v-if="!updateValid"
-                type="primary"
+                class="form-btn"
                 @click="clickUpdateUser"
                 disabled
                 >수정하기</el-button
               >
-              <el-button v-else type="primary" @click="clickUpdateUser"
+              <el-button v-else class="form-btn" @click="clickUpdateUser"
                 >수정하기</el-button
               >
             </span>
@@ -416,6 +429,11 @@ export default {
       });
     };
 
+    const clickDeleteProfile = function() {
+      alert("프로필 사진을 기본 이미지로 변경하시겠습니까?")
+      state.form.profile = "";
+    }
+
     const onInputForm = function() {
       updateForm.value.validate(valid => {
         // updateValid.value = valid & isNicknameAvailable.value;
@@ -440,7 +458,8 @@ export default {
       checkDuplicatedUpdateNickname,
       clickUpdateUser,
       handleAvatarSuccess,
-      beforeAvatarUpload
+      beforeAvatarUpload,
+      clickDeleteProfile
     };
   }
 };
@@ -461,27 +480,42 @@ export default {
   color: #00c0d4;
   background-color: white;
 }
+
+.el-icon-plus.avatar-uploader-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.avatar-uploader {
+  padding: 70px 0;
+}
+
 .avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
+  border: 1px solid #d9d9d9;
+  border-radius: 50%;
   cursor: pointer;
   position: relative;
   overflow: hidden;
+
 }
 .avatar-uploader .el-upload:hover {
-  border-color: #409eff;
+  border-color: #00C0D4;
 }
 .avatar-uploader-icon {
-  font-size: 28px;
+  font-size: 24px;
   color: #8c939d;
   width: 178px;
   height: 178px;
   line-height: 178px;
-  text-align: center;
+  /* text-align: center; */
 }
 .avatar {
   width: 178px;
   height: 178px;
   display: block;
+}
+.profile {
+  text-align: center;
 }
 </style>
