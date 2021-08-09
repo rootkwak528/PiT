@@ -28,7 +28,10 @@
                 />
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
-              <el-button class="form-btn" @click="clickDeleteProfile"
+              <el-button v-if="state.form.profile" class="form-btn" @click="clickDeleteProfile"
+                >프로필 삭제
+              </el-button>
+              <el-button v-else class="form-btn" @click="clickDeleteProfile" disabled
                 >프로필 삭제
               </el-button>
 
@@ -427,6 +430,7 @@ export default {
     };
 
     const clickDeleteProfile = function() {
+      alert("프로필 사진을 기본 이미지로 변경하시겠습니까?")
       state.form.profile = "";
     }
 
@@ -477,8 +481,13 @@ export default {
   background-color: white;
 }
 
+.el-icon-plus.avatar-uploader-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .avatar-uploader {
-  /* position: relative; */
   padding: 70px 0;
 }
 
@@ -493,8 +502,8 @@ export default {
 .avatar-uploader .el-upload:hover {
   border-color: #00C0D4;
 }
-.avatar-uploader-icon::before {
-  /* font-size: 28px; */
+.avatar-uploader-icon {
+  font-size: 24px;
   color: #8c939d;
   width: 178px;
   height: 178px;
