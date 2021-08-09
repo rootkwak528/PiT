@@ -100,8 +100,14 @@ public class UserController {
 		User user = userService.getUserByUserNickname(userNickname);
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
 		String nickName = userDetails.getUser().getUserNickname();
-		if (user != null && !nickName.equals(userNickname)) {
-			return ResponseEntity.status(409).body(BaseResponseBody.of(409, "중복된 닉네임입니다."));
+		if (user != null) {
+			if(!nickName.equals(userNickname)) {				
+				return ResponseEntity.status(409).body(BaseResponseBody.of(409, "중복된 닉네임입니다."));
+			}
+			else {				
+				return ResponseEntity.status(409).body(BaseResponseBody.of(200, "현재 사용중인 닉네임입니다. (사용할 수 있는 닉네임입니다.)"));
+			}
+			
 		}
 		else {
 			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "사용할 수 있는 닉네입니다."));
@@ -146,7 +152,6 @@ public class UserController {
 		System.out.println(url);
 			
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "테스트"));
-		
 	}
 	
 	@DeleteMapping("/me")

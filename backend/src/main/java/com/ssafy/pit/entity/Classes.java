@@ -96,13 +96,13 @@ public class Classes {
 	@Column(name="class_limit")
 	int classLimit;
 	
-	@Column(name="class_ucnt")
+	@Column(name="class_ucnt", columnDefinition = "int default 0")
 	int classUcnt;
 	
 	@Column(name="class_tcnt")
 	int classTcnt;
 	
-	@Column(name="class_ccnt")
+	@Column(name="class_ccnt", columnDefinition = "int default 0")
 	int classCcnt;
 	
 	@Column(name="class_teacher_name")
