@@ -89,7 +89,7 @@ public class QClasses extends EntityPathBase<Classes> {
     public QClasses(Class<? extends Classes> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.ptroom = inits.isInitialized("ptroom") ? new QPtroom(forProperty("ptroom"), inits.get("ptroom")) : null;
-        this.user = inits.isInitialized("user") ? new QUser(forProperty("user")) : null;
+        this.user = inits.isInitialized("user") ? new QUser(forProperty("user"), inits.get("user")) : null;
     }
 
 }

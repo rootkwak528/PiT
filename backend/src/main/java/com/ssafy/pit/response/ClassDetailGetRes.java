@@ -16,7 +16,7 @@ public class ClassDetailGetRes {
 	String classTitle;
 	String classDesc;
 	String classCurri;
-	List<Comment> comments;
+	List<CommentRes> comments;
 	Date classStartDate;
 	Date classEndDate;
 	String classStartTime;

@@ -26,7 +26,9 @@ public class QComment extends EntityPathBase<Comment> {
 
     public final NumberPath<Integer> commentNo = createNumber("commentNo", Integer.class);
 
-    public final DateTimePath<java.util.Date> commentWriteDate = createDateTime("commentWriteDate", java.util.Date.class);
+    public final DatePath<java.util.Date> commentWriteDate = createDate("commentWriteDate", java.util.Date.class);
+
+    public final QUser user;
 
     public final QUserClass userClass;
 
@@ -48,6 +50,7 @@ public class QComment extends EntityPathBase<Comment> {
 
     public QComment(Class<? extends Comment> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
+        this.user = inits.isInitialized("user") ? new QUser(forProperty("user"), inits.get("user")) : null;
         this.userClass = inits.isInitialized("userClass") ? new QUserClass(forProperty("userClass"), inits.get("userClass")) : null;
     }
 
