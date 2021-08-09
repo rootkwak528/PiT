@@ -60,6 +60,11 @@ public class ClassRepositorySupport {
 				)).fetch();
 		return classList;
 	}
+
+	public int getLastestClassNo() {
+		int classNo = query.select(qClass.classNo).from(qClass).orderBy(qClass.classNo.desc()).limit(1).fetchOne();
+		return classNo;
+	}
 	
 	
 }
