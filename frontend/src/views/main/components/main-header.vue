@@ -278,5 +278,11 @@ export default {
 }
 .profile {
   text-align: center;
+  width: 40px;
+  height: 40px;
+}
+img {
+  max-width: 100%;
+  height: auto;
 }
 </style>

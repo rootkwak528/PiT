@@ -13,10 +13,11 @@
 
           <el-col :span="8">
 
-            <div class="profile">
+            <div class="profileUpload">
               <el-upload
                 class="avatar-uploader"
                 action="v1/users/image"
+                accept="image/jpeg"
                 :show-file-list="false"
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload"
@@ -176,16 +177,21 @@ export default {
   },
 
   methods: {
+    // handleAvatarSuccess(res, file){
+    //   state.form.profile = URL.createObjectURL(file.raw);
+    //   console.log("업로드 후 profile : " + state.form.profile);
+    // },
     // beforeAvatarUpload(file){
     //   const isJPG = file.type === "image/jpeg";
+    //   const isPNG = file.type === "image/PNG";
     //   const isLt2M = file.size / 1024 / 1024 < 2;
-    //   if (!isJPG) {
-    //     this.$message.error("Avatar picture must be JPG format!");
+    //   if (!isJPG && isPNG) {
+    //     this.$message.error("JPG / PNG 파일 형식만 업로드가 가능합니다.");
     //   }
     //   if (!isLt2M) {
     //     this.$message.error("Avatar picture size can not exceed 2MB!");
     //   }
-    //   return isJPG && isLt2M;
+    //   return isJPG && isPNG && isLt2M;
     // }
   },
 
@@ -334,11 +340,10 @@ export default {
 
     const beforeAvatarUpload = function(file) {
       const isJPG = file.type === "image/jpeg";
-      const isLt2M = file.size / 1024 / 1024 < 2;
+      const isLt2M = file.size / 1024 / 1024 < 10;
 
       if (!isJPG) {
-        message.Error("Avatar picture must be JPG format!");
-        //this.$message.error("Avatar picture must be JPG format!");
+        console.log("함수 안 : JPG 파일만 업로드 가능합니다.");
       }
       if (!isLt2M) {
         message.error("Avatar picture size can not exceed 2MB!");
@@ -348,7 +353,7 @@ export default {
     };
 
     onMounted(() => {
-      console.log(updateForm.value);
+      // console.log(updateForm.value);
       requestUserInfo();
     });
 
@@ -366,7 +371,7 @@ export default {
           state.form.email = result.data.userEmail;
           state.form.name = result.data.userName;
           state.form.nickname = result.data.userNickname;
-          console.log("수정 전 profile : " + state.form.profile);
+          // console.log("수정 전 profile : " + state.form.profile);
           loading.value = false;
         })
         .catch(function(err) {
@@ -515,7 +520,11 @@ export default {
   height: 178px;
   display: block;
 }
-.profile {
+.profileUpload {
   text-align: center;
+}
+img {
+  max-width: 100%;
+  height: auto;
 }
 </style>
