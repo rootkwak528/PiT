@@ -195,17 +195,14 @@ export default {
                 })
                 .then(function(result) {
                   state.form.profile = result.data.userProfile;
-                  // console.log(
-                  //   "로그인 성공 profile url : " + state.form.profile
-                  // );
                   store.state.profileUrl = state.form.profile;
                   store.commit("root/setProfileUrl", store.state.profileUrl);
-                  // console.log("login.vue 에서 url: " + store.state.profileUrl);
                   loading.value = false;
                 })
                 .catch(function(err) {
                   alert(err.response.data.message);
                   loading.value = false;
+
                 });
               loading.value = false;
               emit("closeLoginDialog");
@@ -213,7 +210,7 @@ export default {
             .catch(function(err) {
               alert(err.response.data.message);
               loading.value = false;
-              emit("closeLoginDialog");
+              state.form.pwd = "";
             });
         } else {
           alert("Validate error!");
