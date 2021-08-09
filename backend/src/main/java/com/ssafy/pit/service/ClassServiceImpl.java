@@ -19,6 +19,7 @@ import com.ssafy.pit.repository.ClassRepository;
 import com.ssafy.pit.repository.ClassRepositorySupport;
 import com.ssafy.pit.repository.CodeRepositorySupport;
 import com.ssafy.pit.repository.CommentRepositorySupport;
+import com.ssafy.pit.repository.UserClassRepository;
 import com.ssafy.pit.repository.UserLikesRepository;
 import com.ssafy.pit.repository.UserRepository;
 import com.ssafy.pit.request.ClassSearchGetReq;
@@ -55,6 +56,9 @@ public class ClassServiceImpl implements ClassService {
 	@Autowired
 	ClassPhotoRepository classPhotoRepository;
 	
+	@Autowired
+	UserClassRepository userClassRepository;
+	
 	@Override
 	public List<ClassListGetRes> getClassList(ClassSearchGetReq searchInfo) {
 //		return classRepository.findAll();
@@ -62,15 +66,10 @@ public class ClassServiceImpl implements ClassService {
 	}
 
 	@Override
-	public List<ClassListGetRes> getClassList() {
-		List<Classes> classesList = classRepositorySupport.getClassList();
+	public List<ClassListGetRes> getClassList(String classPermission) {
+		List<Classes> classesList = classRepositorySupport.getClassList(classPermission);
 		List<ClassListGetRes> classListGetRes = new ArrayList();
-
 		for (Classes classes : classesList) {
-			if(!classes.getClassPermission().equals("001")) {
-				continue;
-			}
-			
 			ClassListGetRes classGetRes = new ClassListGetRes();
 			int classNo = classes.getClassNo();
 			BeanUtils.copyProperties(classes, classGetRes);
@@ -82,18 +81,13 @@ public class ClassServiceImpl implements ClassService {
 				classGetRes.setClassThumbnail("");
 			}
 			classListGetRes.add(classGetRes);
-
 		}
 		return classListGetRes;
 	}
 
 	@Override
-	public ClassDetailGetRes getClassDetail(int classNo) {
-		Classes classes = classRepositorySupport.getClassDetail(classNo);
-		if(!classes.getClassPermission().equals("001")) {
-			return null;
-		}
-		
+	public ClassDetailGetRes getClassDetail(int classNo, String classPermission) {
+		Classes classes = classRepositorySupport.getClassDetail(classNo, classPermission);
 		ClassDetailGetRes classDetail = new ClassDetailGetRes();
 		// classes -> classDetail로 복제 (title, desc, curri, startdate, enddate, material, tcnt, price, starttime, endtime, teachernmae)
 		BeanUtils.copyProperties(classes, classDetail);
@@ -157,7 +151,7 @@ public class ClassServiceImpl implements ClassService {
 			User user = userRepository.findUserByUserNo(userNo);
 			Classes classes = classRepository.findClassByClassNo(classNo);
 			if(!classes.getClassPermission().equals("001")) {
-				return 0;
+				return 2;
 			}
 			
 			UserLikes userLikes = new UserLikes();
@@ -320,21 +314,33 @@ public class ClassServiceImpl implements ClassService {
 	@Override
 	public int enrollClass(User user, int classNo) throws Exception {
 		Classes classes = classRepository.findClassByClassNo(classNo);
-		UserClass userClass = new UserClass();
-		
-		userClass.setUser(user);
-		userClass.setClasses(classes);
-		
 		if(classes.getClassUcnt() < classes.getClassLimit()) {
-			classes.setClassUcnt(classes.getClassUcnt() + 1);
-			classRepository.save(classes);
-			return 1;
+			if(classes.getClassPermission().equals("001")) {
+				UserClass userClass = new UserClass();
+				userClass.setUser(user);
+				userClass.setClasses(classes);
+				classes.setClassUcnt(classes.getClassUcnt() + 1);
+				classRepository.save(classes);
+				userClassRepository.save(userClass);
+				return 1;				
+			}
+			else {
+				return 2;				
+			}
 		}
 		else {
 			return 0;
 		}
 	}
-	
+
+	@Override
+	public void updateClassPermission(int classNo, String permission) throws Exception {
+		Classes classes = classRepository.findClassByClassNo(classNo);
+		classes.setClassPermission(permission);
+		classRepository.save(classes);
+		
+		return;
+	}
 	
 	
 }

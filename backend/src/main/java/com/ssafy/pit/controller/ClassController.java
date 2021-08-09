@@ -1,5 +1,6 @@
 package com.ssafy.pit.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.pit.common.auth.PitUserDetails;
@@ -36,44 +36,72 @@ public class ClassController {
 	@Autowired
 	UserService userService;
 	
-	// 클래스 상세값 가져오기
+	// 클래스 상세값 가져오기 (모든 사용자가 사용가능, 001만 조회)
 	@GetMapping("/{classNo}")
 	public ResponseEntity<ClassDetailGetRes> getClassDetail(@PathVariable int classNo){
-		ClassDetailGetRes classDetail = classService.getClassDetail(classNo);
+		ClassDetailGetRes classDetail = classService.getClassDetail(classNo, "001");
 		return ResponseEntity.status(200).body(classDetail);
 	}
 	
 	// 클래스 리스트 가져오기
 	@GetMapping()
-	public ResponseEntity<List<ClassListGetRes>> getClassList(@RequestParam ClassSearchGetReq searchInfo) {
+	public ResponseEntity<List<ClassListGetRes>> getClassList(ClassSearchGetReq searchInfo) {
 		List<ClassListGetRes> classList = null;
 		System.out.println(searchInfo.toString());
-		
-		if(searchInfo.getClassDay() == null && searchInfo.getClassEndTime() == null && searchInfo.getClassLevel() == null
+		classList = classService.getClassList("001");
+		if(searchInfo.getClassDay() == null && searchInfo.getClassLevel() == null
 				&& searchInfo.getClassType() == null && searchInfo.getClassStartTime() == null 
 				&& searchInfo.getClassEndTime() == null && searchInfo.getSearchKeyword() == null) {
 			System.out.println("홈 전체 클래스 리스트 조회");
-			classList = classService.getClassList();		
+			classList = classService.getClassList("001");
 		}
 		else {
 			classList = classService.getClassList(searchInfo);
 		}
 		return ResponseEntity.status(200).body(classList);
 	}
+
+	// 관리자를 위한 클래스 리스트 가져오기 (authentication) permission(승인, 미승인, 거절)에 따른 클래스 목록보기 가능
+	@GetMapping("/admin")
+	public ResponseEntity<List<ClassListGetRes>> getAdminClassList(Authentication authentication, @RequestBody HashMap<String, String> permissionMap) {
+		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
+		String userEmail = userDetails.getUsername();
+		if(userService.validateUserType(userEmail) == 1) {
+			List<ClassListGetRes> classList = classService.getClassList(permissionMap.get("permission"));
+			return ResponseEntity.status(200).body(classList);
+		}
+		else {			
+			return ResponseEntity.status(403).body(null);
+		}
+	}
+	
+	// 관리자 클래스 상세 -> 승인, 미승인, 거절된 클래스 모두 상세보기 가능
+	@GetMapping("/admin/{classNo}")
+	public ResponseEntity<ClassDetailGetRes> getAdminClassDetail(Authentication authentication, @PathVariable int classNo) {
+		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
+		String userEmail = userDetails.getUsername();
+		if(userService.validateUserType(userEmail) == 1) {
+			ClassDetailGetRes classDetail = classService.getClassDetail(classNo, "000");
+			return ResponseEntity.status(200).body(classDetail);
+		}
+		else {			
+			return ResponseEntity.status(403).body(null);
+		}		
+	}
+	
 	
 	// 찜클 목록 가져오기
 	@GetMapping("/likes")
 	public ResponseEntity<List<ClassListGetRes>> getClassLikesList(Authentication authentication) {
-		List<ClassListGetRes> classLikesList = null;
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
 		String userEmail = userDetails.getUsername();
 		int userNo = userDetails.getUser().getUserNo();
 		if(userService.validateUserType(userEmail) == 3) {
-			classLikesList = classService.getClassLikesList(userNo);
+			List<ClassListGetRes> classLikesList = classService.getClassLikesList(userNo);
 			return ResponseEntity.status(200).body(classLikesList);
 		}
 		else {
-			return ResponseEntity.status(404).body(classLikesList);
+			return ResponseEntity.status(403).body(null);
 		}
 	}
 	
@@ -87,12 +115,15 @@ public class ClassController {
 			if(classService.registerClassLikes(userNo, classNo) == 1) {
 				return ResponseEntity.status(200).body(BaseResponseBody.of(200, "찜한클래스로 등록되었습니다."));
 			}
+			else if(classService.registerClassLikes(userNo, classNo) == 2) {
+				return ResponseEntity.status(200).body(BaseResponseBody.of(403, "접근할 수 없는 페이지입니다."));
+			}
 			else {				
 				return ResponseEntity.status(500).body(BaseResponseBody.of(500, "등록과정에 문제가 생겼습니다."));
 			}
 		}
 		else {
-			return ResponseEntity.status(404).body(BaseResponseBody.of(404, "접근할 수 없는 페이지입니다."));
+			return ResponseEntity.status(403).body(BaseResponseBody.of(403, "접근할 수 없는 페이지입니다."));
 		}
 	}
 	
@@ -111,43 +142,41 @@ public class ClassController {
 			}
 		}
 		else {
-			return ResponseEntity.status(404).body(BaseResponseBody.of(404, "접근할 수 없는 페이지입니다."));
+			return ResponseEntity.status(403).body(BaseResponseBody.of(403, "접근할 수 없는 페이지입니다."));
 		}
 	}
 	
 	// 수강완료 클래스
 	@GetMapping("/finishedclass")
 	public ResponseEntity<List<ClassListGetRes>> getFinishedClassList(Authentication authentication) {
-		List<ClassListGetRes> finishedClassList = null;
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
 		String userEmail = userDetails.getUsername();
 		int userNo = userDetails.getUser().getUserNo();
 		if(userService.validateUserType(userEmail) == 3 || userService.validateUserType(userEmail) == 2) {
-			finishedClassList = classService.getFinishedClassList(userNo);
+			List<ClassListGetRes> finishedClassList = classService.getFinishedClassList(userNo);
 			return ResponseEntity.status(200).body(finishedClassList);
 		}
 		else {
-			return ResponseEntity.status(404).body(finishedClassList);
+			return ResponseEntity.status(403).body(null);
 		}
 	}
 	
 	// 수강중 클래스
 	@GetMapping("/registerclass")
 	public ResponseEntity<List<RegisterClassGetRes>> getRegisterClassList(Authentication authentication) {
-		List<RegisterClassGetRes> registerClassList = null;
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
 		String userEmail = userDetails.getUsername();
 		int userNo = userDetails.getUser().getUserNo();
 		if(userService.validateUserType(userEmail) == 3 || userService.validateUserType(userEmail) == 2) {
-			registerClassList = classService.getRegisterClassList(userNo);
+			List<RegisterClassGetRes> registerClassList = classService.getRegisterClassList(userNo);
 			return ResponseEntity.status(200).body(registerClassList);
 		}
 		else {
-			return ResponseEntity.status(404).body(registerClassList);
+			return ResponseEntity.status(403).body(null);
 		}
 	}
 	
-	// 클래스 생성 (관리자에게 승인신청)
+	// 클래스 생성 (트레이너가 관리자에게 승인신청)
 	@PostMapping("/create")
 	public ResponseEntity<BaseResponseBody> createClass(Authentication authentication, @RequestBody CreateClassPostReq createClassInfo) {
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
@@ -180,11 +209,11 @@ public class ClassController {
 			}			
 		}
 		else {
-			return ResponseEntity.status(404).body(BaseResponseBody.of(404, "접근할 수 없는 페이지입니다."));
+			return ResponseEntity.status(403).body(BaseResponseBody.of(403, "접근할 수 없는 페이지입니다."));
 		}
 	}
 	
-	// 클래스 등록하기 (트레이너가 클래스 신청하기)
+	// 클래스 등록하기 (수강생이 클래스 신청하기)
 	@PutMapping("/enrollment/{classNo}")
 	public ResponseEntity<BaseResponseBody> enrollClass(Authentication authentication, @PathVariable int classNo) {
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
@@ -197,8 +226,11 @@ public class ClassController {
 					System.out.println("클래스 신청등록 완료!");
 					return ResponseEntity.status(200).body(BaseResponseBody.of(200, "해당 클래스가 등록처리되었습니다."));	
 				}
+				else if (classService.enrollClass(user, classNo) == 2) {					
+					return ResponseEntity.status(409).body(BaseResponseBody.of(409, "승인이 나지 않은 클래스입니다."));
+				}
 				else {
-					return ResponseEntity.status(500).body(BaseResponseBody.of(500, "클래스 등록신청 과정에 문제가 발생하였습니다."));
+					return ResponseEntity.status(405).body(BaseResponseBody.of(405, "해당클래스의 정원이 초과하였습니다."));
 				}
 			}
 			catch (Exception e) {
@@ -206,9 +238,38 @@ public class ClassController {
 			}
 		}
 		else {
-			return ResponseEntity.status(404).body(BaseResponseBody.of(404, "접근할 수 없는 페이지입니다."));
+			return ResponseEntity.status(403).body(BaseResponseBody.of(403, "접근할 수 없는 페이지입니다."));
 		}
-		
 	}
+	
+	// 클래스 승인으로 변경 (관리자만 가능)
+	@PutMapping("/admin/{classNo}")
+	public ResponseEntity<BaseResponseBody> updateClassPermission(Authentication authentication, @RequestBody HashMap<String, String> permissionMap, @PathVariable int classNo) {
+		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
+		User user = userDetails.getUser();
+		String userEmail = userDetails.getUsername();
+		if(userService.validateUserType(userEmail) == 1) {
+			try {
+				String permission = permissionMap.get("permission");
+				classService.updateClassPermission(classNo, permission);
+				if(permission.equals("001")) {
+					return ResponseEntity.status(200).body(BaseResponseBody.of(200, "해당클래스를 승인처리 하였습니다."));	
+				} else if(permission.equals("002")) {
+					return ResponseEntity.status(200).body(BaseResponseBody.of(200, "해당클래스를 미승인처리 하였습니다."));	
+				} else if(permission.equals("003")) {
+					return ResponseEntity.status(200).body(BaseResponseBody.of(200, "해당클래스를 거부처리 하였습니다."));	
+				} else {
+					return ResponseEntity.status(500).body(BaseResponseBody.of(500, "클래스 등록신청 과정에 문제가 발생하였습니다."));
+				}
+			} catch (Exception e) {
+				return ResponseEntity.status(500).body(BaseResponseBody.of(500, "클래스 등록신청 과정에 문제가 발생하였습니다."));
+			}
+			
+		}
+		else {
+			return ResponseEntity.status(403).body(BaseResponseBody.of(403, "접근할 수 없는 페이지입니다."));
+		}
+	}
+	
 	
 }

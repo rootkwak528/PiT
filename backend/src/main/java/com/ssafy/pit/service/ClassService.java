@@ -12,8 +12,8 @@ import com.ssafy.pit.response.RegisterClassGetRes;
 public interface ClassService {
 
 	List<ClassListGetRes> getClassList(ClassSearchGetReq searchInfo);
-	List<ClassListGetRes> getClassList();
-	ClassDetailGetRes getClassDetail(int classNo);
+	List<ClassListGetRes> getClassList(String classPermission);
+	ClassDetailGetRes getClassDetail(int classNo, String classPermission);
 	List<ClassListGetRes> getClassLikesList(int userNo);
 	int registerClassLikes(int userNo, int classNo);
 	int deleteClassLikes(int userNo, int classNo);
@@ -23,5 +23,6 @@ public interface ClassService {
 	int getLatestClassNo() throws Exception;
 	void createClassPhoto(String photo, int classNo, boolean isThumbnail) throws Exception;
 	int enrollClass(User user, int classNo) throws Exception;
+	void updateClassPermission(int classNo, String permission) throws Exception;
 	
 }
