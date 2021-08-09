@@ -31,7 +31,7 @@
       </div>
       <div
         class="button-wrapper"
-        v-if="!$store.state.isLogined"
+        v-if="!state.isLogined"
         style="margin-top:10px;"
       >
         <div class="btn-notlogined" @click="clickLogin">
@@ -203,15 +203,6 @@ export default {
     const checkAlert = function() {
       alert("피드백 알림 확인");
     };
-
-    //const checkLogin = ()=>{
-    console.log("main-header isLogined : " + store.state.isLogined);
-    //}
-
-    // onMounted(() => {
-    //   console.log(store.state.profileUrl);
-    //   //requestUserInfo()
-    // });
 
     const requestUserInfo = function() {};
 

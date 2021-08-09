@@ -357,7 +357,8 @@ export default {
           loading.value = false;
         })
         .catch(function(err) {
-          alert(err.response.data.message);
+          //alert(err.response.data.message);
+          //error 코드 == 403 -> 접근못하게
           loading.value = false;
         });
     };

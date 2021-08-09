@@ -169,10 +169,6 @@ export default {
       isLogined: computed(() => store.getters["root/getIsLogined"])
     });
 
-    onMounted(() => {
-      console.log(loginForm.value);
-    });
-
     const clickLogin = function() {
       // 로그인 클릭 시 validate 체크 후 그 결과 값에 따라, 로그인 API 호출 또는 경고창 표시
       console.log("로그인 클릭");

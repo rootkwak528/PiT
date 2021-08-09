@@ -127,10 +127,6 @@ export default {
       formLabelWidth: "120px"
     });
 
-    onMounted(() => {
-      console.log(searchForm.value);
-    });
-
     const clickSearch = function() {
       alert(
         "당신의 선택은? \ntype : " +
