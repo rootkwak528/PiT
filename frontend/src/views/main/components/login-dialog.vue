@@ -192,6 +192,7 @@ export default {
               localStorage.setItem("jwt-auth-token", result.data.accessToken);
               store.commit("root/setIsLogined", true);
 
+              //프로필url 조회
               store
                 .dispatch("root/requestUserInfo", {
                   token: "Bearer" + localStorage.getItem("jwt-auth-token")
