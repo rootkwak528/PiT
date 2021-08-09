@@ -262,17 +262,9 @@ export default {
       const spe = value.search(/[`~!@#$%^&*|₩₩₩'₩";:₩/?]/gi);
 
       if (value === "") {
-        callback(new Error("비밀번호를 입력해 주세요"));
-      } else if (value.length < 9) {
-        callback(new Error("최소 9 글자를 입력해야 합니다"));
-      } else if (value.length > 16) {
-        callback(new Error("최대 16자까지 입력 가능합니다"));
-      } else if (num < 0 || eng < 0 || spe < 0) {
-        callback(
-          new Error("비밀번호는 영문, 숫자, 특수문자가 조합되어야 합니다")
-        );
+        callback(new Error("비밀번호를 입력해 주세요."));
       } else if (value !== state.form.pwd) {
-        callback(new Error("입력한 비밀번호와 일치하지 않습니다"));
+        callback(new Error("입력한 비밀번호와 일치하지 않습니다."));
       } else {
         callback();
       }
@@ -323,7 +315,7 @@ export default {
       },
       rules: {
         gender: [
-          { required: true, validator: validateGender, trigger: "blur" }
+          { required: true, validator: validateGender, trigger: "change" }
         ],
         name: [{ required: true, validator: validateName, trigger: "blur" }],
         email: [{ required: true, validator: validateEmail, trigger: "blur" }],
