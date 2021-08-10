@@ -112,6 +112,7 @@
         prop="desc"
         label="상세 정보"
         :label-width="state.formLabelWidth"
+        v-if="state.form.type == `002`"
       >
         <el-input
           v-model="state.form.desc"
@@ -138,46 +139,7 @@
     </template>
   </el-dialog>
 </template>
-<style>
-.join-dialog {
-  width: 500px !important;
-  height: 750px !important;
-}
-.join-dialog .el-dialog__headerbtn {
-  float: right;
-}
-.join-dialog .el-form-item__content {
-  margin-left: 0 !important;
-  width: 200px;
-  display: inline-block;
-}
-.join-dialog .el-form-item {
-  margin-bottom: 20px;
-}
-.join-dialog .el-form-item__error {
-  font-size: 10px;
-  color: red;
-}
-.join-dialog .el-input__suffix {
-  display: none;
-}
-.join-dialog .el-dialog__footer {
-  margin: 0 calc(50% - 80px);
-  padding-top: 0;
-  display: inline-block;
-}
-.join-dialog .dialog-footer .el-button {
-  width: 120px;
-}
-.form-btn {
-  color: white;
-  background-color: #00c0d4;
-}
-.form-btn:hover {
-  color: #00c0d4;
-  background-color: white;
-}
-</style>
+
 <script>
 import { reactive, computed, ref, onMounted } from "vue";
 import { useStore } from "vuex";
@@ -239,7 +201,7 @@ export default {
     const validatePwd = (rule, value, callback) => {
       const num = value.search(/[0-9]/g);
       const eng = value.search(/[a-z]/gi);
-      const spe = value.search(/[`~!@#$%^&*|₩₩₩'₩";:₩/?]/gi);
+      const spe = value.search(/[^`~!@$!%*#^?&\\(\\)\-_=+]/gi);
 
       if (value === "") {
         callback(new Error("비밀번호를 입력해 주세요"));
@@ -259,20 +221,12 @@ export default {
     const validatePwdChk = (rule, value, callback) => {
       const num = value.search(/[0-9]/g);
       const eng = value.search(/[a-z]/gi);
-      const spe = value.search(/[`~!@#$%^&*|₩₩₩'₩";:₩/?]/gi);
+      const spe = value.search(/[^`~!@$!%*#^?&\\(\\)\-_=+]/gi);
 
       if (value === "") {
-        callback(new Error("비밀번호를 입력해 주세요"));
-      } else if (value.length < 9) {
-        callback(new Error("최소 9 글자를 입력해야 합니다"));
-      } else if (value.length > 16) {
-        callback(new Error("최대 16자까지 입력 가능합니다"));
-      } else if (num < 0 || eng < 0 || spe < 0) {
-        callback(
-          new Error("비밀번호는 영문, 숫자, 특수문자가 조합되어야 합니다")
-        );
+        callback(new Error("비밀번호를 입력해 주세요."));
       } else if (value !== state.form.pwd) {
-        callback(new Error("입력한 비밀번호와 일치하지 않습니다"));
+        callback(new Error("입력한 비밀번호와 일치하지 않습니다."));
       } else {
         callback();
       }
@@ -300,7 +254,10 @@ export default {
     };
 
     const validateDesc = (rule, value, callback) => {
-      if (value.length > 200) {
+      //if (state.form.type == "002")
+      if (value === "") {
+        callback(new Error("입력해줘이자식아!"));
+      } else if (value.length > 200) {
         callback(new Error("최대 200자까지 입력 가능합니다"));
       } else {
         callback();
@@ -323,7 +280,7 @@ export default {
       },
       rules: {
         gender: [
-          { required: true, validator: validateGender, trigger: "blur" }
+          { required: true, validator: validateGender, trigger: "change" }
         ],
         name: [{ required: true, validator: validateName, trigger: "blur" }],
         email: [{ required: true, validator: validateEmail, trigger: "blur" }],
@@ -341,7 +298,7 @@ export default {
       dialogVisible: computed(() => props.open),
       formLabelWidth: "120px"
     });
-
+    console.log(state.form.type);
     const clickRegister = function() {
       // 로그인 클릭 시 validate 체크 후 그 결과 값에 따라, 로그인 API 호출 또는 경고창 표시
       joinForm.value.validate(valid => {
@@ -470,3 +427,43 @@ export default {
   }
 };
 </script>
+<style>
+.join-dialog {
+  width: 500px !important;
+  height: 750px !important;
+}
+.join-dialog .el-dialog__headerbtn {
+  float: right;
+}
+.join-dialog .el-form-item__content {
+  margin-left: 0 !important;
+  width: 200px;
+  display: inline-block;
+}
+.join-dialog .el-form-item {
+  margin-bottom: 20px;
+}
+.join-dialog .el-form-item__error {
+  font-size: 10px;
+  color: red;
+}
+.join-dialog .el-input__suffix {
+  display: none;
+}
+.join-dialog .el-dialog__footer {
+  margin: 0 calc(50% - 80px);
+  padding-top: 0;
+  display: inline-block;
+}
+.join-dialog .dialog-footer .el-button {
+  width: 120px;
+}
+.form-btn {
+  color: white;
+  background-color: #00c0d4;
+}
+.form-btn:hover {
+  color: #00c0d4;
+  background-color: white;
+}
+</style>
