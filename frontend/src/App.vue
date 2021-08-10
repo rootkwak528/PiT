@@ -83,6 +83,15 @@ export default {
         localStorage.getItem("jwt-auth-token") != null
       ) {
         store.commit("root/setIsLogined", true);
+        // 유저 정보 가져와서 프로필 데이터를 스토어에 커밋해보자.
+        store.dispatch("root/requestUserInfo", {
+          token: localStorage.getItem("jwt-auth-token")
+        })
+        .then(function(result){
+          store.commit("root/setProfileUrl", result.data.userProfile);
+        })
+
+
       }
     }
     return { store };

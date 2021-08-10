@@ -54,19 +54,21 @@
         </div>
         <el-dropdown trigger="click">
           <span class="el-dropdown-link">
-            <img
+            <div class="profile">
+              <img
               v-if="state.profileUrl"
               id="profileImg"
               :src="state.profileUrl"
               alt="profile"
-              style="width:100%; max-width:200px; height: 40px; cursor: pointer"
+              style="width:100%; max-width:200px; height: 40px; cursor: pointer; border-radius: 50%;"
             />
             <img
               v-else
               :src="require('@/assets/images/profile-default.png')"
               alt="profile"
-              style="width:100%; max-width:200px; height: 40px; cursor: pointer"
+              style="width:100%; max-width:200px; height: 40px; cursor: pointer; border-radius: 50%;"
             />
+            </div>
           </span>
           <template #dropdown>
             <el-dropdown-menu>
@@ -80,6 +82,18 @@
                   >마이페이지</router-link
                 >
               </el-dropdown-item>
+              <!-- 테스트 마이 페이지 -->
+              <el-dropdown-item
+                icon="el-icon-s-custom"
+                style="font:blue; cursor: pointer;"
+              >
+                <router-link
+                  to="/rgstClassTest"
+                  style="text-decoration: none; color: inherit;"
+                  >테스트 마이페이지</router-link
+                >
+              </el-dropdown-item>
+
               <el-dropdown-item icon="el-icon-turn-off" @click="logout"
                 >로그아웃</el-dropdown-item
               >
@@ -224,7 +238,7 @@ export default {
 </script>
 <style>
 .main-header {
-  padding: 10px 20px;
+  padding: 15px 20px;
 }
 /*Mobile, Tablet*/
 .menu-icon-wrapper {
@@ -273,5 +287,14 @@ export default {
   margin-right: 30px;
   cursor: pointer;
   margin-top: 10px;
+}
+.profile {
+  text-align: center;
+  width: 40px;
+  height: 40px;
+}
+img {
+  max-width: 100%;
+  height: auto;
 }
 </style>

@@ -1,9 +1,9 @@
 package com.ssafy.pit.controller;
 
-import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.ssafy.pit.common.auth.PitUserDetails;
 import com.ssafy.pit.common.response.BaseResponseBody;
@@ -100,8 +99,14 @@ public class UserController {
 		User user = userService.getUserByUserNickname(userNickname);
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
 		String nickName = userDetails.getUser().getUserNickname();
-		if (user != null && !nickName.equals(userNickname)) {
-			return ResponseEntity.status(409).body(BaseResponseBody.of(409, "중복된 닉네임입니다."));
+		if (user != null) {
+			if(!nickName.equals(userNickname)) {				
+				return ResponseEntity.status(409).body(BaseResponseBody.of(409, "중복된 닉네임입니다."));
+			}
+			else {				
+				return ResponseEntity.status(409).body(BaseResponseBody.of(200, "현재 사용중인 닉네임입니다. (사용할 수 있는 닉네임입니다.)"));
+			}
+			
 		}
 		else {
 			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "사용할 수 있는 닉네입니다."));
@@ -139,16 +144,16 @@ public class UserController {
 		}
 	}
 	
-	//유저 아바타 테스트
+	// 유저 아바타 테스트
 	@PostMapping("/image")
 	public ResponseEntity<? extends BaseResponseBody> image(String url) {
 		System.out.println("이미지 진입");
 		System.out.println(url);
 			
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "테스트"));
-		
 	}
 	
+	// 회원탈퇴
 	@DeleteMapping("/me")
 	public ResponseEntity<? extends BaseResponseBody> deleteUser(Authentication authentication) {
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
@@ -161,4 +166,18 @@ public class UserController {
 			return ResponseEntity.status(404).body(BaseResponseBody.of(404, "회원탈퇴중에 문제가 발생하였습니다."));
 		}
 	}
+	
+	// 프로필 이미지 변경
+	@PutMapping("/me/profile")
+	public ResponseEntity<? extends BaseResponseBody> updateProfile(Authentication authentication, @RequestBody HashMap<String, String> profileMap) {
+		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
+		User user = userDetails.getUser();
+		if (userService.update(user, profileMap.get("profile")) == 1) {			
+			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "프로필 사진이 업데이트되었습니다."));
+		}
+		else {
+			return ResponseEntity.status(404).body(BaseResponseBody.of(404, "사진 업데이트중에 문제가 발생하였습니다."));
+		}
+	}
+	
 }

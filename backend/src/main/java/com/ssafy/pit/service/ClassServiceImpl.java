@@ -7,18 +7,23 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.pit.entity.ClassPhoto;
 import com.ssafy.pit.entity.Classes;
 import com.ssafy.pit.entity.Comment;
 import com.ssafy.pit.entity.User;
+import com.ssafy.pit.entity.UserClass;
 import com.ssafy.pit.entity.UserLikes;
+import com.ssafy.pit.repository.ClassPhotoRepository;
 import com.ssafy.pit.repository.ClassPhotoRepositorySupport;
 import com.ssafy.pit.repository.ClassRepository;
 import com.ssafy.pit.repository.ClassRepositorySupport;
 import com.ssafy.pit.repository.CodeRepositorySupport;
 import com.ssafy.pit.repository.CommentRepositorySupport;
+import com.ssafy.pit.repository.UserClassRepository;
 import com.ssafy.pit.repository.UserLikesRepository;
 import com.ssafy.pit.repository.UserRepository;
 import com.ssafy.pit.request.ClassSearchGetReq;
+import com.ssafy.pit.request.CreateClassPostReq;
 import com.ssafy.pit.response.ClassDetailGetRes;
 import com.ssafy.pit.response.ClassListGetRes;
 import com.ssafy.pit.response.CommentRes;
@@ -48,6 +53,12 @@ public class ClassServiceImpl implements ClassService {
 	@Autowired
 	CodeRepositorySupport codeRepositorySupport;
 	
+	@Autowired
+	ClassPhotoRepository classPhotoRepository;
+	
+	@Autowired
+	UserClassRepository userClassRepository;
+	
 	@Override
 	public List<ClassListGetRes> getClassList(ClassSearchGetReq searchInfo) {
 //		return classRepository.findAll();
@@ -55,15 +66,10 @@ public class ClassServiceImpl implements ClassService {
 	}
 
 	@Override
-	public List<ClassListGetRes> getClassList() {
-		List<Classes> classesList = classRepositorySupport.getClassList();
+	public List<ClassListGetRes> getClassList(String classPermission) {
+		List<Classes> classesList = classRepositorySupport.getClassList(classPermission);
 		List<ClassListGetRes> classListGetRes = new ArrayList();
-
 		for (Classes classes : classesList) {
-			if(!classes.getClassPermission().equals("001")) {
-				continue;
-			}
-			
 			ClassListGetRes classGetRes = new ClassListGetRes();
 			int classNo = classes.getClassNo();
 			BeanUtils.copyProperties(classes, classGetRes);
@@ -75,18 +81,13 @@ public class ClassServiceImpl implements ClassService {
 				classGetRes.setClassThumbnail("");
 			}
 			classListGetRes.add(classGetRes);
-
 		}
 		return classListGetRes;
 	}
 
 	@Override
-	public ClassDetailGetRes getClassDetail(int classNo) {
-		Classes classes = classRepositorySupport.getClassDetail(classNo);
-		if(!classes.getClassPermission().equals("001")) {
-			return null;
-		}
-		
+	public ClassDetailGetRes getClassDetail(int classNo, String classPermission) {
+		Classes classes = classRepositorySupport.getClassDetail(classNo, classPermission);
 		ClassDetailGetRes classDetail = new ClassDetailGetRes();
 		// classes -> classDetail로 복제 (title, desc, curri, startdate, enddate, material, tcnt, price, starttime, endtime, teachernmae)
 		BeanUtils.copyProperties(classes, classDetail);
@@ -150,7 +151,7 @@ public class ClassServiceImpl implements ClassService {
 			User user = userRepository.findUserByUserNo(userNo);
 			Classes classes = classRepository.findClassByClassNo(classNo);
 			if(!classes.getClassPermission().equals("001")) {
-				return 0;
+				return 2;
 			}
 			
 			UserLikes userLikes = new UserLikes();
@@ -276,7 +277,70 @@ public class ClassServiceImpl implements ClassService {
 			e.printStackTrace();
 			return null;
 		}
-		
 	}
+
+	@Override
+	public void createClass(CreateClassPostReq createClassInfo, User user) throws Exception {
+		Classes classes = new Classes();
+		BeanUtils.copyProperties(createClassInfo, classes);
+		classes.setUser(user);
+		classes.setClassTeacherName(user.getUserName());
+		classes.setClassUcnt(0);
+		classes.setClassCcnt(0);
+		classes.setClassPermission("002");
+		classRepository.save(classes);
+		return;
+	}
+
+	@Override
+	public int getLatestClassNo() throws Exception {
+		int classNo = classRepositorySupport.getLastestClassNo();
+		return classNo;
+	}
+
+	@Override
+	public void createClassPhoto(String photo, int classNo, boolean isThumbnail)
+			throws Exception {
+		ClassPhoto classPhoto = new ClassPhoto();
+		Classes classes = classRepository.findClassByClassNo(classNo);
+		classPhoto.setClasses(classes);
+		classPhoto.setPhotoIsthumbnail(isThumbnail);
+		classPhoto.setPhotoUrl(photo);
+		
+		classPhotoRepository.save(classPhoto);
+		return;
+	}
+
+	@Override
+	public int enrollClass(User user, int classNo) throws Exception {
+		Classes classes = classRepository.findClassByClassNo(classNo);
+		if(classes.getClassUcnt() < classes.getClassLimit()) {
+			if(classes.getClassPermission().equals("001")) {
+				UserClass userClass = new UserClass();
+				userClass.setUser(user);
+				userClass.setClasses(classes);
+				classes.setClassUcnt(classes.getClassUcnt() + 1);
+				classRepository.save(classes);
+				userClassRepository.save(userClass);
+				return 1;				
+			}
+			else {
+				return 2;				
+			}
+		}
+		else {
+			return 0;
+		}
+	}
+
+	@Override
+	public void updateClassPermission(int classNo, String permission) throws Exception {
+		Classes classes = classRepository.findClassByClassNo(classNo);
+		classes.setClassPermission(permission);
+		classRepository.save(classes);
+		
+		return;
+	}
+	
 	
 }
