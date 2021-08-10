@@ -36,6 +36,7 @@ const routes = [
     name: "ClassDetail",
     component: ClassDetail
   },
+  // 기존 마이페이지
   {
     path: "/myinfo",
     name: "MyInfo",
@@ -56,7 +57,9 @@ const routes = [
     name: "RecordedVideo",
     component: RecordedVideo
   },
+  // 기존 마이페이지
 
+  // 수정된 마이 페이지
   {
     path: "/mypageMain",
     name: "MypageMain",
