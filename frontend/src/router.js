@@ -8,6 +8,13 @@ import RegisterClass from "@/views/mypage/registerClass";
 import FinishedClass from "@/views/mypage/finishedClass";
 import RecordedVideo from "@/views/mypage/recordedVideo";
 
+import MypageMain from "@/views/TESTmypage/mypageMain";
+import FinishedClassTest from "@/views/TESTmypage/finishedClassTest"
+import RegisterClassTest from "@/views/TESTmypage/registerClassTest"
+import RecordedVideoTest from "@/views/TESTmypage/recordedVideoTest"
+import MyInfoTest from "@/views/TESTmypage/myinfoTest"
+
+
 const routes = [
   {
     path: "/",
@@ -48,6 +55,34 @@ const routes = [
     path: "/recordedVideo",
     name: "RecordedVideo",
     component: RecordedVideo
+  },
+
+  {
+    path: "/mypageMain",
+    name: "MypageMain",
+    component: MypageMain,
+    children: [
+      {
+        path: "/finishedClassTest",
+        name: "FinishedClassTest",
+        component: FinishedClassTest
+      },
+      {
+        path: "/rgstClassTest",
+        name: "RegisterClassTest",
+        component: RegisterClassTest
+      },
+      {
+        path: "/recordedVideoTest",
+        name: "RecordedVideoTest",
+        component: RecordedVideoTest
+      },
+      {
+        path: "/myinfoTest",
+        name: "MyInfoTest",
+        component: MyInfoTest
+      }
+    ]
   }
 ];
 

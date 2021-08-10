@@ -1,161 +1,138 @@
 <template>
-  <div class="name">
-    {{ username }}
-  </div>
-  <div>
+  <div class="content-wrapper">
+    <div class="submenu-title">마이페이지</div>
     <el-row class="tac">
-      <el-col :span="6">
-        <mypage-sidebar />
+
+      <el-col :span="8">
+
+        <div class="profileUpload">
+          <el-upload
+            class="avatar-uploader"
+            action="v1/users/image"
+            accept="image/jpeg"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
+          >
+            <img
+              v-if="state.form.profile"
+              :src="state.form.profile"
+              class="avatar"
+            />
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+          <el-button v-if="state.form.profile" class="form-btn" @click="clickDeleteProfile"
+            >기본 이미지로 변경
+          </el-button>
+          <el-button v-else class="form-btn" @click="clickDeleteProfile" style="display:none"
+            >기본 이미지로 변경
+          </el-button>
+          <el-button class="form-btn" @click="updateProfile"
+            >프로필 적용
+          </el-button>
+
+
+        </div>
+
       </el-col>
 
-      <el-col :span="18">
-        <el-row class="tac">
-
-          <el-col :span="8">
-
-            <div class="profileUpload">
-              <el-upload
-                class="avatar-uploader"
-                action="v1/users/image"
-                accept="image/jpeg"
-                :show-file-list="false"
-                :on-success="handleAvatarSuccess"
-                :before-upload="beforeAvatarUpload"
-              >
-                <img
-                  v-if="state.form.profile"
-                  :src="state.form.profile"
-                  class="avatar"
-                />
-                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-              </el-upload>
-              <el-button v-if="state.form.profile" class="form-btn" @click="clickDeleteProfile"
-                >기본 이미지로 변경
-              </el-button>
-              <el-button v-else class="form-btn" @click="clickDeleteProfile" style="display:none"
-                >기본 이미지로 변경
-              </el-button>
-              <el-button class="form-btn" @click="updateProfile"
-                >프로필 적용
-              </el-button>
-
-
-            </div>
-
-          </el-col>
-
-          <el-col :span="16">
-            <el-form
-              v-loading="loading"
-              :model="state.form"
-              :rules="state.rules"
-              ref="updateForm"
-              :label-position="state.form.align"
+      <el-col :span="16">
+        <el-form
+          v-loading="loading"
+          :model="state.form"
+          :rules="state.rules"
+          ref="updateForm"
+          :label-position="state.form.align"
+        >
+          <el-form-item label="분류" :label-width="state.formLabelWidth">
+            <el-label v-model="state.form.type">{{
+              state.form.type
+            }}</el-label>
+          </el-form-item>
+          <el-form-item
+            prop="email"
+            label="이메일"
+            :label-width="state.formLabelWidth"
+          >
+            <el-input v-model="state.form.email" disabled>{{
+              state.form.email
+            }}</el-input>
+          </el-form-item>
+          <el-form-item
+            prop="name"
+            label="이름"
+            :label-width="state.formLabelWidth"
+          >
+            <el-input
+              v-model="state.form.name"
+              @input="onInputForm"
+            ></el-input>
+          </el-form-item>
+          <el-form-item
+            prop="nickname"
+            label="닉네임"
+            :label-width="state.formLabelWidth"
+          >
+            <el-input
+              style="float:left; width:70%"
+              v-model="state.form.nickname"
+            ></el-input>
+            <el-button
+              style="float:right; width:28%"
+              class="form-btn"
+              @click="checkDuplicatedUpdateNickname"
+              >중복확인</el-button
             >
-              <el-form-item label="분류" :label-width="state.formLabelWidth">
-                <el-label v-model="state.form.type">{{
-                  state.form.type
-                }}</el-label>
-              </el-form-item>
-              <el-form-item
-                prop="email"
-                label="이메일"
-                :label-width="state.formLabelWidth"
-              >
-                <el-input v-model="state.form.email" disabled>{{
-                  state.form.email
-                }}</el-input>
-              </el-form-item>
-              <el-form-item
-                prop="name"
-                label="이름"
-                :label-width="state.formLabelWidth"
-              >
-                <el-input
-                  v-model="state.form.name"
-                  @input="onInputForm"
-                ></el-input>
-              </el-form-item>
-              <el-form-item
-                prop="nickname"
-                label="닉네임"
-                :label-width="state.formLabelWidth"
-              >
-                <el-input
-                  style="float:left; width:70%"
-                  v-model="state.form.nickname"
-                ></el-input>
-                <el-button
-                  style="float:right; width:28%"
-                  class="form-btn"
-                  @click="checkDuplicatedUpdateNickname"
-                  >중복확인</el-button
-                >
-              </el-form-item>
-              <el-form-item
-                prop="pwd"
-                label="비밀번호"
-                :label-width="state.formLabelWidth"
-              >
-                <el-input
-                  v-model="state.form.pwd"
-                  show-password
-                  @input="onInputForm"
-                ></el-input>
-              </el-form-item>
-              <el-form-item
-                prop="pwdChk"
-                label="비밀번호 확인"
-                :label-width="state.formLabelWidth"
-              >
-                <el-input
-                  v-model="state.form.pwdChk"
-                  show-password
-                  @input="onInputForm"
-                ></el-input>
-              </el-form-item>
-              <el-form-item
-                prop="phone"
-                label="휴대전화 번호"
-                :label-width="state.formLabelWidth"
-              >
-                <el-input
-                  v-model="state.form.phone"
-                  @input="onInputForm"
-                  placeholder="-를 제외하고 숫자만 입력해주세요"
-                  >{{ state.form.phone }}</el-input
-                >
-              </el-form-item>
-              <el-form-item
-                label="상세 정보"
-                :label-width="state.formLabelWidth"
-              >
-                <el-input
-                  type="textarea"
-                  :rows="6"
-                  v-model="state.form.desc"
-                  maxlength="200"
-                  show-word-limit
-                  @input="onInputForm"
-                  placeholder="트레이너는 필수 입력 사항입니다"
-                >
-                </el-input>
-                <div class="update-footer">
-                  <el-button
-                    v-if="!updateValid"
-                    class="form-btn"
-                    @click="clickUpdateUser"
-                    disabled
-                    >수정하기</el-button
-                  >
-                  <el-button v-else class="form-btn" @click="clickUpdateUser"
-                    >수정하기</el-button
-                  >
-                </div>
-
-              </el-form-item>
-            </el-form>
-            <!-- <span class="update-footer">
+          </el-form-item>
+          <el-form-item
+            prop="pwd"
+            label="비밀번호"
+            :label-width="state.formLabelWidth"
+          >
+            <el-input
+              v-model="state.form.pwd"
+              show-password
+              @input="onInputForm"
+            ></el-input>
+          </el-form-item>
+          <el-form-item
+            prop="pwdChk"
+            label="비밀번호 확인"
+            :label-width="state.formLabelWidth"
+          >
+            <el-input
+              v-model="state.form.pwdChk"
+              show-password
+              @input="onInputForm"
+            ></el-input>
+          </el-form-item>
+          <el-form-item
+            prop="phone"
+            label="휴대전화 번호"
+            :label-width="state.formLabelWidth"
+          >
+            <el-input
+              v-model="state.form.phone"
+              @input="onInputForm"
+              placeholder="-를 제외하고 숫자만 입력해주세요"
+              >{{ state.form.phone }}</el-input
+            >
+          </el-form-item>
+          <el-form-item
+            label="상세 정보"
+            :label-width="state.formLabelWidth"
+          >
+            <el-input
+              type="textarea"
+              :rows="6"
+              v-model="state.form.desc"
+              maxlength="200"
+              show-word-limit
+              @input="onInputForm"
+              placeholder="트레이너는 필수 입력 사항입니다"
+            >
+            </el-input>
+            <div class="update-footer">
               <el-button
                 v-if="!updateValid"
                 class="form-btn"
@@ -166,9 +143,22 @@
               <el-button v-else class="form-btn" @click="clickUpdateUser"
                 >수정하기</el-button
               >
-            </span> -->
-          </el-col>
-        </el-row>
+            </div>
+
+          </el-form-item>
+        </el-form>
+        <!-- <span class="update-footer">
+          <el-button
+            v-if="!updateValid"
+            class="form-btn"
+            @click="clickUpdateUser"
+            disabled
+            >수정하기</el-button
+          >
+          <el-button v-else class="form-btn" @click="clickUpdateUser"
+            >수정하기</el-button
+          >
+        </span> -->
       </el-col>
     </el-row>
   </div>
@@ -177,13 +167,12 @@
 <script>
 import { reactive, computed, ref, onMounted, message } from "vue";
 import { useStore } from "vuex";
-import MypageSidebar from "./component/mypage-sidebar.vue";
 
 export default {
   name: "MyClass",
 
   components: {
-    MypageSidebar
+
   },
 
   props: {
