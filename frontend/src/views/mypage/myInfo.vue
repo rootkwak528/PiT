@@ -30,11 +30,15 @@
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
               <el-button v-if="state.form.profile" class="form-btn" @click="clickDeleteProfile"
-                >프로필 삭제
+                >기본 이미지로 변경
               </el-button>
-              <el-button v-else class="form-btn" @click="clickDeleteProfile" disabled
-                >프로필 삭제
+              <el-button v-else class="form-btn" @click="clickDeleteProfile" style="display:none"
+                >기본 이미지로 변경
               </el-button>
+              <el-button class="form-btn" @click="updateProfile"
+                >프로필 적용
+              </el-button>
+
 
             </div>
 
@@ -136,9 +140,22 @@
                   placeholder="트레이너는 필수 입력 사항입니다"
                 >
                 </el-input>
+                <div class="update-footer">
+                  <el-button
+                    v-if="!updateValid"
+                    class="form-btn"
+                    @click="clickUpdateUser"
+                    disabled
+                    >수정하기</el-button
+                  >
+                  <el-button v-else class="form-btn" @click="clickUpdateUser"
+                    >수정하기</el-button
+                  >
+                </div>
+
               </el-form-item>
             </el-form>
-            <span class="update-footer">
+            <!-- <span class="update-footer">
               <el-button
                 v-if="!updateValid"
                 class="form-btn"
@@ -149,7 +166,7 @@
               <el-button v-else class="form-btn" @click="clickUpdateUser"
                 >수정하기</el-button
               >
-            </span>
+            </span> -->
           </el-col>
         </el-row>
       </el-col>
@@ -439,6 +456,22 @@ export default {
       state.form.profile = "";
     }
 
+    const updateProfile = function() {
+      store
+        .dispatch("root/updateProfile", {
+          userProfile: state.form.profile,
+          token: "Bearer " + localStorage.getItem("jwt-auth-token")
+        })
+        .then(function() {
+          alert("프로필 사진이 변경되었습니다.");
+          store.state.profileUrl = state.form.profile;
+          store.commit("root/setProfileUrl", store.state.profileUrl);
+        })
+        .catch(function(err) {
+          alert(err.response.data.message);
+        })
+    }
+
     const onInputForm = function() {
       updateForm.value.validate(valid => {
         // updateValid.value = valid & isNicknameAvailable.value;
@@ -464,7 +497,8 @@ export default {
       clickUpdateUser,
       handleAvatarSuccess,
       beforeAvatarUpload,
-      clickDeleteProfile
+      clickDeleteProfile,
+      updateProfile
     };
   }
 };
@@ -526,5 +560,9 @@ export default {
 img {
   max-width: 100%;
   height: auto;
+}
+.update-footer {
+  margin: 15px;
+  text-align: center;
 }
 </style>
