@@ -110,7 +110,7 @@
       </el-form-item>
       <el-form-item
         prop="desc"
-        label="상세 정보"
+        label="트레이너 설명"
         :label-width="state.formLabelWidth"
         v-if="state.form.type == `002`"
       >
@@ -171,7 +171,7 @@ export default {
 
     const validateGender = (rule, value, callback) => {
       if (value === "") {
-        callback(new Error("성별을 선택해주세요"));
+        callback(new Error("성별을 선택해주세요."));
       } else {
         callback();
       }
@@ -181,7 +181,7 @@ export default {
       if (value === "") {
         callback(new Error("이름을 입력해주세요"));
       } else if (value.length > 30) {
-        callback(new Error("최대 30자까지 입력 가능합니다"));
+        callback(new Error("최대 30자까지 입력 가능합니다."));
       } else {
         callback();
       }
@@ -192,7 +192,7 @@ export default {
       const emailTest = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
 
       if (emailTest.test(email) == false) {
-        callback(new Error("이메일 형식이 올바르지 않습니다"));
+        callback(new Error("이메일 형식이 올바르지 않습니다."));
       } else {
         callback();
       }
@@ -204,14 +204,14 @@ export default {
       const spe = value.search(/[^`~!@$!%*#^?&\\(\\)\-_=+]/gi);
 
       if (value === "") {
-        callback(new Error("비밀번호를 입력해 주세요"));
+        callback(new Error("비밀번호를 입력해 주세요."));
       } else if (value.length < 9) {
-        callback(new Error("최소 9 글자를 입력해야 합니다"));
+        callback(new Error("최소 9 글자를 입력해야 합니다."));
       } else if (value.length > 16) {
-        callback(new Error("최대 16자까지 입력 가능합니다"));
+        callback(new Error("최대 16자까지 입력 가능합니다."));
       } else if (num < 0 || eng < 0 || spe < 0) {
         callback(
-          new Error("비밀번호는 영문, 숫자, 특수문자가 조합되어야 합니다")
+          new Error("비밀번호는 영문, 숫자, 특수문자가 조합되어야 합니다.")
         );
       } else {
         callback();
@@ -234,9 +234,9 @@ export default {
 
     const validateNickname = (rule, value, callback) => {
       if (value === "") {
-        callback(new Error("P;T에서 사용하실 닉네임을 입력해주세요"));
+        callback(new Error("P;T에서 사용하실 닉네임을 입력해주세요."));
       } else if (value.length > 10) {
-        callback(new Error("최대 10자까지 입력 가능합니다"));
+        callback(new Error("최대 10자까지 입력 가능합니다."));
       } else {
         callback();
       }
@@ -244,9 +244,9 @@ export default {
 
     const validatePhone = (rule, value, callback) => {
       if (value === "") {
-        callback(new Error("휴대전화번호를 입력해주세요"));
+        callback(new Error("휴대전화번호를 입력해주세요."));
       } else if (value.length != 11) {
-        callback(new Error("휴대전화번호 11자리를 입력해주세요"));
+        callback(new Error("휴대전화번호 11자리를 입력해주세요."));
         // 숫자만 들어오게 조건 추가
       } else {
         callback();
@@ -256,9 +256,9 @@ export default {
     const validateDesc = (rule, value, callback) => {
       //if (state.form.type == "002")
       if (value === "") {
-        callback(new Error("입력해줘이자식아!"));
+        callback(new Error("트레이너는 필수 입력입니다."));
       } else if (value.length > 200) {
-        callback(new Error("최대 200자까지 입력 가능합니다"));
+        callback(new Error("최대 200자까지 입력 가능합니다."));
       } else {
         callback();
       }
@@ -292,7 +292,7 @@ export default {
         nickname: [
           { required: true, validator: validateNickname, trigger: "blur" }
         ],
-        desc: [{ validator: validateDesc, trigger: "blur" }],
+        desc: [{ required: true, validator: validateDesc, trigger: "blur" }],
         phone: [{ required: true, validator: validatePhone, trigger: "blur" }]
       },
       dialogVisible: computed(() => props.open),
