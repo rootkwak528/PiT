@@ -16,14 +16,17 @@
         <div style="position: absolute; padding: 18px">
           <div style="display: flex">
             <div class="tag">요가</div>
-            <div style="font-weight: bold">강사: {{ o.teacherName }}</div>
+            <div style="font-weight: bold">강사: <span class="trainer">{{ o.teacherName }}</span></div>
           </div>
           <div class="title">{{ o.title }}</div>
           <div class="desc">{{ o.description }}</div>
           <div class="registerclass-card-bottom">
-            <el-button icon="el-icon-s-home" class="btn-enter"
-              >입장하기</el-button
-            >
+            <el-button
+              icon="el-icon-s-home"
+              class="btn-enter"
+              @click="joinSession"
+              >입장하기
+            </el-button>
             <el-progress
               :text-inside="true"
               :stroke-width="24"
@@ -80,7 +83,27 @@ export default {
   methods: {
     format(percentage) {
       return percentage === 100 ? "Full" : `${percentage}%`;
-    }
+    },
+
+    joinSession (event) {
+      const trainerName = event.target.parentElement.parentElement.parentElement.querySelector('.trainer').innerText
+      const sessionName = this.hashCode(trainerName)
+      const nickName = 'abc'
+      const sessionUrl = `https://i5a204.p.ssafy.io:5000/?sessionName=${sessionName}&nickName=${nickName}`
+      window.location.href = sessionUrl
+      // console.log(sessionUrl)
+    },
+
+    hashCode (str) {
+      var hash = 0, i, chr
+      if (str.length === 0) return hash
+      for (i = 0; i < str.length; i++) {
+        chr   = str.charCodeAt(i)
+        hash  = ((hash << 5) - hash) + chr
+        hash |= 0
+      }
+      return hash
+    },
   }
 };
 </script>
