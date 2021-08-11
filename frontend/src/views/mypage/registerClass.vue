@@ -89,10 +89,14 @@ export default {
       const trainerName = event.target.parentElement.parentElement.parentElement.querySelector('.trainer').innerText
       const sessionName = this.hashCode(trainerName)
       const nickname = 'abc'
-      localStorage.setItem('sessionName', sessionName)
-      localStorage.setItem('nickname', nickname)
-      window.location.href = 'https://i5a204.p.ssafy.io:5000/'
-      // console.log(sessionUrl)
+      const redirectUrl = 'https://i5a204.p.ssafy.io:5000/'
+      
+      const targetWindow = window.open(redirectUrl)
+      setTimeout(
+        function() {
+          targetWindow.postMessage({ sessionName, nickname }, redirectUrl)
+        }, 500
+      )
     },
 
     hashCode (str) {
