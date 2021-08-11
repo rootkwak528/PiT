@@ -25,6 +25,7 @@ import com.ssafy.pit.response.ClassDetailGetRes;
 import com.ssafy.pit.response.ClassListGetRes;
 import com.ssafy.pit.response.RegisterClassGetRes;
 import com.ssafy.pit.service.ClassService;
+import com.ssafy.pit.service.PtroomService;
 import com.ssafy.pit.service.UserService;
 
 @RequestMapping("/v1/class")
@@ -36,6 +37,9 @@ public class ClassController {
 	
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	PtroomService ptroomService;
 	
 	// 클래스 상세값 가져오기 (모든 사용자가 사용가능, 001만 조회)
 	@GetMapping("/{classNo}")
@@ -199,6 +203,10 @@ public class ClassController {
 				// class_photo 테이블에 넣을 classNo 값 구하기
 				int classNo = classService.getLatestClassNo();
 				System.out.println("추가된 클래스의 최신 classNo: " + classNo );
+				
+				String ptroomUrl = createClassInfo.getPtroomUrl();
+				ptroomService.createPtroom(ptroomUrl, classNo);
+				
 				String thumbnailPhoto = createClassInfo.getClassThumbnail();
 				// 썸네일 이미지 넣기
 				classService.createClassPhoto(thumbnailPhoto, classNo, true);
