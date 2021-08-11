@@ -19,6 +19,7 @@ import com.ssafy.pit.repository.ClassRepository;
 import com.ssafy.pit.repository.ClassRepositorySupport;
 import com.ssafy.pit.repository.CodeRepositorySupport;
 import com.ssafy.pit.repository.CommentRepositorySupport;
+import com.ssafy.pit.repository.PtroomRepositorySupport;
 import com.ssafy.pit.repository.UserClassRepository;
 import com.ssafy.pit.repository.UserLikesRepository;
 import com.ssafy.pit.repository.UserRepository;
@@ -58,6 +59,9 @@ public class ClassServiceImpl implements ClassService {
 	
 	@Autowired
 	UserClassRepository userClassRepository;
+	
+	@Autowired
+	PtroomRepositorySupport ptroomRepositorySupport;
 	
 	@Override
 	public List<ClassListGetRes> getClassList(ClassSearchGetReq searchInfo, String permission) {
@@ -316,6 +320,9 @@ public class ClassServiceImpl implements ClassService {
 				float classPercentage = Math.round((classCnt/totalCnt)*10000) / (float) 100.0;
 				
 				registerClass.setClassPercentage(classPercentage);
+				
+				String ptroomUrl = ptroomRepositorySupport.getPtroomUrl(classNo);
+				registerClass.setPtroomUrl(ptroomUrl);
 				
 				registerClassList.add(registerClass);
 			}

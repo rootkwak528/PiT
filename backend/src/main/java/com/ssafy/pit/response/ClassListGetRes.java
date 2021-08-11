@@ -17,5 +17,6 @@ public class ClassListGetRes {
 	String classTeacherName;
 	Date classStartDate;
 	Date classEndDate;
+	String videoUrl;
 	
 }
