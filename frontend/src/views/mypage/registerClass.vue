@@ -88,10 +88,15 @@ export default {
     joinSession (event) {
       const trainerName = event.target.parentElement.parentElement.parentElement.querySelector('.trainer').innerText
       const sessionName = this.hashCode(trainerName)
-      const nickName = 'abc'
-      const sessionUrl = `https://i5a204.p.ssafy.io:5000/createRoom/?sessionName=${sessionName}&nickName=${nickName}`
-      window.location.href = sessionUrl
-      // console.log(sessionUrl)
+      const nickname = 'abc'
+      const redirectUrl = 'https://i5a204.p.ssafy.io:5000/'
+      
+      const targetWindow = window.open(redirectUrl)
+      setTimeout(
+        function() {
+          targetWindow.postMessage({ sessionName, nickname }, redirectUrl)
+        }, 500
+      )
     },
 
     hashCode (str) {
