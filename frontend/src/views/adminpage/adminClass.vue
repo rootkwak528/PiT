@@ -10,7 +10,7 @@
       </el-button-group>
     </div>
     <div style="border: solid 0.5px; margin-top: 13px; margin-bottom: 10px"></div>
-    <div class="finishedclass-card-section">
+    <div class="class-card-wrapper">
       <el-card
         shadow="none"
         v-for="classItem in state.list"
@@ -23,7 +23,7 @@
         style="margin: 5px"
       >
         <router-link
-          :to="`/classdetail?classNo=${classItem.classNo}`"
+          :to="`/adminClassDetail?classNo=${classItem.classNo}`"
           style="text-decoration: none; color: inherit;"
         >
           <el-image
@@ -151,12 +151,38 @@ export default {
 </script>
 
 <style>
-  .non-active {
-    background-color: white;
-    color: #00C0D4;
-  }
-  .active {
-    background-color: #00C0D4;
-    color: white;
-  }
+.non-active {
+  background-color: white;
+  color: #00C0D4;
+}
+.active {
+  background-color: #00C0D4;
+  color: white;
+}
+.class-card-wrapper {
+display: flex;
+flex-wrap: wrap;
+}
+
+.class-card-content {
+  height: 170px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.class-card-tag {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.class-card-content-bottom {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  font-size: 20px;
+  font-weight: bold;
+}
 </style>
