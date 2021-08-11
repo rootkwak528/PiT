@@ -143,22 +143,13 @@
               <el-button v-else class="form-btn" @click="clickUpdateUser"
                 >수정하기</el-button
               >
+              <el-button class="form-btn-delete" @click="clickDeleteUser"
+                >탈퇴하기</el-button
+              >
             </div>
 
           </el-form-item>
         </el-form>
-        <!-- <span class="update-footer">
-          <el-button
-            v-if="!updateValid"
-            class="form-btn"
-            @click="clickUpdateUser"
-            disabled
-            >수정하기</el-button
-          >
-          <el-button v-else class="form-btn" @click="clickUpdateUser"
-            >수정하기</el-button
-          >
-        </span> -->
       </el-col>
     </el-row>
   </div>
@@ -167,6 +158,7 @@
 <script>
 import { reactive, computed, ref, onMounted, message } from "vue";
 import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 
 export default {
   name: "MyClass",
@@ -182,27 +174,9 @@ export default {
     }
   },
 
-  methods: {
-    // handleAvatarSuccess(res, file){
-    //   state.form.profile = URL.createObjectURL(file.raw);
-    //   console.log("업로드 후 profile : " + state.form.profile);
-    // },
-    // beforeAvatarUpload(file){
-    //   const isJPG = file.type === "image/jpeg";
-    //   const isPNG = file.type === "image/PNG";
-    //   const isLt2M = file.size / 1024 / 1024 < 2;
-    //   if (!isJPG && isPNG) {
-    //     this.$message.error("JPG / PNG 파일 형식만 업로드가 가능합니다.");
-    //   }
-    //   if (!isLt2M) {
-    //     this.$message.error("Avatar picture size can not exceed 2MB!");
-    //   }
-    //   return isJPG && isPNG && isLt2M;
-    // }
-  },
-
   setup(props, { emit }) {
     const store = useStore();
+    const router = useRouter();
     const updateForm = ref(null);
     const updateValid = ref(false);
     const isNicknameAvailable = ref(false);
@@ -461,6 +435,23 @@ export default {
         })
     }
 
+    const clickDeleteUser = function() {
+      store
+        .dispatch("root/deleteUser", {
+          token: "Bearer" + localStorage.getItem("jwt-auth-token")
+        })
+        .then(function(){
+          alert("회원탈퇴에 성공하였습니다. Pit를 이용해주셔서 감사합니다.");
+          localStorage.removeItem("jwt-auth-token");
+          store.commit("root/setIsLogined", false);
+          router.push("/");
+        })
+        .catch(function(err){
+          // alert(err.response.data.message);
+        })
+
+    }
+
     const onInputForm = function() {
       updateForm.value.validate(valid => {
         // updateValid.value = valid & isNicknameAvailable.value;
@@ -487,7 +478,8 @@ export default {
       handleAvatarSuccess,
       beforeAvatarUpload,
       clickDeleteProfile,
-      updateProfile
+      updateProfile,
+      clickDeleteUser
     };
   }
 };
@@ -506,6 +498,14 @@ export default {
 }
 .form-btn:hover {
   color: #00c0d4;
+  background-color: white;
+}
+.form-btn-delete {
+  color: white;
+  background-color: rgb(224, 126, 106);
+}
+.form-btn-delete:hover {
+  color: rgb(224, 126, 106);
   background-color: white;
 }
 
