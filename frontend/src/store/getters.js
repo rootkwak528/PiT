@@ -20,3 +20,8 @@ export function getIsLogined(state) {
 export function getProfileUrl(state) {
   return state.profileUrl;
 }
+
+export function getUserType(state) {
+  console.log("getter 사용시 UserType : " + state.userType);
+  return state.userType;
+}

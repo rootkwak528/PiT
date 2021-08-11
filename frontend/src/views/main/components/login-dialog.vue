@@ -188,15 +188,18 @@ export default {
               localStorage.setItem("jwt-auth-token", result.data.accessToken);
               store.commit("root/setIsLogined", true);
 
-              //프로필url 조회
+              // 회원 정보 조회
               store
                 .dispatch("root/requestUserInfo", {
                   token: "Bearer" + localStorage.getItem("jwt-auth-token")
                 })
                 .then(function(result) {
-                  state.form.profile = result.data.userProfile;
-                  store.state.profileUrl = state.form.profile;
+                  store.state.profileUrl = result.data.userProfile;
+                  store.state.userType = result.data.userTypeName;
+                  store.commit("root/setUserType", store.state.userType);
                   store.commit("root/setProfileUrl", store.state.profileUrl);
+                  console.log("로그인 후 userType : " + store.state.userType);
+                  console.log("로그인 후 store getter해온 userType : " + store.getters["root/getUserType"]);
                   loading.value = false;
                 })
                 .catch(function(err) {
