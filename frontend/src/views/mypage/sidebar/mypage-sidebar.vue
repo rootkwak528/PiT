@@ -1,6 +1,6 @@
 <template>
   <el-menu
-    default-active="rgstClass"
+    :default-active="pathname"
     class="el-menu-vertical-demo"
     @open="handleOpen"
     @close="handleClose"
@@ -23,7 +23,7 @@
       <i class="el-icon-star-on"></i>
       <span>찜한 클래스</span>
     </el-menu-item>
-    <el-menu-item index="/myinfo">
+    <el-menu-item index="myinfo">
       <i class="el-icon-user"></i>
       <span>마이페이지</span>
     </el-menu-item>
@@ -34,8 +34,12 @@
 export default {
   data() {
     return {
-      userType: "002"
+      userType: "002",
+
     };
+  },
+  props: {
+    pathname: String,
   },
   methods: {
     handleOpen(key, keyPath) {
@@ -44,7 +48,8 @@ export default {
     handleClose(key, keyPath) {
       console.log(key, keyPath);
     }
-  }
+  },
+
 };
 </script>
 

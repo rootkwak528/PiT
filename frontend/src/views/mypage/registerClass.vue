@@ -1,71 +1,55 @@
 <template>
-  <div class="name">
-    {{ username }}
-  </div>
-  <div>
-    <el-row class="tac">
-      <el-col :span="6">
-        <mypage-sidebar />
-      </el-col>
-      <el-col :span="18">
-        <div class="content-wrapper">
-          <div class="submenu-title">수강중 클래스</div>
-          <el-card
-            v-for="o in classContent"
-            :key="o"
-            shadow="hover"
-            class="registerclass-card"
-          >
-            <div class="card-image-wrapper">
-              <el-image
-                :src="o.thumbnail"
-                :fit="cover"
-                style="vertical-align: middle; opacity: 0.4; width: 100%;"
-              />
-              <div style="position: absolute; padding: 18px">
-                <div style="display: flex">
-                  <div class="tag">요가</div>
-                  <div style="font-weight: bold">강사: {{ o.teacherName }}</div>
-                </div>
-                <div class="title">{{ o.title }}</div>
-                <div class="desc">{{ o.description }}</div>
-                <div class="registerclass-card-bottom">
-                  <el-button icon="el-icon-s-home" class="btn-enter"
-                    >입장하기</el-button
-                  >
-                  <el-progress
-                    :text-inside="true"
-                    :stroke-width="24"
-                    :percentage="100"
-                    status="success"
-                  ></el-progress>
-                </div>
-              </div>
-            </div>
-            <div class="card-calendar-wrapper">
-              <el-image
-                :src="require(`@/assets/images/calendar.png`)"
-                fit="cover"
-                style=""
-              />
-              <!-- <Calendar /> -->
-            </div>
-          </el-card>
+  <div class="content-wrapper">
+    <div class="submenu-title">수강중 클래스</div>
+    <el-card
+      v-for="o in classContent"
+      :key="o"
+      shadow="hover"
+      class="registerclass-card"
+    >
+      <div class="card-image-wrapper">
+        <el-image
+          :src="o.thumbnail"
+          :fit="cover"
+          style="vertical-align: middle; opacity: 0.4; width: 100%;"
+        />
+        <div style="position: absolute; padding: 18px">
+          <div style="display: flex">
+            <div class="tag">요가</div>
+            <div style="font-weight: bold">강사: {{ o.teacherName }}</div>
+          </div>
+          <div class="title">{{ o.title }}</div>
+          <div class="desc">{{ o.description }}</div>
+          <div class="registerclass-card-bottom">
+            <el-button icon="el-icon-s-home" class="btn-enter"
+              >입장하기</el-button
+            >
+            <el-progress
+              :text-inside="true"
+              :stroke-width="24"
+              :percentage="100"
+              status="success"
+            ></el-progress>
+          </div>
         </div>
-      </el-col>
-    </el-row>
+      </div>
+      <div class="card-calendar-wrapper">
+        <el-image
+          :src="require(`@/assets/images/calendar.png`)"
+          fit="cover"
+          style=""
+        />
+        <!-- <Calendar /> -->
+      </div>
+    </el-card>
   </div>
 </template>
 
 <script>
-// import Calendar from "v-calendar";
-import MypageSidebar from "./component/mypage-sidebar.vue";
-
 export default {
-  name: "RegisterClass",
+  name: "RegisterClassTest",
   components: {
     // Calendar,
-    MypageSidebar
   },
   data() {
     return {

@@ -1,143 +1,138 @@
 <template>
-  <div class="name">
-    {{ username }}
-  </div>
-  <div>
+  <div class="content-wrapper">
+    <div class="submenu-title">마이페이지</div>
     <el-row class="tac">
-      <el-col :span="6">
-        <mypage-sidebar />
+
+      <el-col :span="8">
+
+        <div class="profileUpload">
+          <el-upload
+            class="avatar-uploader"
+            action="v1/users/image"
+            accept="image/jpeg"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
+          >
+            <img
+              v-if="state.form.profile"
+              :src="state.form.profile"
+              class="avatar"
+            />
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+          </el-upload>
+          <el-button v-if="state.form.profile" class="form-btn" @click="clickDeleteProfile"
+            >기본 이미지로 변경
+          </el-button>
+          <el-button v-else class="form-btn" @click="clickDeleteProfile" style="display:none"
+            >기본 이미지로 변경
+          </el-button>
+          <el-button class="form-btn" @click="updateProfile"
+            >프로필 적용
+          </el-button>
+
+
+        </div>
+
       </el-col>
 
-      <el-col :span="18">
-        <el-row class="tac">
-
-          <el-col :span="8">
-
-            <div class="profile">
-              <el-upload
-                class="avatar-uploader"
-                action="v1/users/image"
-                :show-file-list="false"
-                :on-success="handleAvatarSuccess"
-                :before-upload="beforeAvatarUpload"
-              >
-                <img
-                  v-if="state.form.profile"
-                  :src="state.form.profile"
-                  class="avatar"
-                />
-                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-              </el-upload>
-              <el-button v-if="state.form.profile" class="form-btn" @click="clickDeleteProfile"
-                >프로필 삭제
-              </el-button>
-              <el-button v-else class="form-btn" @click="clickDeleteProfile" disabled
-                >프로필 삭제
-              </el-button>
-
-            </div>
-
-          </el-col>
-
-          <el-col :span="16">
-            <el-form
-              v-loading="loading"
-              :model="state.form"
-              :rules="state.rules"
-              ref="updateForm"
-              :label-position="state.form.align"
+      <el-col :span="16">
+        <el-form
+          v-loading="loading"
+          :model="state.form"
+          :rules="state.rules"
+          ref="updateForm"
+          :label-position="state.form.align"
+        >
+          <el-form-item label="분류" :label-width="state.formLabelWidth">
+            <el-label v-model="state.form.type">{{
+              state.form.type
+            }}</el-label>
+          </el-form-item>
+          <el-form-item
+            prop="email"
+            label="이메일"
+            :label-width="state.formLabelWidth"
+          >
+            <el-input v-model="state.form.email" disabled>{{
+              state.form.email
+            }}</el-input>
+          </el-form-item>
+          <el-form-item
+            prop="name"
+            label="이름"
+            :label-width="state.formLabelWidth"
+          >
+            <el-input
+              v-model="state.form.name"
+              @input="onInputForm"
+            ></el-input>
+          </el-form-item>
+          <el-form-item
+            prop="nickname"
+            label="닉네임"
+            :label-width="state.formLabelWidth"
+          >
+            <el-input
+              style="float:left; width:70%"
+              v-model="state.form.nickname"
+            ></el-input>
+            <el-button
+              style="float:right; width:28%"
+              class="form-btn"
+              @click="checkDuplicatedUpdateNickname"
+              >중복확인</el-button
             >
-              <el-form-item label="분류" :label-width="state.formLabelWidth">
-                <el-label v-model="state.form.type">{{
-                  state.form.type
-                }}</el-label>
-              </el-form-item>
-              <el-form-item
-                prop="email"
-                label="이메일"
-                :label-width="state.formLabelWidth"
-              >
-                <el-input v-model="state.form.email" disabled>{{
-                  state.form.email
-                }}</el-input>
-              </el-form-item>
-              <el-form-item
-                prop="name"
-                label="이름"
-                :label-width="state.formLabelWidth"
-              >
-                <el-input
-                  v-model="state.form.name"
-                  @input="onInputForm"
-                ></el-input>
-              </el-form-item>
-              <el-form-item
-                prop="nickname"
-                label="닉네임"
-                :label-width="state.formLabelWidth"
-              >
-                <el-input
-                  style="float:left; width:70%"
-                  v-model="state.form.nickname"
-                ></el-input>
-                <el-button
-                  style="float:right; width:28%"
-                  class="form-btn"
-                  @click="checkDuplicatedUpdateNickname"
-                  >중복확인</el-button
-                >
-              </el-form-item>
-              <el-form-item
-                prop="pwd"
-                label="비밀번호"
-                :label-width="state.formLabelWidth"
-              >
-                <el-input
-                  v-model="state.form.pwd"
-                  show-password
-                  @input="onInputForm"
-                ></el-input>
-              </el-form-item>
-              <el-form-item
-                prop="pwdChk"
-                label="비밀번호 확인"
-                :label-width="state.formLabelWidth"
-              >
-                <el-input
-                  v-model="state.form.pwdChk"
-                  show-password
-                  @input="onInputForm"
-                ></el-input>
-              </el-form-item>
-              <el-form-item
-                prop="phone"
-                label="휴대전화 번호"
-                :label-width="state.formLabelWidth"
-              >
-                <el-input
-                  v-model="state.form.phone"
-                  @input="onInputForm"
-                  placeholder="-를 제외하고 숫자만 입력해주세요"
-                  >{{ state.form.phone }}</el-input
-                >
-              </el-form-item>
-              <el-form-item
-                label="상세 정보"
-                :label-width="state.formLabelWidth"
-              >
-                <el-input
-                  type="textarea"
-                  :rows="6"
-                  v-model="state.form.desc"
-                  maxlength="200"
-                  show-word-limit
-                  @input="onInputForm"
-                  placeholder="트레이너는 필수 입력 사항입니다"
-                >
-                </el-input>
-              </el-form-item>
-            </el-form>
-            <span class="update-footer">
+          </el-form-item>
+          <el-form-item
+            prop="pwd"
+            label="비밀번호"
+            :label-width="state.formLabelWidth"
+          >
+            <el-input
+              v-model="state.form.pwd"
+              show-password
+              @input="onInputForm"
+            ></el-input>
+          </el-form-item>
+          <el-form-item
+            prop="pwdChk"
+            label="비밀번호 확인"
+            :label-width="state.formLabelWidth"
+          >
+            <el-input
+              v-model="state.form.pwdChk"
+              show-password
+              @input="onInputForm"
+            ></el-input>
+          </el-form-item>
+          <el-form-item
+            prop="phone"
+            label="휴대전화 번호"
+            :label-width="state.formLabelWidth"
+          >
+            <el-input
+              v-model="state.form.phone"
+              @input="onInputForm"
+              placeholder="-를 제외하고 숫자만 입력해주세요"
+              >{{ state.form.phone }}</el-input
+            >
+          </el-form-item>
+          <el-form-item
+            label="상세 정보"
+            :label-width="state.formLabelWidth"
+          >
+            <el-input
+              type="textarea"
+              :rows="6"
+              v-model="state.form.desc"
+              maxlength="200"
+              show-word-limit
+              @input="onInputForm"
+              placeholder="트레이너는 필수 입력 사항입니다"
+            >
+            </el-input>
+            <div class="update-footer">
               <el-button
                 v-if="!updateValid"
                 class="form-btn"
@@ -148,9 +143,13 @@
               <el-button v-else class="form-btn" @click="clickUpdateUser"
                 >수정하기</el-button
               >
-            </span>
-          </el-col>
-        </el-row>
+              <el-button class="form-btn-delete" @click="clickDeleteUser"
+                >탈퇴하기</el-button
+              >
+            </div>
+
+          </el-form-item>
+        </el-form>
       </el-col>
     </el-row>
   </div>
@@ -159,13 +158,13 @@
 <script>
 import { reactive, computed, ref, onMounted, message } from "vue";
 import { useStore } from "vuex";
-import MypageSidebar from "./component/mypage-sidebar.vue";
+import { useRouter } from "vue-router";
 
 export default {
   name: "MyClass",
 
   components: {
-    MypageSidebar
+
   },
 
   props: {
@@ -175,22 +174,9 @@ export default {
     }
   },
 
-  methods: {
-    // beforeAvatarUpload(file){
-    //   const isJPG = file.type === "image/jpeg";
-    //   const isLt2M = file.size / 1024 / 1024 < 2;
-    //   if (!isJPG) {
-    //     this.$message.error("Avatar picture must be JPG format!");
-    //   }
-    //   if (!isLt2M) {
-    //     this.$message.error("Avatar picture size can not exceed 2MB!");
-    //   }
-    //   return isJPG && isLt2M;
-    // }
-  },
-
   setup(props, { emit }) {
     const store = useStore();
+    const router = useRouter();
     const updateForm = ref(null);
     const updateValid = ref(false);
     const isNicknameAvailable = ref(false);
@@ -334,11 +320,10 @@ export default {
 
     const beforeAvatarUpload = function(file) {
       const isJPG = file.type === "image/jpeg";
-      const isLt2M = file.size / 1024 / 1024 < 2;
+      const isLt2M = file.size / 1024 / 1024 < 10;
 
       if (!isJPG) {
-        message.Error("Avatar picture must be JPG format!");
-        //this.$message.error("Avatar picture must be JPG format!");
+        console.log("함수 안 : JPG 파일만 업로드 가능합니다.");
       }
       if (!isLt2M) {
         message.error("Avatar picture size can not exceed 2MB!");
@@ -348,7 +333,7 @@ export default {
     };
 
     onMounted(() => {
-      console.log(updateForm.value);
+      // console.log(updateForm.value);
       requestUserInfo();
     });
 
@@ -366,7 +351,7 @@ export default {
           state.form.email = result.data.userEmail;
           state.form.name = result.data.userName;
           state.form.nickname = result.data.userNickname;
-          console.log("수정 전 profile : " + state.form.profile);
+          // console.log("수정 전 profile : " + state.form.profile);
           loading.value = false;
         })
         .catch(function(err) {
@@ -434,6 +419,39 @@ export default {
       state.form.profile = "";
     }
 
+    const updateProfile = function() {
+      store
+        .dispatch("root/updateProfile", {
+          profile: state.form.profile,
+          token: "Bearer " + localStorage.getItem("jwt-auth-token")
+        })
+        .then(function() {
+          alert("프로필 사진이 변경되었습니다.");
+          store.state.profileUrl = state.form.profile;
+          store.commit("root/setProfileUrl", store.state.profileUrl);
+        })
+        .catch(function(err) {
+          alert(err.response.data.message);
+        })
+    }
+
+    const clickDeleteUser = function() {
+      store
+        .dispatch("root/deleteUser", {
+          token: "Bearer" + localStorage.getItem("jwt-auth-token")
+        })
+        .then(function(){
+          alert("회원탈퇴에 성공하였습니다. Pit를 이용해주셔서 감사합니다.");
+          localStorage.removeItem("jwt-auth-token");
+          store.commit("root/setIsLogined", false);
+          router.push("/");
+        })
+        .catch(function(err){
+          // alert(err.response.data.message);
+        })
+
+    }
+
     const onInputForm = function() {
       updateForm.value.validate(valid => {
         // updateValid.value = valid & isNicknameAvailable.value;
@@ -459,7 +477,9 @@ export default {
       clickUpdateUser,
       handleAvatarSuccess,
       beforeAvatarUpload,
-      clickDeleteProfile
+      clickDeleteProfile,
+      updateProfile,
+      clickDeleteUser
     };
   }
 };
@@ -478,6 +498,14 @@ export default {
 }
 .form-btn:hover {
   color: #00c0d4;
+  background-color: white;
+}
+.form-btn-delete {
+  color: white;
+  background-color: rgb(224, 126, 106);
+}
+.form-btn-delete:hover {
+  color: rgb(224, 126, 106);
   background-color: white;
 }
 
@@ -515,7 +543,15 @@ export default {
   height: 178px;
   display: block;
 }
-.profile {
+.profileUpload {
+  text-align: center;
+}
+img {
+  max-width: 100%;
+  height: auto;
+}
+.update-footer {
+  margin: 15px;
   text-align: center;
 }
 </style>

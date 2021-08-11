@@ -3,10 +3,12 @@ import Main from "@/views/main/main.vue";
 import Event from "@/views/event.vue";
 import SearchResult from "@/views/search-result";
 import ClassDetail from "@/views/classdetail/class-detail";
-import MyInfo from "@/views/mypage/myInfo";
-import RegisterClass from "@/views/mypage/registerClass";
-import FinishedClass from "@/views/mypage/finishedClass";
-import RecordedVideo from "@/views/mypage/recordedVideo";
+
+import MypageMain from "@/views/mypage/mypageMain";
+import FinishedClass from "@/views/mypage/finishedClass"
+import RegisterClass from "@/views/mypage/registerClass"
+import RecordedVideo from "@/views/mypage/recordedVideo"
+import MyInfo from "@/views/mypage/myInfo"
 
 const routes = [
   {
@@ -30,24 +32,31 @@ const routes = [
     component: ClassDetail
   },
   {
-    path: "/myinfo",
-    name: "MyInfo",
-    component: MyInfo
-  },
-  {
-    path: "/rgstClass",
-    name: "RegisterClass",
-    component: RegisterClass
-  },
-  {
-    path: "/finishedClass",
-    name: "FinishedClass",
-    component: FinishedClass
-  },
-  {
-    path: "/recordedVideo",
-    name: "RecordedVideo",
-    component: RecordedVideo
+    path: "/mypageMain",
+    name: "MypageMain",
+    component: MypageMain,
+    children: [
+      {
+        path: "/finishedClass",
+        name: "FinishedClass",
+        component: FinishedClass
+      },
+      {
+        path: "/rgstClass",
+        name: "RegisterClass",
+        component: RegisterClass
+      },
+      {
+        path: "/recordedVideo",
+        name: "RecordedVideo",
+        component: RecordedVideo
+      },
+      {
+        path: "/myinfo",
+        name: "MyInfo",
+        component: MyInfo
+      }
+    ]
   }
 ];
 

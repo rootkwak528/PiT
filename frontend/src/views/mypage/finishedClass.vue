@@ -1,69 +1,55 @@
 <template>
-  <div class="name">
-    {{ username }}
-  </div>
-  <div>
-    <el-row class="tac">
-      <el-col :span="6">
-        <mypage-sidebar />
-      </el-col>
-
-      <el-col :span="18">
-        <div class="content-wrapper">
-          <div class="submenu-title">수강완료 클래스</div>
-          <div class="finishedclass-card-section">
-            <el-card
-              shadow="none"
-              v-for="o in classContent"
-              :key="o"
-              :body-style="{
-                padding: '0px',
-                height: '400px',
-                width: '300px'
-              }"
-              style="margin: 5px"
+  <div class="content-wrapper">
+    <div class="submenu-title">수강완료 클래스</div>
+    <div class="finishedclass-card-section">
+      <el-card
+        shadow="none"
+        v-for="o in classContent"
+        :key="o"
+        :body-style="{
+          padding: '0px',
+          height: '400px',
+          width: '300px'
+        }"
+        style="margin: 5px"
+      >
+        <el-image
+          :src="o.thumbnail"
+          fit="cover"
+          style="width: 300px; height: 200px;"
+        />
+        <div class="finishedclass-card-content">
+          <div>
+            <div>
+              {{ o.teacherName }}
+            </div>
+            <div class="title">{{ o.title }}</div>
+            <el-tag size="mini" color="#BEEDED"
+              >{{ o.classStartDate }} ~ {{ o.classEndDate }}</el-tag
             >
-              <el-image
-                :src="o.thumbnail"
-                fit="cover"
-                style="width: 300px; height: 200px;"
-              />
-              <div class="finishedclass-card-content">
-                <div>
-                  <div>
-                    {{ o.teacherName }}
-                  </div>
-                  <div class="title">{{ o.title }}</div>
-                  <el-tag size="mini" color="#BEEDED"
-                    >{{ o.classStartDate }} ~ {{ o.classEndDate }}</el-tag
-                  >
-                </div>
-                <div class="finishedclass-card-content-bottom">
-                  <el-button
-                    icon="el-icon-video-play"
-                    class="btn-enter"
-                    style="width: 70%;"
-                    >영상 다시보기</el-button
-                  >
-                </div>
-              </div>
-            </el-card>
+          </div>
+          <div class="finishedclass-card-content-bottom">
+            <el-button
+              icon="el-icon-video-play"
+              class="btn-enter"
+              style="width: 70%;"
+              >영상 다시보기</el-button
+            >
           </div>
         </div>
-      </el-col>
-    </el-row>
+      </el-card>
+    </div>
   </div>
 </template>
 
 <script>
 // import Calendar from "v-calendar";
-import MypageSidebar from "./component/mypage-sidebar.vue";
+
 
 export default {
-  name: "RegisterClass",
+  name: "FinishedClassTest",
   components: {
     // Calendar,
-    MypageSidebar
   },
   data() {
     return {

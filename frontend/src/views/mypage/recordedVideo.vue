@@ -1,50 +1,38 @@
 <template>
-  <div class="name">
-    {{ username }}
-  </div>
   <div>
-    <el-row class="tac">
-      <el-col :span="6">
-        <mypage-sidebar />
-      </el-col>
-
-      <el-col :span="18">
-        <div class="content-wrapper">
-          <div class="classList" v-if="!selectedClassid">
-            <div class="submenu-title">녹화된 영상</div>
-            <div class="recordedvideo-card-section">
-              <el-table
-                :data="classContent"
-                style="width: 80%; font-size: 17px;"
-                @row-click="mvVideoList"
-              >
-                <el-table-column prop="title" label="클래스명">
-                </el-table-column>
-                <el-table-column
-                  prop="teacherName"
-                  label="강사명"
-                  width="100"
-                  fixed="right"
-                >
-                </el-table-column>
-              </el-table>
-            </div>
-          </div>
-          <div class="videoList" v-else>
-            <el-page-header @back="goBack" :content="selectedTitle">
-              <!-- <video-player ref="videoPlayer" :options="playerOptions">
-              </video-player> -->
-            </el-page-header>
-          </div>
+    <div class="content-wrapper">
+      <div class="classList" v-if="!selectedClassid">
+        <div class="submenu-title">녹화된 영상</div>
+        <div class="recordedvideo-card-section">
+          <el-table
+            :data="classContent"
+            style="width: 80%; font-size: 17px;"
+            @row-click="mvVideoList"
+          >
+            <el-table-column prop="title" label="클래스명">
+            </el-table-column>
+            <el-table-column
+              prop="teacherName"
+              label="강사명"
+              width="100"
+              fixed="right"
+            >
+            </el-table-column>
+          </el-table>
         </div>
-      </el-col>
-    </el-row>
+      </div>
+      <div class="videoList" v-else>
+        <el-page-header @back="goBack" :content="selectedTitle">
+          <!-- <video-player ref="videoPlayer" :options="playerOptions">
+          </video-player> -->
+        </el-page-header>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 // import Calendar from "v-calendar";
-import MypageSidebar from "./component/mypage-sidebar.vue";
 // import VideoPlayer from "vue-video-player";
 // import VueCoreVideoPlayer from "vue-core-video-player";
 //import "video.js/dist/video-js.css";
@@ -52,10 +40,9 @@ import MypageSidebar from "./component/mypage-sidebar.vue";
 //import { videoPlayer } from "vue-video-player";
 
 export default {
-  name: "RegisterClass",
+  name: "recordedVideoTest",
   components: {
     // Calendar,
-    MypageSidebar
     //videoPlayer
     // VideoPlayer
   },
