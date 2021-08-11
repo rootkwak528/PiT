@@ -182,7 +182,7 @@ export default {
       } else if (value.length < 9) {
         state.inputAvail.pwd = false;
         checkAvail();
-        callback(new Error("최소 9 글자를 입력해야 합니다."));
+        callback(new Error("최소 9글자를 입력해야 합니다."));
       } else if (value.length > 16) {
         state.inputAvail.pwd = false;
         checkAvail();
