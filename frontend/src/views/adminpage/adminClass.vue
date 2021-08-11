@@ -3,10 +3,10 @@
     <div class="submenu-title">클래스 목록 조회</div>
     <div class="class-by-permission">
       <el-button-group>
-        <el-button>전체</el-button>
-        <el-button>승인</el-button>
-        <el-button>미승인</el-button>
-        <el-button>거절</el-button>
+        <el-button v-bind:class="{'non-active': !state.pAll, 'active': state.pAll }" @click="clickPermissionAll">전체</el-button>
+        <el-button v-bind:class="{'non-active': !state.pGranted, 'active': state.pGranted }" @click="clickPermissionGranted">승인</el-button>
+        <el-button v-bind:class="{'non-active': !state.pNotGranted, 'active': state.pNotGranted }" @click="clickPermissionNotGranted">미승인</el-button>
+        <el-button v-bind:class="{'non-active': !state.pDenied, 'active': state.pDenied }" @click="clickPermissionDenied">거절</el-button>
       </el-button-group>
     </div>
     <div style="border: solid 0.5px; margin-top: 13px; margin-bottom: 10px"></div>
@@ -68,17 +68,56 @@ export default {
   setup() {
     const store = useStore();
     const state = reactive({
-      list: []
+      list: [],
+      permission: "000",
+      pAll: true,
+      pGranted: false,
+      pNotGranted: false,
+      pDenied: false,
     });
 
     onMounted(() => {
       getClassList();
     });
 
+    const clickPermissionAll = function() {
+      state.permission = "000";
+      state.pAll = true;
+      state.pGranted = false;
+      state.pNotGranted = false;
+      state.pDenied = false;
+      console.log("pAll : "+ state.pAll);
+      getClassList();
+    }
+    const clickPermissionGranted = function() {
+      state.permission = "001";
+      state.pAll = false;
+      state.pGranted = true;
+      state.pNotGranted = false;
+      state.pDenied = false;
+      getClassList();
+    }
+    const clickPermissionNotGranted = function() {
+      state.permission = "002";
+      state.pAll = false;
+      state.pGranted = false;
+      state.pNotGranted = true;
+      state.pDenied = false;
+      getClassList();
+    }
+    const clickPermissionDenied = function() {
+      state.permission = "003";
+      state.pAll = false;
+      state.pGranted = false;
+      state.pNotGranted = false;
+      state.pDenied = true;
+      getClassList();
+    }
+
     const getClassList = function() {
       store
         .dispatch("root/getAdminClassList", {
-          permission: "000",
+          permission: state.permission,
           token: "Bearer " + localStorage.getItem("jwt-auth-token")
         })
         .then(function(result) {
@@ -101,8 +140,23 @@ export default {
 
     return {
       state,
-      getClassList
+      getClassList,
+      clickPermissionAll,
+      clickPermissionGranted,
+      clickPermissionNotGranted,
+      clickPermissionDenied
     };
   }
 }
 </script>
+
+<style>
+  .non-active {
+    background-color: white;
+    color: #00C0D4;
+  }
+  .active {
+    background-color: #00C0D4;
+    color: white;
+  }
+</style>
