@@ -40,6 +40,7 @@ public class ClassController {
 	@GetMapping("/{classNo}")
 	public ResponseEntity<ClassDetailGetRes> getClassDetail(@PathVariable int classNo){
 		ClassDetailGetRes classDetail = classService.getClassDetail(classNo, "001");
+		System.out.println(classNo + " 번 클래스 상세정보 조회");
 		return ResponseEntity.status(200).body(classDetail);
 	}
 	
@@ -49,14 +50,14 @@ public class ClassController {
 		List<ClassListGetRes> classList = null;
 		System.out.println(searchInfo.toString());
 		classList = classService.getClassList("001");
-		if(searchInfo.getClassDay() == null && searchInfo.getClassLevel() == null
+		if(searchInfo.getSearchType() == null && searchInfo.getClassDay() == null && searchInfo.getClassLevel() == null
 				&& searchInfo.getClassType() == null && searchInfo.getClassStartTime() == null 
 				&& searchInfo.getClassEndTime() == null && searchInfo.getSearchKeyword() == null) {
 			System.out.println("홈 전체 클래스 리스트 조회");
 			classList = classService.getClassList("001");
 		}
 		else {
-			classList = classService.getClassList(searchInfo);
+			classList = classService.getClassList(searchInfo, "001");
 		}
 		return ResponseEntity.status(200).body(classList);
 	}
@@ -68,6 +69,7 @@ public class ClassController {
 		String userEmail = userDetails.getUsername();
 		if(userService.validateUserType(userEmail) == 1) {
 			List<ClassListGetRes> classList = classService.getClassList(permissionMap.get("permission"));
+			System.out.println("클래스코드: " + permissionMap.get("permission") + "조회" );
 			return ResponseEntity.status(200).body(classList);
 		}
 		else {			
@@ -82,6 +84,7 @@ public class ClassController {
 		String userEmail = userDetails.getUsername();
 		if(userService.validateUserType(userEmail) == 1) {
 			ClassDetailGetRes classDetail = classService.getClassDetail(classNo, "000");
+			System.out.println("관리자 클래스 상세 조회 성공!");
 			return ResponseEntity.status(200).body(classDetail);
 		}
 		else {			
@@ -98,6 +101,7 @@ public class ClassController {
 		int userNo = userDetails.getUser().getUserNo();
 		if(userService.validateUserType(userEmail) == 3) {
 			List<ClassListGetRes> classLikesList = classService.getClassLikesList(userNo);
+			System.out.println("수강생이 찜한 클래스 목록 조회");
 			return ResponseEntity.status(200).body(classLikesList);
 		}
 		else {
@@ -113,6 +117,7 @@ public class ClassController {
 		int userNo = userDetails.getUser().getUserNo();
 		if(userService.validateUserType(userEmail) == 3) {
 			if(classService.registerClassLikes(userNo, classNo) == 1) {
+				System.out.println("수강생 찜한 클래스 등록 성공");
 				return ResponseEntity.status(200).body(BaseResponseBody.of(200, "찜한클래스로 등록되었습니다."));
 			}
 			else if(classService.registerClassLikes(userNo, classNo) == 2) {
@@ -135,6 +140,7 @@ public class ClassController {
 		int userNo = userDetails.getUser().getUserNo();
 		if(userService.validateUserType(userEmail) == 3) {
 			if(classService.deleteClassLikes(userNo, classNo) == 1) {
+				System.out.println("찜한 클래스 해제 성공");
 				return ResponseEntity.status(200).body(BaseResponseBody.of(200, "찜한클래스가 해제되었습니다."));
 			}
 			else {				
@@ -154,6 +160,7 @@ public class ClassController {
 		int userNo = userDetails.getUser().getUserNo();
 		if(userService.validateUserType(userEmail) == 3 || userService.validateUserType(userEmail) == 2) {
 			List<ClassListGetRes> finishedClassList = classService.getFinishedClassList(userNo);
+			System.out.println("수강완료된 클래스 목록 조회 성공!");
 			return ResponseEntity.status(200).body(finishedClassList);
 		}
 		else {
@@ -169,6 +176,7 @@ public class ClassController {
 		int userNo = userDetails.getUser().getUserNo();
 		if(userService.validateUserType(userEmail) == 3 || userService.validateUserType(userEmail) == 2) {
 			List<RegisterClassGetRes> registerClassList = classService.getRegisterClassList(userNo);
+			System.out.println("현재 수강중인 클래스 목록 조회 성공");
 			return ResponseEntity.status(200).body(registerClassList);
 		}
 		else {
@@ -242,7 +250,7 @@ public class ClassController {
 		}
 	}
 	
-	// 클래스 승인으로 변경 (관리자만 가능)
+	// 클래스 permission 변경 (관리자만 가능)
 	@PutMapping("/admin/{classNo}")
 	public ResponseEntity<BaseResponseBody> updateClassPermission(Authentication authentication, @RequestBody HashMap<String, String> permissionMap, @PathVariable int classNo) {
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
@@ -252,6 +260,7 @@ public class ClassController {
 			try {
 				String permission = permissionMap.get("permission");
 				classService.updateClassPermission(classNo, permission);
+				System.out.println("클래스 퍼미션 " + permissionMap.get("permission") + "으로 변경");
 				if(permission.equals("001")) {
 					return ResponseEntity.status(200).body(BaseResponseBody.of(200, "해당클래스를 승인처리 하였습니다."));	
 				} else if(permission.equals("002")) {

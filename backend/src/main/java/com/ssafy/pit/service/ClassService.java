@@ -11,9 +11,9 @@ import com.ssafy.pit.response.RegisterClassGetRes;
 
 public interface ClassService {
 
-	List<ClassListGetRes> getClassList(ClassSearchGetReq searchInfo);
-	List<ClassListGetRes> getClassList(String classPermission);
-	ClassDetailGetRes getClassDetail(int classNo, String classPermission);
+	List<ClassListGetRes> getClassList(ClassSearchGetReq searchInfo, String permission);
+	List<ClassListGetRes> getClassList(String permission);
+	ClassDetailGetRes getClassDetail(int classNo, String permission);
 	List<ClassListGetRes> getClassLikesList(int userNo);
 	int registerClassLikes(int userNo, int classNo);
 	int deleteClassLikes(int userNo, int classNo);

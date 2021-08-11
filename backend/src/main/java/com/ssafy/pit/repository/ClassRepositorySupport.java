@@ -11,6 +11,7 @@ import com.ssafy.pit.entity.Classes;
 import com.ssafy.pit.entity.QClasses;
 import com.ssafy.pit.entity.QUserClass;
 import com.ssafy.pit.entity.QUserLikes;
+import com.ssafy.pit.response.ClassListGetRes;
 
 @Repository
 public class ClassRepositorySupport {
@@ -53,11 +54,11 @@ public class ClassRepositorySupport {
 	}
 
 	public List<Classes> getClassLikesList(int userNo) {
-		List<Classes> classList = query.selectFrom(qClass).where(qClass.classNo.in(
+		List<Classes> classesList = query.selectFrom(qClass).where(qClass.classNo.in(
 				JPAExpressions.select(qUserLikes.classes.classNo).from(qUserLikes).where(qUserLikes.user.userNo.eq(userNo))
 				), qClass.classPermission.eq("001")).fetch();
 		
-		return classList;
+		return classesList;
 	}
 
 	public int getUserLikesNo(int userNo, int classNo) {
@@ -67,15 +68,43 @@ public class ClassRepositorySupport {
 	}
 
 	public List<Classes> getUserClassList(int userNo) {
-		List<Classes> classList = query.selectFrom(qClass).where(qClass.classNo.in(
+		List<Classes> classesList = query.selectFrom(qClass).where(qClass.classNo.in(
 				JPAExpressions.select(qUserClass.classes.classNo).from(qUserClass).where(qUserClass.user.userNo.eq(userNo))
 				)).fetch();
-		return classList;
+		return classesList;
 	}
 
 	public int getLastestClassNo() {
 		int classNo = query.select(qClass.classNo).from(qClass).orderBy(qClass.classNo.desc()).limit(1).fetchOne();
 		return classNo;
+	}
+
+	// 
+	public List<Classes> getClassListByTotal(String searchKeyword, String classType, String classLevel,
+			String classStartTime, String classEndTime) {
+		List<Classes> classesList = query.selectFrom(qClass).where(qClass.classType.contains(classType), 
+				qClass.classLevel.contains(classLevel), qClass.classStartTime.goe(classStartTime), qClass.classEndTime.loe(classEndTime),
+				qClass.classTitle.contains(searchKeyword).or(qClass.classTeacherName.contains(searchKeyword))
+				).fetch();
+		return classesList;
+	}
+
+	public List<Classes> getClassListByClassTitle(String searchKeyword, String classType, String classLevel,
+			String classStartTime, String classEndTime) {
+		List<Classes> classesList = query.selectFrom(qClass).where(qClass.classType.contains(classType), 
+				qClass.classLevel.contains(classLevel), qClass.classStartTime.goe(classStartTime), qClass.classEndTime.loe(classEndTime),
+				qClass.classTitle.contains(searchKeyword)
+				).fetch();
+		return classesList;
+	}
+
+	public List<Classes> getClassListByTrainerName(String searchKeyword, String classType, String classLevel,
+			String classStartTime, String classEndTime) {
+		List<Classes> classesList = query.selectFrom(qClass).where(qClass.classType.contains(classType), 
+				qClass.classLevel.contains(classLevel), qClass.classStartTime.goe(classStartTime), qClass.classEndTime.loe(classEndTime),
+				(qClass.classTeacherName.contains(searchKeyword))
+				).fetch();
+		return classesList;
 	}
 	
 	
