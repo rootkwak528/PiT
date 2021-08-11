@@ -39,7 +39,6 @@
           v-model="state.form.pwd"
           autocomplete="off"
           show-password
-          @input="onInputForm"
         ></el-input>
       </el-form-item>
       <el-form-item
@@ -51,7 +50,6 @@
           v-model="state.form.pwdChk"
           autocomplete="off"
           show-password
-          @input="onInputForm"
         ></el-input>
       </el-form-item>
       <el-form-item
@@ -62,7 +60,7 @@
         <el-radio v-model="state.form.gender" label="001">남성</el-radio>
         <el-radio v-model="state.form.gender" label="002">여성</el-radio>
       </el-form-item>
-      <el-form-item
+      <!--<el-form-item
         prop="name"
         label="이름"
         :label-width="state.formLabelWidth"
@@ -121,8 +119,9 @@
           placeholder="트레이너는 필수 입력 사항입니다"
           @keyup.enter="clickRegister"
         ></el-input>
-      </el-form-item>
+      </el-form-item> -->
     </el-form>
+
     <template #footer>
       <span class="dialog-footer">
         <el-button
@@ -137,6 +136,7 @@
         >
       </span>
     </template>
+    <!-- @input="onInputForm" -->
   </el-dialog>
 </template>
 
@@ -187,10 +187,11 @@ export default {
       }
     };
 
-    const validateEmail = (rule, value, callback) => {
+    const validateEmail = (rules, value, callback) => {
       const email = value;
       const emailTest = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
 
+      console.log("이메일 발리 들어옴!!!!!!! " + value);
       if (emailTest.test(email) == false) {
         callback(new Error("이메일 형식이 올바르지 않습니다."));
       } else {
@@ -199,10 +200,11 @@ export default {
     };
 
     const validatePwd = (rule, value, callback) => {
+      //console.log(callback);
       const num = value.search(/[0-9]/g);
       const eng = value.search(/[a-z]/gi);
       const spe = value.search(/[^`~!@$!%*#^?&\\(\\)\-_=+]/gi);
-
+      console.log("비밀번호 발리 들어옴!!!!!!! " + value);
       if (value === "") {
         callback(new Error("비밀번호를 입력해 주세요."));
       } else if (value.length < 9) {
@@ -264,6 +266,7 @@ export default {
       }
     };
 
+    const rules2 = {};
     const state = reactive({
       form: {
         gender: "",
@@ -279,26 +282,28 @@ export default {
         align: "left"
       },
       rules: {
-        gender: [
-          { required: true, validator: validateGender, trigger: "change" }
+        // gender: [
+        //   { required: true, validator: validateGender, trigger: "change" }
+        // ],
+        // name: [{ required: true, validator: validateName, trigger: "blur" }],
+        email: [
+          { required: true, validator: validateEmail, trigger: "change" }
         ],
-        name: [{ required: true, validator: validateName, trigger: "blur" }],
-        email: [{ required: true, validator: validateEmail, trigger: "blur" }],
-        pwd: [{ required: true, validator: validatePwd, trigger: "blur" }],
+        pwd: [{ required: true, validator: validatePwd, trigger: "change" }],
         pwdChk: [
-          { required: true, validator: validatePwdChk, trigger: "blur" }
+          { required: true, validator: validatePwdChk, trigger: "change" }
         ],
-        type: [{ required: true, trigger: "blur" }],
-        nickname: [
-          { required: true, validator: validateNickname, trigger: "blur" }
-        ],
-        desc: [{ required: true, validator: validateDesc, trigger: "blur" }],
-        phone: [{ required: true, validator: validatePhone, trigger: "blur" }]
+        type: [{ required: true, trigger: "change" }]
+        // nickname: [
+        //   { required: true, validator: validateNickname, trigger: "blur" }
+        // ],
+        // desc: [{ required: true, validator: validateDesc, trigger: "blur" }],
+        // phone: [{ required: true, validator: validatePhone, trigger: "blur" }]
       },
       dialogVisible: computed(() => props.open),
       formLabelWidth: "120px"
     });
-    console.log(state.form.type);
+
     const clickRegister = function() {
       // 로그인 클릭 시 validate 체크 후 그 결과 값에 따라, 로그인 API 호출 또는 경고창 표시
       joinForm.value.validate(valid => {
@@ -422,7 +427,8 @@ export default {
       checkDuplicatedNickname,
       onInputForm,
       onInputEmailForm,
-      onInputNicknameForm
+      onInputNicknameForm,
+      rules2
     };
   }
 };
