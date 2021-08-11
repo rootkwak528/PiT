@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.pit.common.auth.PitUserDetails;
@@ -63,13 +64,13 @@ public class ClassController {
 	}
 
 	// 관리자를 위한 클래스 리스트 가져오기 (authentication) permission(승인, 미승인, 거절)에 따른 클래스 목록보기 가능
-	@GetMapping("/admin/{permission}")
-	public ResponseEntity<List<ClassListGetRes>> getAdminClassList(Authentication authentication, @PathVariable String permission) {
+	@GetMapping("/admin")
+	public ResponseEntity<List<ClassListGetRes>> getAdminClassList(Authentication authentication, @RequestParam HashMap<String, String> permissionMap) {
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
 		String userEmail = userDetails.getUsername();
 		if(userService.validateUserType(userEmail) == 1) {
-			List<ClassListGetRes> classList = classService.getClassList(permission);
-			System.out.println("클래스코드: " + permission + "조회" );
+			List<ClassListGetRes> classList = classService.getClassList(permissionMap.get("permission"));
+			System.out.println("클래스코드: " + permissionMap.get("permission") + "조회" );
 			return ResponseEntity.status(200).body(classList);
 		}
 		else {			
