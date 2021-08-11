@@ -88,9 +88,10 @@ export default {
     joinSession (event) {
       const trainerName = event.target.parentElement.parentElement.parentElement.querySelector('.trainer').innerText
       const sessionName = this.hashCode(trainerName)
-      const nickName = 'abc'
-      const sessionUrl = `https://i5a204.p.ssafy.io:5000/createRoom/?sessionName=${sessionName}&nickName=${nickName}`
-      window.location.href = sessionUrl
+      const nickname = 'abc'
+      localStorage.setItem('sessionName', sessionName)
+      localStorage.setItem('nickname', nickname)
+      window.location.href = 'https://i5a204.p.ssafy.io:5000/'
       // console.log(sessionUrl)
     },
 
