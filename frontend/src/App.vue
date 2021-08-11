@@ -1,6 +1,19 @@
 <template>
   <el-container class="main-wrapper">
     <el-container class="main-container">
+
+      <!-- <div v-if="userType == 관리자" style="width: 70%; margin-left: auto; margin-right: auto;">
+        <main-header
+          :height="`70px`"
+          @openLoginDialog="onOpenLoginDialog"
+          @openJoinDialog="onOpenJoinDialog"
+          @openSearchDialog="onOpenSearchDialog"
+        />
+        <navbar />
+        <admin-main />
+        <main-footer />
+      </div> -->
+
       <div style="width: 70%; margin-left: auto; margin-right: auto;">
         <main-header
           :height="`70px`"
@@ -12,6 +25,7 @@
         <router-view />
         <main-footer />
       </div>
+
     </el-container>
   </el-container>
   <login-dialog
@@ -33,6 +47,7 @@ import Main from "./views/main/main.vue";
 import MainHeader from "./views/main/components/main-header";
 import MainFooter from "./views/main/components/main-footer";
 import Navbar from "./views/main/components/navbar.vue";
+import AdminMain from "./views/adminpage/adminMain.vue";
 import { useStore } from "vuex";
 
 export default {
@@ -45,7 +60,8 @@ export default {
     Navbar,
     LoginDialog,
     JoinDialog,
-    SearchDialog
+    SearchDialog,
+    AdminMain
   },
   methods: {
     onOpenLoginDialog() {
@@ -83,15 +99,13 @@ export default {
         localStorage.getItem("jwt-auth-token") != null
       ) {
         store.commit("root/setIsLogined", true);
-        // 유저 정보 가져와서 프로필 데이터를 스토어에 커밋해보자.
         store.dispatch("root/requestUserInfo", {
           token: localStorage.getItem("jwt-auth-token")
         })
         .then(function(result){
           store.commit("root/setProfileUrl", result.data.userProfile);
+          store.commit("root/setUserType", result.data.userTypeName);
         })
-
-
       }
     }
     return { store };
