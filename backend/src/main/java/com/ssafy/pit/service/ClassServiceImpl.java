@@ -60,14 +60,62 @@ public class ClassServiceImpl implements ClassService {
 	UserClassRepository userClassRepository;
 	
 	@Override
-	public List<ClassListGetRes> getClassList(ClassSearchGetReq searchInfo) {
-//		return classRepository.findAll();
-		return null;
+	public List<ClassListGetRes> getClassList(ClassSearchGetReq searchInfo, String permission) {
+		String searchType = searchInfo.getSearchType();  //서치타입 (0(선택안한경우 전체검색) , 1(클래스명 검색)), 2(강사명 검색)
+		String searchKeyword = searchInfo.getSearchKeyword();  //검색키워드 
+		String classType = searchInfo.getClassType();  //클래스타입 (001, 002, 003, 004) 전체(선택안한경우)는 00
+		String classLevel = searchInfo.getClassLevel();  //레벨코드 (001, 002, 003, 004) 전체(선택안한경우)는 00
+		String classDay = searchInfo.getClassDay();  //수업요일 (화목)  화, 목 "화목" 전체(월화수목금토일)
+		String classStartTime = searchInfo.getClassStartTime();  //시작시간 "09"
+		String classEndTime = searchInfo.getClassEndTime();  //종료시간 "12"
+		
+		List<Classes> classesList = new ArrayList<Classes>();
+		List<ClassListGetRes> classListGetRes = new ArrayList();
+		// 조건 없는 경우, 전체검색
+		if (searchType.equals("0")) {
+			classesList = classRepositorySupport.getClassListByTotal(searchKeyword, classType, classLevel, classStartTime, classEndTime);
+		}
+		// 클래스명으로 검색
+		else if (searchType.equals("1")) {
+			classesList = classRepositorySupport.getClassListByClassTitle(searchKeyword, classType, classLevel, classStartTime, classEndTime);
+		}
+		// 강사명 검색
+		else if (searchType.equals("2")){
+			classesList = classRepositorySupport.getClassListByTrainerName(searchKeyword, classType, classLevel, classStartTime, classEndTime);
+		}
+		
+		for(Classes classes: classesList) {
+			ClassListGetRes classGetRes = new ClassListGetRes();
+			// 클래스 요일은 query로 작성하기 힘들어서 자바에서 처리를 해줌
+			String dbClassDay = classes.getClassDay();
+			String[] days = classDay.split("");
+			int dayCnt = 0;
+			for(int i=0, size=days.length; i<size; i++) {
+				String day = days[i];
+				if(dbClassDay.contains(day)) {
+					dayCnt++;
+				}
+			}
+			
+			if(dayCnt == 0) continue;
+			int classNo = classes.getClassNo();
+			BeanUtils.copyProperties(classes, classGetRes);
+			String classThumbnail = classPhotoRepositorySupport.getThumbnail(classNo);
+			if (classThumbnail != null) {
+				classGetRes.setClassThumbnail(classThumbnail);
+			}
+			else {
+				classGetRes.setClassThumbnail("");
+			}
+			classListGetRes.add(classGetRes);	
+		}
+		
+		return classListGetRes;
 	}
 
 	@Override
-	public List<ClassListGetRes> getClassList(String classPermission) {
-		List<Classes> classesList = classRepositorySupport.getClassList(classPermission);
+	public List<ClassListGetRes> getClassList(String permission) {
+		List<Classes> classesList = classRepositorySupport.getClassList(permission);
 		List<ClassListGetRes> classListGetRes = new ArrayList();
 		for (Classes classes : classesList) {
 			ClassListGetRes classGetRes = new ClassListGetRes();
@@ -86,8 +134,8 @@ public class ClassServiceImpl implements ClassService {
 	}
 
 	@Override
-	public ClassDetailGetRes getClassDetail(int classNo, String classPermission) {
-		Classes classes = classRepositorySupport.getClassDetail(classNo, classPermission);
+	public ClassDetailGetRes getClassDetail(int classNo, String permission) {
+		Classes classes = classRepositorySupport.getClassDetail(classNo, permission);
 		ClassDetailGetRes classDetail = new ClassDetailGetRes();
 		// classes -> classDetail로 복제 (title, desc, curri, startdate, enddate, material, tcnt, price, starttime, endtime, teachernmae)
 		BeanUtils.copyProperties(classes, classDetail);

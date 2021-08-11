@@ -13,9 +13,9 @@
         <span>마이클래스</span>
       </template>
       <el-menu-item-group>
-        <el-menu-item index="rgstClassTest">수강중 클래스</el-menu-item>
-        <el-menu-item index="finishedClassTest">수강완료 클래스</el-menu-item>
-        <el-menu-item index="recordedVideoTest">녹화된 수업</el-menu-item>
+        <el-menu-item index="rgstClass">수강중 클래스</el-menu-item>
+        <el-menu-item index="finishedClass">수강완료 클래스</el-menu-item>
+        <el-menu-item index="recordedVideo">녹화된 수업</el-menu-item>
         <el-menu-item index="1-4">피드백</el-menu-item>
       </el-menu-item-group>
     </el-submenu>
@@ -23,7 +23,7 @@
       <i class="el-icon-star-on"></i>
       <span>찜한 클래스</span>
     </el-menu-item>
-    <el-menu-item index="myinfoTest">
+    <el-menu-item index="myinfo">
       <i class="el-icon-user"></i>
       <span>마이페이지</span>
     </el-menu-item>

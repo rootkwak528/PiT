@@ -72,7 +72,7 @@
           </span>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item
+              <!-- <el-dropdown-item
                 icon="el-icon-s-custom"
                 style="font:blue; cursor: pointer;"
               >
@@ -81,16 +81,16 @@
                   style="text-decoration: none; color: inherit;"
                   >마이페이지</router-link
                 >
-              </el-dropdown-item>
+              </el-dropdown-item> -->
               <!-- 테스트 마이 페이지 -->
               <el-dropdown-item
                 icon="el-icon-s-custom"
                 style="font:blue; cursor: pointer;"
               >
                 <router-link
-                  to="/rgstClassTest"
+                  to="/rgstClass"
                   style="text-decoration: none; color: inherit;"
-                  >테스트 마이페이지</router-link
+                  >마이페이지</router-link
                 >
               </el-dropdown-item>
 

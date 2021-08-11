@@ -63,6 +63,17 @@ export function updateUserInfo({ state }, payload) {
   });
 }
 
+// 회원 탈퇴
+export function deleteUser() {
+  const url = `/users/me`;
+  let token = "Bearer " + localStorage.getItem("jwt-auth-token");
+  return $axios.delete(url, {
+    headers: {
+      Authorization: token
+    }
+  })
+}
+
 // 유저 프로필 변경
 export function updateProfile({ state }, payload) {
   const url = `/users/me/profile`;

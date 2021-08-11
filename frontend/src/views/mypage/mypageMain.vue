@@ -16,14 +16,12 @@
 </template>
 
 <script>
-import MypageSidebar from "../TESTmypage/sidebar/mypage-sidebar.vue";
-import RegisterClassTest from "../TESTmypage/registerClassTest.vue";
+import MypageSidebar from "../mypage/sidebar/mypage-sidebar.vue";
 
 export default {
   name: "MypageMain",
   components: {
     MypageSidebar,
-    RegisterClassTest
   },
   data() {
     return {
