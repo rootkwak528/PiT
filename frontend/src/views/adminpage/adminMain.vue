@@ -7,8 +7,10 @@
       <el-col :span="6">
         <adminpage-sidebar :pathname="pathname"/>
       </el-col>
-      <el-col :span="18">
-        <router-view />
+      <el-col :span="18" style="min-height: 655px">
+        <div class="view-section">
+          <router-view />
+        </div>
       </el-col>
     </el-row>
   </div>
@@ -28,3 +30,8 @@ export default {
   }
 }
 </script>
+<style>
+.view-section {
+  height: 100%;
+}
+</style>

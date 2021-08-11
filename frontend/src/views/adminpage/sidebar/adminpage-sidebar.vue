@@ -7,7 +7,7 @@
     active-text-color="#00C0D4"
     router="true"
   >
-    <el-menu-item index="1">
+    <el-menu-item index="adminClass">
       <i class="el-icon-zoom-in"></i>
       <span>클래스 목록 조회</span>
     </el-menu-item>

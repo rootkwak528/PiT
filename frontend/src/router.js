@@ -11,6 +11,7 @@ import RecordedVideo from "@/views/mypage/recordedVideo"
 import MyInfo from "@/views/mypage/myInfo"
 
 import AdminMain from "@/views/adminpage/adminMain"
+import AdminClass from "@/views/adminpage/adminClass"
 
 const routes = [
   {
@@ -63,7 +64,14 @@ const routes = [
   {
     path: "/adminMain",
     name: "AdminMain",
-    component: AdminMain
+    component: AdminMain,
+    children: [
+      {
+        path: "/adminClass",
+        name: "AdminClass",
+        component: AdminClass
+      }
+    ]
   }
 ];
 

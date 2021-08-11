@@ -97,3 +97,15 @@ export function getClassDetail({}, payload) {
   const url = `/class/${body.classNo}`;
   return $axios.get(url);
 }
+
+// [관리자] 클래스 목록 조회
+export function getAdminClassList({ state }, payload) {
+  const url = `/class/admin/${payload.permission}`;
+  let body = payload;
+  let token = "Bearer " + localStorage.getItem("jwt-auth-token");
+  return $axios.get(url, {
+    headers: {
+      Authorization: token
+    }
+  })
+}

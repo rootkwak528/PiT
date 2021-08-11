@@ -89,7 +89,7 @@
                 style="font:blue; cursor: pointer;"
               >
                 <router-link
-                  to="/adminMain"
+                  to="/adminClass"
                   style="text-decoration: none; color: inherit;"
                   >관리자 페이지</router-link
                 >
