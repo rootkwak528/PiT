@@ -89,7 +89,7 @@ export default {
       const trainerName = event.target.parentElement.parentElement.parentElement.querySelector('.trainer').innerText
       const sessionName = this.hashCode(trainerName)
       const nickName = 'abc'
-      const sessionUrl = `https://i5a204.p.ssafy.io:5000/?sessionName=${sessionName}&nickName=${nickName}`
+      const sessionUrl = `https://i5a204.p.ssafy.io:5000/createRoom/?sessionName=${sessionName}&nickName=${nickName}`
       window.location.href = sessionUrl
       // console.log(sessionUrl)
     },
