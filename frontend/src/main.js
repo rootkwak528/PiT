@@ -11,7 +11,7 @@ import router from "./router";
 // import VueVideoPlayer from "vue-video-player";
 // import Calendar from "v-calendar";
 
-import "element-plus/packages/theme-chalk/src/base.scss";
+//import "element-plus/packages/theme-chalk/src/base.scss";
 // import "video.js/dist/video-js.css";
 
 // Element UI Components [시작]
