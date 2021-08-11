@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.ssafy.pit.entity.ClassPhoto;
 import com.ssafy.pit.entity.Classes;
 import com.ssafy.pit.entity.Comment;
+import com.ssafy.pit.entity.Ptroom;
 import com.ssafy.pit.entity.User;
 import com.ssafy.pit.entity.UserClass;
 import com.ssafy.pit.entity.UserLikes;
@@ -23,6 +24,7 @@ import com.ssafy.pit.repository.PtroomRepositorySupport;
 import com.ssafy.pit.repository.UserClassRepository;
 import com.ssafy.pit.repository.UserLikesRepository;
 import com.ssafy.pit.repository.UserRepository;
+import com.ssafy.pit.repository.UserVideoRepositorySupport;
 import com.ssafy.pit.request.ClassSearchGetReq;
 import com.ssafy.pit.request.CreateClassPostReq;
 import com.ssafy.pit.response.ClassDetailGetRes;
@@ -62,6 +64,9 @@ public class ClassServiceImpl implements ClassService {
 	
 	@Autowired
 	PtroomRepositorySupport ptroomRepositorySupport;
+	
+	@Autowired
+	UserVideoRepositorySupport userVideoRepositorySupport;
 	
 	@Override
 	public List<ClassListGetRes> getClassList(ClassSearchGetReq searchInfo, String permission) {
@@ -393,9 +398,16 @@ public class ClassServiceImpl implements ClassService {
 		Classes classes = classRepository.findClassByClassNo(classNo);
 		classes.setClassPermission(permission);
 		classRepository.save(classes);
-		
 		return;
 	}
-	
+
+	@Override
+	public List<String> getVideoUrls(int userNo, int classNo) throws Exception {
+		Ptroom ptroom = ptroomRepositorySupport.getPtroomByClassNo(classNo);
+		int ptroomNo = ptroom.getPtroomNo();
+		List<String> videoUrls = userVideoRepositorySupport.getVideoUrls(userNo, ptroomNo);
+		return videoUrls;
+	}
+
 	
 }

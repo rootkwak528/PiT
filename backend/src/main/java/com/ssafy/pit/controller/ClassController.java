@@ -289,5 +289,26 @@ public class ClassController {
 		}
 	}
 	
+	// 영상 다시보기 비디오들 리스트
+	@GetMapping("/replay/{classNo}")
+	public ResponseEntity<List<String>> getVideoUrls(Authentication authentication, @PathVariable int classNo) {
+		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
+		User user = userDetails.getUser();
+		String userEmail = userDetails.getUsername();
+		int userNo = user.getUserNo();
+		if(userService.validateUserType(userEmail) == 3) {
+			try {				
+				List<String> videoUrls = classService.getVideoUrls(userNo, classNo);
+				return ResponseEntity.status(200).body(videoUrls);
+			}
+			catch (Exception e) {
+				return ResponseEntity.status(500).body(null);
+			}
+			
+		} else {
+			return ResponseEntity.status(403).body(null);
+		}
+		
+	}
 	
 }
