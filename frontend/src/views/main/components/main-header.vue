@@ -89,7 +89,7 @@
                 style="font:blue; cursor: pointer;"
               >
                 <router-link
-                  to="/myinfo"
+                  to="/adminMain"
                   style="text-decoration: none; color: inherit;"
                   >관리자 페이지</router-link
                 >
@@ -167,18 +167,7 @@ export default {
       isLogined: computed(() => store.getters["root/getIsLogined"]),
       profileUrl: computed(() => store.getters["root/getProfileUrl"]),
       userType: computed(() => store.getters["root/getUserType"]),
-      isUserTypeAdmin: false,
     });
-
-
-
-    if ( state.userType === "관리자") {
-      console.log("응애 나 애기 관리자");
-    }
-    else {
-      console.log("Cannot find userType");
-      console.log("main-header.vue : " + state.userType);
-    }
 
     if (state.activeIndex === -1) {
       state.activeIndex = 0;

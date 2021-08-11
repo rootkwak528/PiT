@@ -1,12 +1,30 @@
 <template>
+  <div class="name">
+    {{ username }}
+  </div>
   <div>
-    관리자페이지 테스팅
+    <el-row class="tac">
+      <el-col :span="6">
+        <adminpage-sidebar :pathname="pathname"/>
+      </el-col>
+      <el-col :span="18">
+        <router-view />
+      </el-col>
+    </el-row>
   </div>
 </template>
 <script>
+import AdminpageSidebar from "../adminpage/sidebar/adminpage-sidebar.vue"
 
 export default {
   name: "adminPage",
-
+  components:{
+    AdminpageSidebar
+  },
+  computed: {
+    pathname() {
+      return(window.location.pathname.slice(1));
+    }
+  }
 }
 </script>
