@@ -19,3 +19,7 @@ export function setIsLogined(state, isLogined) {
 export function setProfileUrl(state, profileUrl) {
   state.profileUrl = profileUrl;
 }
+
+export function setUserType(state, userType) {
+  state.userType = userType;
+}

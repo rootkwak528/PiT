@@ -39,5 +39,6 @@ export default {
   activeMenu: "home",
   menus: menuData,
   isLogined: false,
-  profileUrl: ""
+  profileUrl: "",
+  userType: "",
 };
