@@ -8,7 +8,7 @@ import MypageMain from "@/views/mypage/mypageMain";
 import FinishedClass from "@/views/mypage/finishedClass"
 import RegisterClass from "@/views/mypage/registerClass"
 import RecordedVideo from "@/views/mypage/recordedVideo"
-import MyInfo from "@/views/mypage/myinfo"
+import MyInfo from "@/views/mypage/myInfo"
 
 const routes = [
   {
