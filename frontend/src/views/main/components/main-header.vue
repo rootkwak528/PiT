@@ -9,12 +9,12 @@
       <div class="search-field">
         <el-select
           v-model="selectValue"
-          placeholder="Select"
+          placeholder="전체 검색"
           style="margin-right: 5px"
         >
-          <el-option>전체 검색</el-option>
-          <el-option>클래스 명 검색</el-option>
-          <el-option>강사 명 검색</el-option>
+          <el-option value="">전체 검색</el-option>
+          <el-option value="">클래스 명 검색</el-option>
+          <el-option value="">강사 명 검색</el-option>
         </el-select>
         <el-input placeholder="검색" v-model="state.searchValue"></el-input>
         <el-button

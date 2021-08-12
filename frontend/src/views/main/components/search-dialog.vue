@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     custom-class="search-dialog"
-    title="회원가입"
+    title="상세검색"
     v-model="state.dialogVisible"
     @close="handleClose"
   >
