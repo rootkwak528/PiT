@@ -2,9 +2,7 @@
   <div class="content-wrapper">
     <div class="submenu-title">마이페이지</div>
     <el-row class="tac">
-
       <el-col :span="8">
-
         <div class="profileUpload">
           <el-upload
             class="avatar-uploader"
@@ -21,19 +19,23 @@
             />
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
-          <el-button v-if="state.form.profile" class="form-btn" @click="clickDeleteProfile"
+          <el-button
+            v-if="state.form.profile"
+            class="form-btn"
+            @click="clickDeleteProfile"
             >기본 이미지로 변경
           </el-button>
-          <el-button v-else class="form-btn" @click="clickDeleteProfile" style="display:none"
+          <el-button
+            v-else
+            class="form-btn"
+            @click="clickDeleteProfile"
+            style="display:none"
             >기본 이미지로 변경
           </el-button>
           <el-button class="form-btn" @click="updateProfile"
             >프로필 적용
           </el-button>
-
-
         </div>
-
       </el-col>
 
       <el-col :span="16">
@@ -45,9 +47,7 @@
           :label-position="state.form.align"
         >
           <el-form-item label="분류" :label-width="state.formLabelWidth">
-            <el-label v-model="state.form.type">{{
-              state.form.type
-            }}</el-label>
+            <el-label v-model="state.form.type">{{ state.form.type }}</el-label>
           </el-form-item>
           <el-form-item
             prop="email"
@@ -63,10 +63,7 @@
             label="이름"
             :label-width="state.formLabelWidth"
           >
-            <el-input
-              v-model="state.form.name"
-              @input="onInputForm"
-            ></el-input>
+            <el-input v-model="state.form.name" @input="onInputForm"></el-input>
           </el-form-item>
           <el-form-item
             prop="nickname"
@@ -118,10 +115,7 @@
               >{{ state.form.phone }}</el-input
             >
           </el-form-item>
-          <el-form-item
-            label="상세 정보"
-            :label-width="state.formLabelWidth"
-          >
+          <el-form-item label="상세 정보" :label-width="state.formLabelWidth">
             <el-input
               type="textarea"
               :rows="6"
@@ -147,7 +141,6 @@
                 >탈퇴하기</el-button
               >
             </div>
-
           </el-form-item>
         </el-form>
       </el-col>
@@ -163,9 +156,7 @@ import { useRouter } from "vue-router";
 export default {
   name: "MyClass",
 
-  components: {
-
-  },
+  components: {},
 
   props: {
     open: {
@@ -334,14 +325,12 @@ export default {
 
     onMounted(() => {
       // console.log(updateForm.value);
-      requestUserInfo();
+      getUserInfo();
     });
 
-    const requestUserInfo = function() {
+    const getUserInfo = function() {
       store
-        .dispatch("root/requestUserInfo", {
-          token: "Bearer" + localStorage.getItem("jwt-auth-token")
-        })
+        .dispatch("root/getUserInfo")
         .then(function(result) {
           state.form.gender = result.data.userGenderName;
           state.form.desc = result.data.userDesc;
@@ -415,9 +404,9 @@ export default {
     };
 
     const clickDeleteProfile = function() {
-      alert("프로필 사진을 기본 이미지로 변경하시겠습니까?")
+      alert("프로필 사진을 기본 이미지로 변경하시겠습니까?");
       state.form.profile = "";
-    }
+    };
 
     const updateProfile = function() {
       store
@@ -432,25 +421,24 @@ export default {
         })
         .catch(function(err) {
           alert(err.response.data.message);
-        })
-    }
+        });
+    };
 
     const clickDeleteUser = function() {
       store
         .dispatch("root/deleteUser", {
           token: "Bearer" + localStorage.getItem("jwt-auth-token")
         })
-        .then(function(){
+        .then(function() {
           alert("회원탈퇴에 성공하였습니다. Pit를 이용해주셔서 감사합니다.");
           localStorage.removeItem("jwt-auth-token");
           store.commit("root/setIsLogined", false);
           router.push("/");
         })
-        .catch(function(err){
+        .catch(function(err) {
           // alert(err.response.data.message);
-        })
-
-    }
+        });
+    };
 
     const onInputForm = function() {
       updateForm.value.validate(valid => {
@@ -470,7 +458,7 @@ export default {
       updateValid,
       isNicknameAvailable,
       loading,
-      requestUserInfo,
+      getUserInfo,
       onInputForm,
       onInputNicknameForm,
       checkDuplicatedUpdateNickname,
@@ -525,10 +513,9 @@ export default {
   cursor: pointer;
   position: relative;
   overflow: hidden;
-
 }
 .avatar-uploader .el-upload:hover {
-  border-color: #00C0D4;
+  border-color: #00c0d4;
 }
 .avatar-uploader-icon {
   font-size: 24px;

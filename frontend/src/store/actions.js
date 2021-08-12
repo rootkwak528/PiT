@@ -39,7 +39,7 @@ export function requestLogin({ state }, payload) {
 }
 
 // 회원 정보 조회
-export function requestUserInfo() {
+export function getUserInfo() {
   // console.log('requestUserInfo token : ' + token)
   const url = `/users/me`;
   let token = "Bearer " + localStorage.getItem("jwt-auth-token");
@@ -129,12 +129,23 @@ export function updateClassPermission({ state }, payload) {
     headers: {
       Authorization: token
     }
-  })
+  });
 }
 
 // 수강중 클래스 목록 조회
 export function getRegisterClassList() {
   const url = `/class/registerclass`;
+  let token = "Bearer " + localStorage.getItem("jwt-auth-token");
+  return $axios.get(url, {
+    headers: {
+      Authorization: token
+    }
+  });
+}
+
+// 수강완료 클래스 목록 조회
+export function getFinishedClassList() {
+  const url = `/class/finishedclass`;
   let token = "Bearer " + localStorage.getItem("jwt-auth-token");
   return $axios.get(url, {
     headers: {

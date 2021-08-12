@@ -190,22 +190,22 @@ export default {
 
               // 회원 정보 조회
               store
-                .dispatch("root/requestUserInfo", {
-                  token: "Bearer" + localStorage.getItem("jwt-auth-token")
-                })
+                .dispatch("root/getUserInfo")
                 .then(function(result) {
                   store.state.profileUrl = result.data.userProfile;
                   store.state.userType = result.data.userTypeName;
                   store.state.userNickname = result.data.userNickname;
                   store.commit("root/setUserType", store.state.userType);
                   store.commit("root/setProfileUrl", store.state.profileUrl);
-                  store.commit("root/setUserNickname", store.state.userNickname);
+                  store.commit(
+                    "root/setUserNickname",
+                    store.state.userNickname
+                  );
                   loading.value = false;
                 })
                 .catch(function(err) {
                   alert(err.response.data.message);
                   loading.value = false;
-
                 });
               loading.value = false;
               emit("closeLoginDialog");

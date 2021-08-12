@@ -5,49 +5,28 @@
   <div>
     <el-row class="tac">
       <el-col :span="6">
-        <mypage-sidebar :pathname="pathname"/>
+        <mypage-sidebar
+          :pathname="pathname"
+          :userTypeName="state.userTypeName"
+        />
       </el-col>
       <el-col :span="18" style="min-height: 655px">
-        <router-view />
+        <router-view :userTypeName="state.userTypeName" />
       </el-col>
     </el-row>
   </div>
-
 </template>
 
 <script>
 import MypageSidebar from "../mypage/sidebar/mypage-sidebar.vue";
+import { useRouter } from "vue-router";
+import { reactive, computed, onMounted } from "vue";
+import { useStore } from "vuex";
 
 export default {
   name: "MypageMain",
   components: {
-    MypageSidebar,
-  },
-  data() {
-    return {
-      classContent: [
-        {
-          thumbnail:
-            "https://images.unsplash.com/photo-1604431696980-07e518647bec?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1055&q=80",
-          title: `홈트계의 끝판왕 '힙으뜸'`,
-          price: `46,800`,
-          classid: `1111`,
-          teacherName: "심으뜸",
-          description: `검증된 운동 유튜버의 업데이트 된 커리큘럼!`,
-          percentage: 30
-        },
-        {
-          thumbnail:
-            "http://laza.jalbum.net/Watermark%20Demo/slides/P8220329.jpg",
-          title: `SNPE 바디리셋 프로젝트. 척추운동으로 밸런스 회복하기!`,
-          price: `46,800`,
-          classid: `2222`,
-          teacherName: "김계란",
-          description: `수년 째 작심삼일 중인 당신을 위한 클래스`,
-          percentage: 50
-        }
-      ]
-    };
+    MypageSidebar
   },
   methods: {
     format(percentage) {
@@ -55,10 +34,38 @@ export default {
     }
   },
   computed: {
-    pathname(){
-
-      return(window.location.pathname.slice(1));
+    pathname() {
+      return window.location.pathname.slice(1);
     }
+  },
+  setup() {
+    const router = useRouter();
+    const store = useStore();
+
+    onMounted(() => {
+      getUserInfo();
+    });
+
+    const state = reactive({
+      userTypeName: ""
+    });
+
+    const getUserInfo = function() {
+      store
+        .dispatch("root/getUserInfo")
+        .then(function(result) {
+          console.log(result);
+          state.userTypeName = result.data.userTypeName;
+        })
+        .catch(function(err) {
+          alert(err.response.data.message);
+          console.log(err);
+          //store.commit("root/setIsLogined", false);
+          //router.push("/");
+        });
+    };
+
+    return { state, getUserInfo };
   }
 };
 </script>

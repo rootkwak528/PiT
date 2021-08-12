@@ -5,14 +5,15 @@ import SearchResult from "@/views/search-result";
 import ClassDetail from "@/views/classdetail/class-detail";
 
 import MypageMain from "@/views/mypage/mypageMain";
-import FinishedClass from "@/views/mypage/finishedClass"
-import RegisterClass from "@/views/mypage/registerClass"
-import RecordedVideo from "@/views/mypage/recordedVideo"
-import MyInfo from "@/views/mypage/myInfo"
+import FinishedClass from "@/views/mypage/finishedClass";
+import RegisterClass from "@/views/mypage/registerClass";
+import RecordedVideo from "@/views/mypage/recordedVideo";
+import MyInfo from "@/views/mypage/myInfo";
+import OpenClass from "@/views/mypage/openClass";
 
-import AdminMain from "@/views/adminpage/adminMain"
-import AdminClass from "@/views/adminpage/adminClass"
-import AdminClassDetail from "@/views/adminpage/adminclassdetail/adminclass-detail"
+import AdminMain from "@/views/adminpage/adminMain";
+import AdminClass from "@/views/adminpage/adminClass";
+import AdminClassDetail from "@/views/adminpage/adminclassdetail/adminclass-detail";
 
 const routes = [
   {
@@ -59,6 +60,11 @@ const routes = [
         path: "/myinfo",
         name: "MyInfo",
         component: MyInfo
+      },
+      {
+        path: "/openClass",
+        name: "OpenClass",
+        component: OpenClass
       }
     ]
   },
