@@ -82,15 +82,15 @@ public class ClassServiceImpl implements ClassService {
 		List<ClassListGetRes> classListGetRes = new ArrayList();
 		// 조건 없는 경우, 전체검색
 		if (searchType.equals("0")) {
-			classesList = classRepositorySupport.getClassListByTotal(searchKeyword, classType, classLevel, classStartTime, classEndTime);
+			classesList = classRepositorySupport.getClassListByTotal(searchKeyword, classType, classLevel, classStartTime, classEndTime, permission);
 		}
 		// 클래스명으로 검색
 		else if (searchType.equals("1")) {
-			classesList = classRepositorySupport.getClassListByClassTitle(searchKeyword, classType, classLevel, classStartTime, classEndTime);
+			classesList = classRepositorySupport.getClassListByClassTitle(searchKeyword, classType, classLevel, classStartTime, classEndTime, permission);
 		}
 		// 강사명 검색
 		else if (searchType.equals("2")){
-			classesList = classRepositorySupport.getClassListByTrainerName(searchKeyword, classType, classLevel, classStartTime, classEndTime);
+			classesList = classRepositorySupport.getClassListByTrainerName(searchKeyword, classType, classLevel, classStartTime, classEndTime, permission);
 		}
 		
 		for(Classes classes: classesList) {
