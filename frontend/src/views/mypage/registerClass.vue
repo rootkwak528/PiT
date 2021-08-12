@@ -101,6 +101,7 @@ export default {
     const classData = reactive({
       classList: [],
       dates: [],
+      dateAttrs: [],
       dayList: [
         {
           dateAttrs: [
@@ -193,6 +194,7 @@ export default {
               var tmp = "weekdays : " + weekday;
               tmpDays.push(tmp);
             }
+
             console.log(tmpDays);
             classData.dates.push(tmpDays);
             console.log(classData.dates);
