@@ -7,12 +7,7 @@ import VueAxios from "./common/lib/axios";
 import axios from "./common/lib/axios";
 import i18n from "./common/lib/i18n";
 import router from "./router";
-// @ts-ignore
-// import VueVideoPlayer from "vue-video-player";
-// import Calendar from "v-calendar";
-
-//import "element-plus/packages/theme-chalk/src/base.scss";
-// import "video.js/dist/video-js.css";
+import VCalendar from "v-calendar";
 
 // Element UI Components [시작]
 import {
@@ -205,6 +200,7 @@ app.use(VueAxios, axios);
 app.use(store);
 app.use(i18n);
 app.use(router);
+app.use(VCalendar, {});
 // app.use(VueVideoPlayer);
 // app.use(Calendar);
 

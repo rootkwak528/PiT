@@ -2,24 +2,27 @@
   <div class="content-wrapper">
     <div class="submenu-title">수강중 클래스</div>
     <el-card
-      v-for="o in classContent"
-      :key="o"
+      v-for="classItem in classData.classList"
+      :key="classItem"
       shadow="hover"
       class="registerclass-card"
     >
       <div class="card-image-wrapper">
         <el-image
-          :src="o.thumbnail"
-          :fit="cover"
+          :src="classItem.classThumbnail"
+          fit="cover"
           style="vertical-align: middle; opacity: 0.4; width: 100%;"
         />
         <div style="position: absolute; padding: 18px">
           <div style="display: flex">
-            <div class="tag">요가</div>
-            <div style="font-weight: bold">강사: <span class="trainer">{{ o.teacherName }}</span></div>
+            <div class="tag">{{ classItem.classType }}</div>
+            <div style="font-weight: bold">
+              강사:
+              <span class="trainer">{{ classItem.classTeacherName }}</span>
+            </div>
           </div>
-          <div class="title">{{ o.title }}</div>
-          <div class="desc">{{ o.description }}</div>
+          <div class="title">{{ classItem.classTitle }}</div>
+          <!-- <div class="desc">{{ classItem.classDesc }}</div> -->
           <div class="registerclass-card-bottom">
             <el-button
               icon="el-icon-s-home"
@@ -37,78 +40,100 @@
         </div>
       </div>
       <div class="card-calendar-wrapper">
-        <el-image
+        <!-- <el-image
           :src="require(`@/assets/images/calendar.png`)"
           fit="cover"
           style=""
-        />
-        <!-- <Calendar /> -->
+        /> -->
+        <v-calendar />
+        <!-- <el-calendar :range="[new Date(2019, 2, 4), new Date(2019, 2, 24)]">
+        </el-calendar> -->
       </div>
     </el-card>
   </div>
 </template>
 
 <script>
+import { onMounted } from "@vue/runtime-core";
+import { useStore } from "vuex";
+import { reactive } from "@vue/reactivity";
+
 export default {
   name: "RegisterClassTest",
   components: {
     // Calendar,
-  },
-  data() {
-    return {
-      classContent: [
-        {
-          thumbnail:
-            "https://images.unsplash.com/photo-1604431696980-07e518647bec?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1055&q=80",
-          title: `홈트계의 끝판왕 '힙으뜸'`,
-          price: `46,800`,
-          classid: `1111`,
-          teacherName: "심으뜸",
-          description: `검증된 운동 유튜버의 업데이트 된 커리큘럼!`,
-          percentage: 30
-        },
-        {
-          thumbnail:
-            "http://laza.jalbum.net/Watermark%20Demo/slides/P8220329.jpg",
-          title: `SNPE 바디리셋 프로젝트. 척추운동으로 밸런스 회복하기!`,
-          price: `46,800`,
-          classid: `2222`,
-          teacherName: "김계란",
-          description: `수년 째 작심삼일 중인 당신을 위한 클래스`,
-          percentage: 50
-        }
-      ]
-    };
   },
   methods: {
     format(percentage) {
       return percentage === 100 ? "Full" : `${percentage}%`;
     },
 
-    joinSession (event) {
-      const trainerName = event.target.parentElement.parentElement.parentElement.querySelector('.trainer').innerText
-      const sessionName = this.hashCode(trainerName)
-      const nickname = 'abc'
-      const redirectUrl = 'https://i5a204.p.ssafy.io:5000/'
-      
-      const targetWindow = window.open(redirectUrl)
-      setTimeout(
-        function() {
-          targetWindow.postMessage({ sessionName, nickname }, redirectUrl)
-        }, 500
-      )
+    joinSession(event) {
+      const trainerName = event.target.parentElement.parentElement.parentElement.querySelector(
+        ".trainer"
+      ).innerText;
+      const sessionName = this.hashCode(trainerName);
+      const nickname = "abc";
+      const redirectUrl = "https://i5a204.p.ssafy.io:5000/";
+
+      const targetWindow = window.open(redirectUrl);
+      setTimeout(function() {
+        targetWindow.postMessage({ sessionName, nickname }, redirectUrl);
+      }, 500);
     },
 
-    hashCode (str) {
-      var hash = 0, i, chr
-      if (str.length === 0) return hash
+    hashCode(str) {
+      var hash = 0,
+        i,
+        chr;
+      if (str.length === 0) return hash;
       for (i = 0; i < str.length; i++) {
-        chr   = str.charCodeAt(i)
-        hash  = ((hash << 5) - hash) + chr
-        hash |= 0
+        chr = str.charCodeAt(i);
+        hash = (hash << 5) - hash + chr;
+        hash |= 0;
       }
-      return hash
-    },
+      return hash;
+    }
+  },
+  setup() {
+    const store = useStore();
+    onMounted(() => {
+      getRegisterClassList();
+    });
+
+    const classData = reactive({
+      classList: []
+    });
+
+    const getRegisterClassList = function() {
+      store
+        .dispatch("root/getRegisterClassList")
+        .then(function(result) {
+          // console.log(result);
+          console.log(result.data);
+          classData.classList = result.data;
+          for (var i = 0; i < classData.classList.length; i++) {
+            if (classData.classList[i].classType == "001") {
+              //PT
+              classData.classList[i].classType = "PT";
+            } else if (classData.classList[i].classType == "002") {
+              //요가
+              classData.classList[i].classType = "요가";
+            } else if (classData.classList[i].classType == "003") {
+              //필라테스
+              classData.classList[i].classType = "필라테스";
+            } else {
+              //기타
+              classData.classList[i].classType = "기타";
+            }
+          }
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
+    };
+
+    return { getRegisterClassList, classData };
   }
 };
 </script>

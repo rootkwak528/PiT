@@ -21,5 +21,6 @@ public class RegisterClassGetRes {
 	String classStartTime;
 	String classEndTime;
 	String ptroomUrl;
+	String classType;
 	
 }

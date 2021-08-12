@@ -329,6 +329,8 @@ public class ClassServiceImpl implements ClassService {
 				String ptroomUrl = ptroomRepositorySupport.getPtroomUrl(classNo);
 				registerClass.setPtroomUrl(ptroomUrl);
 				
+				registerClass.setClassType(classes.getClassType());
+				
 				registerClassList.add(registerClass);
 			}
 			return registerClassList;

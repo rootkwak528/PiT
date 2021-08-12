@@ -71,7 +71,7 @@ export function deleteUser() {
     headers: {
       Authorization: token
     }
-  })
+  });
 }
 
 // 유저 프로필 변경
@@ -82,7 +82,7 @@ export function updateProfile({ state }, payload) {
     headers: {
       Authorization: body.token
     }
-  })
+  });
 }
 
 // 클래스 전체 목록 조회
@@ -106,16 +106,27 @@ export function getAdminClassList({ state }, payload) {
     headers: {
       Authorization: token
     }
-  })
+  });
 }
 
 // [관리자] 클래스 상세 조회
 export function getAdminClassDetail({ state }, payload) {
-  const url = `/class/admin/${payload.classNo}`
+  const url = `/class/admin/${payload.classNo}`;
   let token = "Bearer " + localStorage.getItem("jwt-auth-token");
   return $axios.get(url, {
     headers: {
       Authorization: token
     }
-  })
+  });
+}
+
+// 수강중 클래스 목록 조회
+export function getRegisterClassList() {
+  const url = `/class/registerclass`;
+  let token = "Bearer " + localStorage.getItem("jwt-auth-token");
+  return $axios.get(url, {
+    headers: {
+      Authorization: token
+    }
+  });
 }
