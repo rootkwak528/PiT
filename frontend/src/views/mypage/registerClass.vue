@@ -2,7 +2,7 @@
   <div class="content-wrapper">
     <div class="submenu-title">수강중 클래스</div>
     <el-card
-      v-for="classItem in classData.classList"
+      v-for="(classItem, index) in classData.classList"
       :key="classItem"
       shadow="hover"
       class="registerclass-card"
@@ -40,12 +40,11 @@
         </div>
       </div>
       <div class="card-calendar-wrapper">
-        <!-- <el-image
-          :src="require(`@/assets/images/calendar.png`)"
-          fit="cover"
-          style=""
-        /> -->
-        <v-calendar :attributes="classData.dateAttrs" />
+        <v-calendar
+          :attributes="classData.dayList[index].dateAttrs"
+          :min-date="classItem.classStartDate"
+          :max-date="classItem.classEndDate"
+        />
       </div>
     </el-card>
   </div>
@@ -101,10 +100,40 @@ export default {
 
     const classData = reactive({
       classList: [],
-      dateAttrs: [
+      dates: [],
+      dateAttrs: [],
+      dayList: [
         {
-          dates: { weekdays: 6 },
-          color: "red"
+          dateAttrs: [
+            {
+              highlight: true,
+              dates: [{ weekdays: 0 }, { weekdays: 3 }]
+            }
+          ]
+        },
+        {
+          dateAttrs: [
+            {
+              highlight: true,
+              dates: [{ weekdays: 0 }, { weekdays: 3 }]
+            }
+          ]
+        },
+        {
+          dateAttrs: [
+            {
+              highlight: true,
+              dates: [{ weekdays: 6 }]
+            }
+          ]
+        },
+        {
+          dateAttrs: [
+            {
+              highlight: true,
+              dates: [{ weekdays: 1 }, { weekdays: 3 }, { weekdays: 5 }]
+            }
+          ]
         }
       ]
     });
@@ -130,6 +159,51 @@ export default {
               //기타
               classData.classList[i].classType = "기타";
             }
+
+            var tmpDayList = classData.classList[i].classDay; // 요일 리스트
+            console.log(tmpDayList);
+            var tmpDateAttrs = [];
+            var tmpDays = [];
+            for (var j = 0; j < tmpDayList.length; j++) {
+              console.log(tmpDayList.charAt(j));
+              var weekday = 0;
+              switch (tmpDayList.charAt(j)) {
+                case "월":
+                  weekday = 0;
+                  break;
+                case "화":
+                  weekday = 1;
+                  break;
+                case "수":
+                  weekday = 2;
+                  break;
+                case "목":
+                  weekday = 3;
+                  break;
+                case "금":
+                  weekday = 4;
+                  break;
+                case "토":
+                  weekday = 5;
+                  break;
+                case "일":
+                  weekday = 6;
+                  break;
+              }
+              console.log(weekday);
+              var tmp = "weekdays : " + weekday;
+              tmpDays.push(tmp);
+            }
+
+            console.log(tmpDays);
+            classData.dates.push(tmpDays);
+            console.log(classData.dates);
+            classData.dates.pop;
+            // var tmp = "dates : " + tmpDays;
+            // tmpDateAttrs.push(tmp);
+            // // tmp = `,dot: {color: "red"}`;
+            // // tmpDateAttrs.push(tmp);
+            // console.log(tmpDateAttrs);
           }
         })
         .catch(function(err) {
@@ -157,7 +231,7 @@ export default {
 
 .registerclass-card > .el-card__body {
   display: flex;
-  height: 200px;
+  height: 240px;
   padding: 0px;
   /* background-image: url("https://cdn.class101.net/images/119a8385-66ea-471a-a4a2-bee3e519c4da/375xauto.webp"); */
 }
@@ -177,7 +251,8 @@ export default {
 
 .card-calendar-wrapper {
   text-align: center;
-  width: 250px;
+  /* height: 200px;
+  width: 250px; */
 }
 
 .card-calendar-wrapper > el-image__inner {
