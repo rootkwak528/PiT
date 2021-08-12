@@ -79,33 +79,57 @@ public class ClassRepositorySupport {
 		return classNo;
 	}
 
-	// 
-	public List<Classes> getClassListByTotal(String searchKeyword, String classType, String classLevel,
-			String classStartTime, String classEndTime, String permission) {
-		List<Classes> classesList = query.selectFrom(qClass).where(qClass.classType.contains(classType), 
-				qClass.classLevel.contains(classLevel), qClass.classStartTime.goe(classStartTime), qClass.classEndTime.loe(classEndTime),
+	
+	public List<Classes> getClassListByTotal(String searchKeyword, String classStartTime, String classEndTime, String permission) {
+		List<Classes> classesList = query.selectFrom(qClass).where(
+				qClass.classStartTime.goe(classStartTime), qClass.classEndTime.loe(classEndTime),
 				qClass.classTitle.contains(searchKeyword).or(qClass.classTeacherName.contains(searchKeyword))
 				, qClass.classPermission.eq(permission)).fetch();
 		return classesList;
 	}
+	// getClassListByTotal
+//	public List<Classes> getClassListByTotal(String searchKeyword, String classType, String classLevel,
+//			String classStartTime, String classEndTime, String permission) {
+//		List<Classes> classesList = query.selectFrom(qClass).where(qClass.classType.contains(classType),
+//				qClass.classLevel.contains(classLevel), qClass.classStartTime.goe(classStartTime), qClass.classEndTime.loe(classEndTime),
+//				qClass.classTitle.contains(searchKeyword).or(qClass.classTeacherName.contains(searchKeyword))
+//				, qClass.classPermission.eq(permission)).fetch();
+//		return classesList;
+//	}
 
-	public List<Classes> getClassListByClassTitle(String searchKeyword, String classType, String classLevel,
-			String classStartTime, String classEndTime, String permission) {
-		List<Classes> classesList = query.selectFrom(qClass).where(qClass.classType.contains(classType), 
-				qClass.classLevel.contains(classLevel), qClass.classStartTime.goe(classStartTime), qClass.classEndTime.loe(classEndTime),
+	public List<Classes> getClassListByClassTitle(String searchKeyword, String classStartTime, String classEndTime, String permission) { 
+		List<Classes> classesList = query.selectFrom(qClass).where( 
+				qClass.classStartTime.goe(classStartTime), qClass.classEndTime.loe(classEndTime),
 				qClass.classTitle.contains(searchKeyword)
 				, qClass.classPermission.eq(permission)).fetch();
 		return classesList;
 	}
-
-	public List<Classes> getClassListByTrainerName(String searchKeyword, String classType, String classLevel,
-			String classStartTime, String classEndTime, String permission) {
-		List<Classes> classesList = query.selectFrom(qClass).where(qClass.classType.contains(classType), 
-				qClass.classLevel.contains(classLevel), qClass.classStartTime.goe(classStartTime), qClass.classEndTime.loe(classEndTime),
-				(qClass.classTeacherName.contains(searchKeyword))
-				, qClass.classPermission.eq(permission)).fetch();
+	// getClassListByClassTitle
+//	public List<Classes> getClassListByClassTitle(String searchKeyword, String classType, String classLevel,
+//			String classStartTime, String classEndTime, String permission) {
+//		List<Classes> classesList = query.selectFrom(qClass).where(qClass.classType.contains(classType), 
+//				qClass.classLevel.contains(classLevel), qClass.classStartTime.goe(classStartTime), qClass.classEndTime.loe(classEndTime),
+//				qClass.classTitle.contains(searchKeyword)
+//				, qClass.classPermission.eq(permission)).fetch();
+//		return classesList;
+//	}
+	
+	public List<Classes> getClassListByTrainerName(String searchKeyword, String classStartTime, String classEndTime, String permission) {
+		List<Classes> classesList = query.selectFrom(qClass).where( 
+				qClass.classStartTime.goe(classStartTime), qClass.classEndTime.loe(classEndTime),
+				(qClass.classTeacherName.contains(searchKeyword)),
+				qClass.classPermission.eq(permission)).fetch();
 		return classesList;
 	}
+	// getClassListByTrainerName
+//	public List<Classes> getClassListByTrainerName(String searchKeyword, String classType, String classLevel,
+//			String classStartTime, String classEndTime, String permission) {
+//		List<Classes> classesList = query.selectFrom(qClass).where(qClass.classType.contains(classType), 
+//				qClass.classLevel.contains(classLevel), qClass.classStartTime.goe(classStartTime), qClass.classEndTime.loe(classEndTime),
+//				(qClass.classTeacherName.contains(searchKeyword)),
+//				qClass.classPermission.eq(permission)).fetch();
+//		return classesList;
+//	}
 	
 	
 }
