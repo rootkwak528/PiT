@@ -41,4 +41,5 @@ export default {
   isLogined: false,
   profileUrl: "",
   userType: "",
+  userNickname: "",
 };

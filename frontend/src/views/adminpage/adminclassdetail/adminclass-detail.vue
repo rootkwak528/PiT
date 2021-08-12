@@ -1,23 +1,35 @@
 <template>
-  <!-- 갤러리 -->
+  <div class="submenu-title" style="margin-left: 10px">클래스 상세</div>
+  <admin-gallery style="margin-bottom: 40px;"/>
   <div class="content">
-    <!-- 컨텐트 -->
-    <!-- 섬머리 -->
-    어드민 클래스 디테일 뷰
+    <admin-class-content :classNo="this.$route.query.classNo" style="width: 68%;" />
+    <admin-class-summary :classNo="this.$route.query.classNo" />
+  </div>
+  <div class="permission-btn">
+    <el-button>클래스 개설승인</el-button> <!-- -->
+    <el-button>클래스 개설거절</el-button> <!-- -->
   </div>
 </template>
 
 <script>
 // 어드민 클래스 컨텐트, 섬머리, 갤러리 임포트
+import AdminClassContent from "@/views/adminpage/adminclassdetail/components/adminclass-content"
+import AdminClassSummary from "@/views/adminpage/adminclassdetail/components/adminclass-summary"
+import AdminGallery from "@/views/adminpage/adminclassdetail/components/admingallery"
 
 export default {
   name: "AdminClassDetail",
   components: {
     // 컨텐트, 섬머리, 갤러리
+    AdminClassContent,
+    AdminClassSummary,
+    AdminGallery
   },
-  data() {
-    return {};
+  setup(){
+    // 클래스 승인 여부 변경 코드
   }
+
+
 };
 </script>
 
@@ -25,5 +37,10 @@ export default {
 .content {
   display: flex;
   justify-content: space-between;
+}
+.permission-btn {
+  display: flex;
+  margin-top: 25px;
+  justify-content: center;
 }
 </style>
