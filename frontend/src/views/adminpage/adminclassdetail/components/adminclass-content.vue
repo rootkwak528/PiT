@@ -4,6 +4,27 @@
       <div>
         <h2>클래스 설명</h2>
         <el-divider />
+        <h3>클래스 요약</h3>
+        <el-tag size="mini" color="#BEEDED">8월 8일부터 수강 가능</el-tag>
+        <div class="info-content">
+          <div class="info-content-child" style="width: 20%">
+            <div><i class="el-icon-folder" /> 대분류</div>
+            <div><i class="el-icon-goods" /> 준비물</div>
+            <div><i class="el-icon-star-off" /> 레벨</div>
+            <div><i class="el-icon-goods" /> 기간</div>
+            <div><i class="el-icon-star-off" /> 수업 수</div>
+            <div><i class="el-icon-coin" /> 금액</div>
+          </div>
+          <div class="info-content-child" style="margin-left: 15px">
+            <div>{{ state.form.classTypeName }}</div>
+            <div>{{ state.form.classMaterial }}</div>
+            <div>{{ state.form.classLevelName }}</div>
+            <div>3달</div>
+            <div>{{ state.form.classTcnt }}</div>
+            <div>총 {{ state.form.classPrice }}원</div>
+          </div>
+        </div>
+        <el-divider />
         <h3>{{ state.form.classTitle }}</h3>
         <p>{{ state.form.classDesc }}</p>
         <el-divider />
@@ -11,38 +32,66 @@
         <pre>{{ state.form.classCurri }}</pre>
         <el-divider />
         <h3>커뮤니티</h3>
-        <div v-for="o in state.form.comments" :key="o">
+        <div v-for="comment in state.form.comments" :key="comment">
           <el-card class="box-card">
             <div class="rate">
-              <div style="margin-right: 20px">사용자</div>
-              <div>{{ o.commentWriteDate }}</div>
+              <div style="margin-right: 20px">{{ comment.userNickname }}</div>
+              <div>{{ comment.commentWriteDate }}</div>
             </div>
             <div>
-              {{ o.commentContent }}
+              {{ comment.commentContent }}
             </div>
           </el-card>
         </div>
       </div>
     </el-tab-pane>
+
+    <el-tab-pane label="클래스 요약" name="summary">
+      <h3>클래스 요약</h3>
+      <el-tag size="mini" color="#BEEDED">8월 8일부터 수강 가능</el-tag>
+      <div class="info-content">
+        <div class="info-content-child" style="width: 20%">
+          <div><i class="el-icon-folder" /> 대분류</div>
+          <div><i class="el-icon-goods" /> 준비물</div>
+          <div><i class="el-icon-star-off" /> 레벨</div>
+          <div><i class="el-icon-goods" /> 기간</div>
+          <div><i class="el-icon-star-off" /> 수업 수</div>
+          <div><i class="el-icon-coin" /> 금액</div>
+        </div>
+        <div class="info-content-child" style="margin-left: 15px">
+          <div>{{ state.form.classTypeName }}</div>
+          <div>{{ state.form.classMaterial }}</div>
+          <div>{{ state.form.classLevelName }}</div>
+          <div>3달</div>
+          <div>{{ state.form.classTcnt }}</div>
+          <div>총 {{ state.form.classPrice }}원</div>
+        </div>
+      </div>
+    </el-tab-pane>
+
     <el-tab-pane label="커리큘럼" name="curriculum"
       ><h3>커리큘럼</h3>
-      <pre>{{ state.form.classCurri }}</pre></el-tab-pane
-    >
+      <pre>{{ state.form.classCurri }}</pre>
+    </el-tab-pane>
+
     <el-tab-pane label="커뮤니티" name="review"
       ><h3>커뮤니티</h3>
       <div>
-        <div v-for="o in state.form.comments" :key="o">
+        <div v-for="comment in state.form.comments" :key="comment">
           <el-card class="box-card">
             <div class="rate">
-              <div style="margin-right: 20px">사용자</div>
-              <div>{{ o.commentWriteDate }}</div>
+              <div style="margin-right: 20px">{{ comment.userNickname }}</div>
+              <div>{{ comment.commentWriteDate }}</div>
             </div>
             <div>
-              {{ o.commentContent }}
+              {{ comment.commentContent }}
             </div>
           </el-card>
         </div>
-      </div></el-tab-pane>
+      </div>
+    </el-tab-pane>
+
+
   </el-tabs>
 </template>
 
@@ -61,7 +110,7 @@ export default {
       form: {
         classTitle: "",
         classDesc: "",
-        classCurri: ""
+        classCurri: "",
       },
       comments: []
     });
@@ -74,12 +123,29 @@ export default {
       store
         .dispatch("root/getAdminClassDetail", { classNo: props.classNo })
         .then(function(result) {
+          // 컨텐트에서 받은 attr
           state.form.classTitle = result.data.classTitle;
           state.form.classDesc = result.data.classDesc;
           state.form.classCurri = result.data.classCurri;
           state.form.comments = result.data.comments;
+          // summary에서 받은 attr
+          state.form.classStartDate = result.data.classStartDate;
+          state.form.classEndDate = result.data.classEndDate;
+          state.form.classTypeName = result.data.classTypeName;
+          state.form.classMaterial = result.data.classMaterial;
+          state.form.classLevelName = result.data.classLevelName;
+          state.form.classTcnt = result.data.classTcnt;
+          state.form.classPrice = result.data.classPrice;
+
+          var startMonth = parseInt(result.data.classStartDate.split("-")[1]);
+          var endMonth = parseInt(result.data.classEndDate.split("-")[1]);
+          state.form.classPricePerMonth = Math.ceil(
+            result.data.classPrice / (endMonth - startMonth + 1)
+          );
         })
-        .catch(function() {});
+        .catch(function(err) {
+          console.log(err);
+        });
     };
 
     return { getClassDetail, state };
@@ -96,5 +162,56 @@ export default {
 .content {
   display: flex;
   justify-content: space-between;
+}
+
+.summary-card {
+  height: 550px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.info-content {
+  display: flex;
+  font-size: 15px;
+  margin-top: 20px;
+}
+
+.info-content-child > * {
+  margin-bottom: 8px;
+}
+
+.title {
+  font-size: large;
+  font-weight: bold;
+}
+
+.subtitle {
+  font-weight: bold;
+}
+
+.price-per-month {
+  color: #f35747;
+  font-weight: bold;
+  font-size: 20px;
+  margin-top: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn-submit {
+  margin-top: 30px;
+  background-color: #ef7764;
+  width: 100%;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  height: 40px;
+  font-size: 18px;
+  font-weight: bold;
 }
 </style>

@@ -1,9 +1,9 @@
 <template>
   <div class="submenu-title" style="margin-left: 10px">클래스 상세</div>
   <admin-gallery style="margin-bottom: 40px;"/>
-  <div class="content">
-    <admin-class-content :classNo="this.$route.query.classNo" style="width: 68%;" />
-    <admin-class-summary :classNo="this.$route.query.classNo" />
+  <div>
+    <admin-class-content :classNo="this.$route.query.classNo" />
+    <!-- <admin-class-summary :classNo="this.$route.query.classNo" /> -->
   </div>
   <div class="permission-btn">
     <el-button>클래스 개설승인</el-button> <!-- -->
@@ -25,8 +25,12 @@ export default {
     AdminClassSummary,
     AdminGallery
   },
-  setup(){
+  props: {
+    permission: String
+  },
+  setup(props){
     // 클래스 승인 여부 변경 코드
+    console.log(props.permission);
   }
 
 
