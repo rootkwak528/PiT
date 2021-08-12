@@ -1,11 +1,11 @@
 <template>
   <div class="content-wrapper">
     <div class="submenu-title">수강완료 클래스</div>
-    <div class="finishedclass-card-section">
+    <div class="finishedclass-card-section" v-if="userTypeName == '수강생'">
       <el-card
         shadow="none"
-        v-for="o in classContent"
-        :key="o"
+        v-for="classItem in classData.classList"
+        :key="classItem"
         :body-style="{
           padding: '0px',
           height: '400px',
@@ -14,18 +14,19 @@
         style="margin: 5px"
       >
         <el-image
-          :src="o.thumbnail"
+          :src="classItem.classThumbnail"
           fit="cover"
           style="width: 300px; height: 200px;"
         />
         <div class="finishedclass-card-content">
           <div>
             <div>
-              {{ o.teacherName }}
+              {{ classItem.classTeacherName }}
             </div>
-            <div class="title">{{ o.title }}</div>
+            <div class="title">{{ classItem.classTitle }}</div>
             <el-tag size="mini" color="#BEEDED"
-              >{{ o.classStartDate }} ~ {{ o.classEndDate }}</el-tag
+              >{{ classItem.classStartDate }} ~
+              {{ classItem.classEndDate }}</el-tag
             >
           </div>
           <div class="finishedclass-card-content-bottom">
@@ -39,64 +40,79 @@
         </div>
       </el-card>
     </div>
+    <div class="finishedclass-card-section" v-if="userTypeName == '트레이너'">
+      <el-card
+        shadow="none"
+        v-for="classItem in classData.classList"
+        :key="classItem"
+        :body-style="{
+          padding: '0px',
+          height: '350px',
+          width: '300px'
+        }"
+        style="margin: 5px"
+      >
+        <el-image
+          :src="classItem.classThumbnail"
+          fit="cover"
+          style="width: 300px; height: 200px;"
+        />
+        <div class="finishedclass-card-content">
+          <div>
+            <div>
+              {{ classItem.classTeacherName }}
+            </div>
+            <div class="title">{{ classItem.classTitle }}</div>
+            <el-tag size="mini" color="#BEEDED"
+              >{{ classItem.classStartDate }} ~
+              {{ classItem.classEndDate }}</el-tag
+            >
+          </div>
+        </div>
+      </el-card>
+    </div>
   </div>
 </template>
 
 <script>
-// import Calendar from "v-calendar";
-
+import { useRouter } from "vue-router";
+import { reactive, computed, onMounted } from "vue";
+import { useStore } from "vuex";
 
 export default {
   name: "FinishedClassTest",
   components: {
     // Calendar,
   },
-  data() {
-    return {
-      classContent: [
-        {
-          thumbnail:
-            "https://images.unsplash.com/photo-1604431696980-07e518647bec?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1055&q=80",
-          title: `홈트계의 끝판왕 '힙으뜸'`,
-          classid: `1111`,
-          teacherName: "심으뜸",
-          classStartDate: "2021-08-08",
-          classEndDate: "2021-11-08"
-        },
-        {
-          thumbnail:
-            "http://laza.jalbum.net/Watermark%20Demo/slides/P8220329.jpg",
-          title: `SNPE 바디리셋 프로젝트. 척추운동으로 밸런스 회복하기!`,
-          classid: `2222`,
-          teacherName: "김계란",
-          classStartDate: "2021-08-08",
-          classEndDate: "2021-11-08"
-        },
-        {
-          thumbnail:
-            "http://laza.jalbum.net/Watermark%20Demo/slides/P8220329.jpg",
-          title: `SNPE 바디리셋 프로젝트. 척추운동으로 밸런스 회복하기!`,
-          classid: `2222`,
-          teacherName: "김계란",
-          classStartDate: "2021-08-08",
-          classEndDate: "2021-11-08"
-        },
-        {
-          thumbnail:
-            "http://laza.jalbum.net/Watermark%20Demo/slides/P8220329.jpg",
-          title: `SNPE 바디리셋 프로젝트. 척추운동으로 밸런스 회복하기!`,
-          classid: `2222`,
-          teacherName: "김계란",
-          classStartDate: "2021-08-08",
-          classEndDate: "2021-11-08"
-        }
-      ]
-    };
+  props: {
+    userTypeName: String
   },
-  methods: {
-    format(percentage) {
-      return percentage === 100 ? "Full" : `${percentage}%`;
-    }
+  setup(props) {
+    const router = useRouter();
+    const store = useStore();
+
+    onMounted(() => {
+      getFinishedClassList();
+    });
+
+    const classData = reactive({
+      classList: []
+    });
+
+    const getFinishedClassList = function() {
+      store
+        .dispatch("root/getFinishedClassList")
+        .then(function(result) {
+          //console.log(result);
+          classData.classList = result.data;
+        })
+        .catch(function(err) {
+          alert(err.response.data.message);
+          console.log(err);
+        });
+    };
+
+    return { getFinishedClassList, classData };
   }
 };
 </script>

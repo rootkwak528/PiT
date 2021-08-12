@@ -1,6 +1,7 @@
 <template>
   <div class="content-wrapper">
     <div class="submenu-title">수강중 클래스</div>
+    <div v-if="classData.classList.length == 0">수강중인 클래스가 없어요!</div>
     <el-card
       v-for="(classItem, index) in classData.classList"
       :key="classItem"
