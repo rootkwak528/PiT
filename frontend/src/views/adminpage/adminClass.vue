@@ -21,6 +21,7 @@
           width: '300px'
         }"
         style="margin: 5px"
+        :permission="state.permission"
       >
         <router-link
           :to="`/adminClassDetail?classNo=${classItem.classNo}`"
@@ -131,6 +132,7 @@ export default {
             result.data[i].classPrice = Math.ceil(
               result.data[i].classPrice / (endMonth - startMonth + 1)
             );
+            console.log(result.data[i].classPermission);
           }
         })
         .catch(function(err) {
