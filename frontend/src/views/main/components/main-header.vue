@@ -8,7 +8,7 @@
       </div>
       <div class="search-field">
         <el-select
-          v-model="selectValue"
+          v-model="searchType"
           placeholder="전체 검색"
           style="margin-right: 5px"
         >
@@ -16,7 +16,7 @@
           <el-option value="">클래스 명 검색</el-option>
           <el-option value="">강사 명 검색</el-option>
         </el-select>
-        <el-input placeholder="검색" v-model="state.searchValue"></el-input>
+        <el-input placeholder="검색" v-model="state.searchKeyword"></el-input>
         <el-button
           icon="el-icon-search"
           @click="search"
@@ -149,7 +149,7 @@ export default {
     const store = useStore();
     const router = useRouter();
     const state = reactive({
-      searchValue: null,
+      searchKeyword: null,
       isCollapse: true,
       menuItems: computed(() => {
         const MenuItems = store.getters["root/getMenus"];
@@ -176,10 +176,10 @@ export default {
     }
 
     const search = () => {
-      if (state.searchValue === null) {
+      if (state.searchKeyword === null) {
         alert("검색어를 입력해주세요.");
       } else {
-        router.push("/searchresult?word=" + state.searchValue);
+        router.push("/searchresult?word=" + state.searchKeyword);
       }
     };
 
@@ -205,7 +205,6 @@ export default {
       localStorage.removeItem("jwt-auth-token");
       store.commit("root/setIsLogined", false);
       //store.state.isLogined = false;
-      console.log("logout clicked!! : " + store.state.isLogined);
       router.push("/");
     };
 

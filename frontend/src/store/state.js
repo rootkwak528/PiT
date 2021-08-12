@@ -42,4 +42,12 @@ export default {
   profileUrl: "",
   userType: "",
   userNickname: "",
+
+  searchType: "",
+  searchKeyword: "",
+  classType: "",
+  classLevel: "",
+  classDay: "",
+  classStartTime: "",
+  classEndTime: ""
 };

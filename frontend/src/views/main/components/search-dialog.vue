@@ -17,7 +17,7 @@
           <el-checkbox label="PT" name="type"></el-checkbox>
           <el-checkbox label="요가" name="type"></el-checkbox>
           <el-checkbox label="필라테스" name="type"></el-checkbox>
-          <el-checkbox label="크로스핏" name="type"></el-checkbox>
+          <el-checkbox label="기타" name="type"></el-checkbox>
         </el-checkbox-group>
       </el-form-item>
       <el-form-item prop="level" label="난이도" :label-width="formLabelWidth">
@@ -138,10 +138,10 @@ export default {
           "\ntime : " +
           state.form.time
       );
-      // console.log("type : "+state.form.type)
-      // console.log("level : "+state.form.level)
-      // console.log("day : "+state.form.day)
-      // console.log("time : "+state.form.time)
+      console.log("type : "+state.form.type)
+      console.log("level : "+state.form.level)
+      console.log("day : "+state.form.day)
+      console.log("time : "+state.form.time)
       emit("closeSearchDialog");
     };
 
