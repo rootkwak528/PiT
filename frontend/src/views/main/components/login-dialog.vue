@@ -196,10 +196,10 @@ export default {
                 .then(function(result) {
                   store.state.profileUrl = result.data.userProfile;
                   store.state.userType = result.data.userTypeName;
+                  store.state.userNickname = result.data.userNickname;
                   store.commit("root/setUserType", store.state.userType);
                   store.commit("root/setProfileUrl", store.state.profileUrl);
-                  console.log("로그인 후 userType : " + store.state.userType);
-                  console.log("로그인 후 store getter해온 userType : " + store.getters["root/getUserType"]);
+                  store.commit("root/setUserNickname", store.state.userNickname);
                   loading.value = false;
                 })
                 .catch(function(err) {

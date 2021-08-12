@@ -167,6 +167,7 @@ export default {
       isLogined: computed(() => store.getters["root/getIsLogined"]),
       profileUrl: computed(() => store.getters["root/getProfileUrl"]),
       userType: computed(() => store.getters["root/getUserType"]),
+      userNickname: computed(() => store.getters["root/getUserNickname"]),
     });
 
     if (state.activeIndex === -1) {

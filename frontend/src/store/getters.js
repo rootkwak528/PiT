@@ -22,6 +22,10 @@ export function getProfileUrl(state) {
 }
 
 export function getUserType(state) {
-  console.log("getter 사용시 UserType : " + state.userType);
   return state.userType;
+}
+
+export function getUserNickname(state) {
+  console.log("getter 사용시 UserNickname : " + state.userNickname);
+  return state.userNickname;
 }

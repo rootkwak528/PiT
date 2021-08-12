@@ -23,3 +23,8 @@ export function setProfileUrl(state, profileUrl) {
 export function setUserType(state, userType) {
   state.userType = userType;
 }
+
+export function setUserNickname(state, userNickname) {
+  state.userNickname = userNickname;
+  console.log("set : " + state.userNickname);
+}

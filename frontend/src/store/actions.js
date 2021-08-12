@@ -108,3 +108,14 @@ export function getAdminClassList({ state }, payload) {
     }
   })
 }
+
+// [관리자] 클래스 상세 조회
+export function getAdminClassDetail({ state }, payload) {
+  const url = `/class/admin/${payload.classNo}`
+  let token = "Bearer " + localStorage.getItem("jwt-auth-token");
+  return $axios.get(url, {
+    headers: {
+      Authorization: token
+    }
+  })
+}
