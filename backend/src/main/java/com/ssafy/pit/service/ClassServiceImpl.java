@@ -312,6 +312,7 @@ public class ClassServiceImpl implements ClassService {
 				
 				RegisterClassGetRes registerClass = new RegisterClassGetRes();
 				int classNo = classes.getClassNo();
+				
 				BeanUtils.copyProperties(classes, registerClass);
 				String classThumbnail = classPhotoRepositorySupport.getThumbnail(classNo);
 				if (classThumbnail != null) {
@@ -320,10 +321,10 @@ public class ClassServiceImpl implements ClassService {
 				else {
 					registerClass.setClassThumbnail("");
 				}
+				
 				float totalCnt = classes.getClassTcnt();
 				float classCnt = classes.getClassCcnt();
-				float classPercentage = Math.round((classCnt/totalCnt)*10000) / (float) 100.0;
-				
+				float classPercentage = Math.round((classCnt/totalCnt)*10000) / (float) 100.0;				
 				registerClass.setClassPercentage(classPercentage);
 				
 				String ptroomUrl = ptroomRepositorySupport.getPtroomUrl(classNo);

@@ -45,9 +45,7 @@
           fit="cover"
           style=""
         /> -->
-        <v-calendar />
-        <!-- <el-calendar :range="[new Date(2019, 2, 4), new Date(2019, 2, 24)]">
-        </el-calendar> -->
+        <v-calendar :attributes="classData.dateAttrs" />
       </div>
     </el-card>
   </div>
@@ -102,7 +100,13 @@ export default {
     });
 
     const classData = reactive({
-      classList: []
+      classList: [],
+      dateAttrs: [
+        {
+          dates: { weekdays: 6 },
+          color: "red"
+        }
+      ]
     });
 
     const getRegisterClassList = function() {
