@@ -72,25 +72,26 @@
           </span>
           <template #dropdown>
             <el-dropdown-menu>
-              <!-- <el-dropdown-item
-                icon="el-icon-s-custom"
-                style="font:blue; cursor: pointer;"
-              >
-                <router-link
-                  to="/rgstClass"
-                  style="text-decoration: none; color: inherit;"
-                  >마이페이지</router-link
-                >
-              </el-dropdown-item> -->
-              <!-- 테스트 마이 페이지 -->
               <el-dropdown-item
                 icon="el-icon-s-custom"
                 style="font:blue; cursor: pointer;"
               >
                 <router-link
-                  to="/rgstClass"
+                  to="/myinfo"
                   style="text-decoration: none; color: inherit;"
                   >마이페이지</router-link
+                >
+              </el-dropdown-item>
+
+              <el-dropdown-item
+                v-if="state.userType === '관리자'"
+                icon="el-icon-s-custom"
+                style="font:blue; cursor: pointer;"
+              >
+                <router-link
+                  to="/adminClass"
+                  style="text-decoration: none; color: inherit;"
+                  >관리자 페이지</router-link
                 >
               </el-dropdown-item>
 
@@ -164,7 +165,8 @@ export default {
       }),
       activeIndex: computed(() => store.getters["root/getActiveMenuIndex"]),
       isLogined: computed(() => store.getters["root/getIsLogined"]),
-      profileUrl: computed(() => store.getters["root/getProfileUrl"])
+      profileUrl: computed(() => store.getters["root/getProfileUrl"]),
+      userType: computed(() => store.getters["root/getUserType"]),
     });
 
     if (state.activeIndex === -1) {
@@ -210,15 +212,9 @@ export default {
       alert("장바구니 클릭1111!");
     };
 
-    const mvMyclass = function() {
-      alert("마이클래스 클릭!");
-    };
-
     const checkAlert = function() {
       alert("피드백 알림 확인");
     };
-
-    const requestUserInfo = function() {};
 
     return {
       state,
@@ -229,9 +225,7 @@ export default {
       changeCollapse,
       logout,
       mvCart,
-      mvMyclass,
-      checkAlert,
-      requestUserInfo
+      checkAlert
     };
   }
 };

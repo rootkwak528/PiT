@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.pit.common.auth.PitUserDetails;
@@ -24,6 +25,7 @@ import com.ssafy.pit.response.ClassDetailGetRes;
 import com.ssafy.pit.response.ClassListGetRes;
 import com.ssafy.pit.response.RegisterClassGetRes;
 import com.ssafy.pit.service.ClassService;
+import com.ssafy.pit.service.PtroomService;
 import com.ssafy.pit.service.UserService;
 
 @RequestMapping("/v1/class")
@@ -35,6 +37,9 @@ public class ClassController {
 	
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	PtroomService ptroomService;
 	
 	// 클래스 상세값 가져오기 (모든 사용자가 사용가능, 001만 조회)
 	@GetMapping("/{classNo}")
@@ -64,7 +69,7 @@ public class ClassController {
 
 	// 관리자를 위한 클래스 리스트 가져오기 (authentication) permission(승인, 미승인, 거절)에 따른 클래스 목록보기 가능
 	@GetMapping("/admin")
-	public ResponseEntity<List<ClassListGetRes>> getAdminClassList(Authentication authentication, @RequestBody HashMap<String, String> permissionMap) {
+	public ResponseEntity<List<ClassListGetRes>> getAdminClassList(Authentication authentication, @RequestParam HashMap<String, String> permissionMap) {
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
 		String userEmail = userDetails.getUsername();
 		if(userService.validateUserType(userEmail) == 1) {
@@ -198,6 +203,10 @@ public class ClassController {
 				// class_photo 테이블에 넣을 classNo 값 구하기
 				int classNo = classService.getLatestClassNo();
 				System.out.println("추가된 클래스의 최신 classNo: " + classNo );
+				
+				String ptroomUrl = createClassInfo.getPtroomUrl();
+				ptroomService.createPtroom(ptroomUrl, classNo);
+				
 				String thumbnailPhoto = createClassInfo.getClassThumbnail();
 				// 썸네일 이미지 넣기
 				classService.createClassPhoto(thumbnailPhoto, classNo, true);
@@ -280,5 +289,26 @@ public class ClassController {
 		}
 	}
 	
+	// 영상 다시보기 비디오들 리스트
+	@GetMapping("/replay/{classNo}")
+	public ResponseEntity<List<String>> getVideoUrls(Authentication authentication, @PathVariable int classNo) {
+		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
+		User user = userDetails.getUser();
+		String userEmail = userDetails.getUsername();
+		int userNo = user.getUserNo();
+		if(userService.validateUserType(userEmail) == 3) {
+			try {				
+				List<String> videoUrls = classService.getVideoUrls(userNo, classNo);
+				return ResponseEntity.status(200).body(videoUrls);
+			}
+			catch (Exception e) {
+				return ResponseEntity.status(500).body(null);
+			}
+			
+		} else {
+			return ResponseEntity.status(403).body(null);
+		}
+		
+	}
 	
 }

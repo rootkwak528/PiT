@@ -47,7 +47,7 @@ public class Ptroom {
 	Classes classes;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="ptroom_savetime")
+	@Column(name="ptroom_savetime", nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	Date ptroomSavetime;
 	@Column(name="ptroom_limit")
 	int ptroomLimit;

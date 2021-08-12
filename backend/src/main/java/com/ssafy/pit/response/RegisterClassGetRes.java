@@ -20,5 +20,6 @@ public class RegisterClassGetRes {
 	Date classEndDate;
 	String classStartTime;
 	String classEndTime;
+	String ptroomUrl;
 	
 }

@@ -1,0 +1,188 @@
+<template>
+  <div class="content-wrapper">
+    <div class="submenu-title">클래스 목록 조회</div>
+    <div class="class-by-permission">
+      <el-button-group>
+        <el-button v-bind:class="{'non-active': !state.pAll, 'active': state.pAll }" @click="clickPermissionAll">전체</el-button>
+        <el-button v-bind:class="{'non-active': !state.pGranted, 'active': state.pGranted }" @click="clickPermissionGranted">승인</el-button>
+        <el-button v-bind:class="{'non-active': !state.pNotGranted, 'active': state.pNotGranted }" @click="clickPermissionNotGranted">미승인</el-button>
+        <el-button v-bind:class="{'non-active': !state.pDenied, 'active': state.pDenied }" @click="clickPermissionDenied">거절</el-button>
+      </el-button-group>
+    </div>
+    <div style="border: solid 0.5px; margin-top: 13px; margin-bottom: 10px"></div>
+    <div class="class-card-wrapper">
+      <el-card
+        shadow="none"
+        v-for="classItem in state.list"
+        :key="classItem"
+        :body-style="{
+          padding: '0px',
+          height: '400px',
+          width: '300px'
+        }"
+        style="margin: 5px"
+      >
+        <router-link
+          :to="`/adminClassDetail?classNo=${classItem.classNo}`"
+          style="text-decoration: none; color: inherit;"
+        >
+          <el-image
+            :src="classItem.classThumbnail"
+            fit="cover"
+            style="width: 300px; height: 200px;"
+          />
+          <div class="class-card-content">
+            <div>
+              <div style="height: 80px;">
+                <div>
+                  {{ classItem.classTeacherName }}
+                </div>
+                <div class="title">{{ classItem.classTitle }}</div>
+              </div>
+              <div class="class-card-tag">
+                <el-tag size="mini" color="#BEEDED">
+                  {{ classItem.classStartDate }} ~
+                  {{ classItem.classEndDate }}
+                </el-tag>
+              </div>
+            </div>
+            <div class="class-card-content-bottom">
+              월 {{ classItem.classPrice }}원
+            </div>
+          </div>
+        </router-link>
+      </el-card>
+    </div>
+  </div>
+
+</template>
+
+<script>
+import { reactive } from "@vue/reactivity";
+import { useStore } from "vuex";
+import { onMounted } from "@vue/runtime-core";
+
+export default {
+  name: "AdminClass",
+
+  setup() {
+    const store = useStore();
+    const state = reactive({
+      list: [],
+      permission: "000",
+      pAll: true,
+      pGranted: false,
+      pNotGranted: false,
+      pDenied: false,
+    });
+
+    onMounted(() => {
+      getClassList();
+    });
+
+    const clickPermissionAll = function() {
+      state.permission = "000";
+      state.pAll = true;
+      state.pGranted = false;
+      state.pNotGranted = false;
+      state.pDenied = false;
+      console.log("pAll : "+ state.pAll);
+      getClassList();
+    }
+    const clickPermissionGranted = function() {
+      state.permission = "001";
+      state.pAll = false;
+      state.pGranted = true;
+      state.pNotGranted = false;
+      state.pDenied = false;
+      getClassList();
+    }
+    const clickPermissionNotGranted = function() {
+      state.permission = "002";
+      state.pAll = false;
+      state.pGranted = false;
+      state.pNotGranted = true;
+      state.pDenied = false;
+      getClassList();
+    }
+    const clickPermissionDenied = function() {
+      state.permission = "003";
+      state.pAll = false;
+      state.pGranted = false;
+      state.pNotGranted = false;
+      state.pDenied = true;
+      getClassList();
+    }
+
+    const getClassList = function() {
+      store
+        .dispatch("root/getAdminClassList", {
+          permission: state.permission,
+          token: "Bearer " + localStorage.getItem("jwt-auth-token")
+        })
+        .then(function(result) {
+          state.list = result.data;
+
+          for (var i = 0; i < state.list.length; i++) {
+            var startMonth = parseInt(
+              result.data[i].classStartDate.split("-")[1]
+            );
+            var endMonth = parseInt(result.data[i].classEndDate.split("-")[1]);
+            result.data[i].classPrice = Math.ceil(
+              result.data[i].classPrice / (endMonth - startMonth + 1)
+            );
+          }
+        })
+        .catch(function(err) {
+          alert(err.response);
+        });
+    };
+
+    return {
+      state,
+      getClassList,
+      clickPermissionAll,
+      clickPermissionGranted,
+      clickPermissionNotGranted,
+      clickPermissionDenied
+    };
+  }
+}
+</script>
+
+<style>
+.non-active {
+  background-color: white;
+  color: #00C0D4;
+}
+.active {
+  background-color: #00C0D4;
+  color: white;
+}
+.class-card-wrapper {
+display: flex;
+flex-wrap: wrap;
+}
+
+.class-card-content {
+  height: 170px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.class-card-tag {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.class-card-content-bottom {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  font-size: 20px;
+  font-weight: bold;
+}
+</style>

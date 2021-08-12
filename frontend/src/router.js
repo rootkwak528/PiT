@@ -10,6 +10,10 @@ import RegisterClass from "@/views/mypage/registerClass"
 import RecordedVideo from "@/views/mypage/recordedVideo"
 import MyInfo from "@/views/mypage/myInfo"
 
+import AdminMain from "@/views/adminpage/adminMain"
+import AdminClass from "@/views/adminpage/adminClass"
+import AdminClassDetail from "@/views/adminpage/adminclassdetail/adminclass-detail"
+
 const routes = [
   {
     path: "/",
@@ -55,6 +59,23 @@ const routes = [
         path: "/myinfo",
         name: "MyInfo",
         component: MyInfo
+      }
+    ]
+  },
+  {
+    path: "/adminMain",
+    name: "AdminMain",
+    component: AdminMain,
+    children: [
+      {
+        path: "/adminClass",
+        name: "AdminClass",
+        component: AdminClass
+      },
+      {
+        path: "/adminClassDetail",
+        name: "AdminClassDetail",
+        component: AdminClassDetail
       }
     ]
   }

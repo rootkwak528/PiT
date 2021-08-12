@@ -7,7 +7,7 @@
       <el-col :span="6">
         <mypage-sidebar :pathname="pathname"/>
       </el-col>
-      <el-col :span="18">
+      <el-col :span="18" style="min-height: 655px">
         <router-view />
       </el-col>
     </el-row>
