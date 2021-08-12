@@ -25,15 +25,9 @@ export default {
     AdminClassSummary,
     AdminGallery
   },
-  props: {
-    permission: String
-  },
+
   setup(props){
-    // 클래스 승인 여부 변경 코드
-    console.log(props.permission);
   }
-
-
 };
 </script>
 
