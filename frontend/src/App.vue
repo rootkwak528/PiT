@@ -97,17 +97,6 @@ export default {
         localStorage.getItem("jwt-auth-token") != null
       ) {
         store.commit("root/setIsLogined", true);
-<<<<<<< HEAD
-        store.dispatch("root/requestUserInfo", {
-          token: localStorage.getItem("jwt-auth-token")
-        })
-        .then(function(result){
-          store.commit("root/setProfileUrl", result.data.userProfile);
-          store.commit("root/setUserType", result.data.userTypeName);
-          store.commit("root/setNickname", result.data.userNickname);
-          console.log("main에서 userType : " + store.getters["root/getUserType"]);
-        })
-=======
         store
           .dispatch("root/getUserInfo", {
             token: localStorage.getItem("jwt-auth-token")
@@ -117,7 +106,6 @@ export default {
             store.commit("root/setUserType", result.data.userTypeName);
             store.commit("root/setUserType", result.data.userNickname);
           });
->>>>>>> FE_YE
       }
     }
     return { store };
