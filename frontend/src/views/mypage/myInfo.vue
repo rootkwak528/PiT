@@ -458,7 +458,7 @@ export default {
       updateValid,
       isNicknameAvailable,
       loading,
-      requestUserInfo,
+      getUserInfo,
       onInputForm,
       onInputNicknameForm,
       checkDuplicatedUpdateNickname,

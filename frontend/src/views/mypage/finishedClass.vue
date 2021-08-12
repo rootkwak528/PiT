@@ -1,6 +1,9 @@
 <template>
   <div class="content-wrapper">
     <div class="submenu-title">수강완료 클래스</div>
+    <div v-if="classData.classList.length == 0">
+      수강완료된 클래스가 없어요!
+    </div>
     <div class="finishedclass-card-section" v-if="userTypeName == '수강생'">
       <el-card
         shadow="none"

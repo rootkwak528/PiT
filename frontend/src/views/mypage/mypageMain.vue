@@ -54,6 +54,7 @@ export default {
       store
         .dispatch("root/getUserInfo")
         .then(function(result) {
+          console.log(result);
           state.userTypeName = result.data.userTypeName;
         })
         .catch(function(err) {

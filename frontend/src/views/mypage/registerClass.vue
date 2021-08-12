@@ -144,7 +144,7 @@ export default {
         .dispatch("root/getRegisterClassList")
         .then(function(result) {
           // console.log(result);
-          console.log(result.data);
+          //console.log(result.data);
           classData.classList = result.data;
           for (var i = 0; i < classData.classList.length; i++) {
             if (classData.classList[i].classType == "001") {
@@ -162,7 +162,7 @@ export default {
             }
 
             var tmpDayList = classData.classList[i].classDay; // 요일 리스트
-            console.log(tmpDayList);
+            //console.log(tmpDayList);
             var tmpDateAttrs = [];
             var tmpDays = [];
             for (var j = 0; j < tmpDayList.length; j++) {
@@ -191,14 +191,14 @@ export default {
                   weekday = 6;
                   break;
               }
-              console.log(weekday);
+              //console.log(weekday);
               var tmp = "weekdays : " + weekday;
               tmpDays.push(tmp);
             }
 
-            console.log(tmpDays);
+            //console.log(tmpDays);
             classData.dates.push(tmpDays);
-            console.log(classData.dates);
+            //console.log(classData.dates);
             classData.dates.pop;
             // var tmp = "dates : " + tmpDays;
             // tmpDateAttrs.push(tmp);

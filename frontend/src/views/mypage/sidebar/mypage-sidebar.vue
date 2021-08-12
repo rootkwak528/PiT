@@ -12,7 +12,7 @@
         <i class="el-icon-notebook-1"></i>
         <span>마이클래스</span>
       </template>
-      <el-menu-item-group v-if="userTypeName == '사용자'">
+      <el-menu-item-group v-if="userTypeName == '수강생'">
         <el-menu-item index="rgstClass">수강중 클래스</el-menu-item>
         <el-menu-item index="finishedClass">수강완료 클래스</el-menu-item>
         <el-menu-item index="recordedVideo">녹화된 수업</el-menu-item>
@@ -21,10 +21,10 @@
       <el-menu-item-group v-if="userTypeName == '트레이너'">
         <el-menu-item index="rgstClass">수강중 클래스</el-menu-item>
         <el-menu-item index="finishedClass">수강완료 클래스</el-menu-item>
-        <el-menu-item index="recordedVideo">클래스 개설</el-menu-item>
+        <el-menu-item index="openClass">클래스 개설</el-menu-item>
       </el-menu-item-group>
     </el-submenu>
-    <el-menu-item index="2" v-if="userTypeName == '사용자'">
+    <el-menu-item index="2" v-if="userTypeName == '수강생'">
       <i class="el-icon-star-on"></i>
       <span>찜한 클래스</span>
     </el-menu-item>
