@@ -105,7 +105,8 @@ export default {
         .then(function(result){
           store.commit("root/setProfileUrl", result.data.userProfile);
           store.commit("root/setUserType", result.data.userTypeName);
-          store.commit("root/setUserType", result.data.userNickname);
+          store.commit("root/setNickname", result.data.userNickname);
+          console.log("main에서 userType : " + store.getters["root/getUserType"]);
         })
       }
     }
