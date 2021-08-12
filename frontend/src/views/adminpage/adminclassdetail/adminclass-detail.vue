@@ -5,10 +5,7 @@
     <admin-class-content :classNo="this.$route.query.classNo" />
     <!-- <admin-class-summary :classNo="this.$route.query.classNo" /> -->
   </div>
-  <div class="permission-btn">
-    <el-button>클래스 개설승인</el-button> <!-- -->
-    <el-button>클래스 개설거절</el-button> <!-- -->
-  </div>
+
 </template>
 
 <script>
@@ -35,10 +32,5 @@ export default {
 .content {
   display: flex;
   justify-content: space-between;
-}
-.permission-btn {
-  display: flex;
-  margin-top: 25px;
-  justify-content: center;
 }
 </style>

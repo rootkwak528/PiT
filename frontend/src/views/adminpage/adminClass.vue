@@ -9,7 +9,8 @@
         <el-button v-bind:class="{'non-active': !state.pDenied, 'active': state.pDenied }" @click="clickPermissionDenied">거절</el-button>
       </el-button-group>
     </div>
-    <div style="border: solid 0.5px; margin-top: 13px; margin-bottom: 10px"></div>
+    <el-divider></el-divider>
+    <!-- <div style="border: solid 0.5px; margin-top: 13px; margin-bottom: 10px"></div> -->
     <div class="class-card-wrapper">
       <el-card
         shadow="none"

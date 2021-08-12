@@ -91,12 +91,20 @@
       </div>
     </el-tab-pane>
 
-
+    <div class="permission-btn">
+      <el-button v-if="state.form.classPermission === '001'" style="display: none" >클래스 개설승인</el-button>
+      <el-button v-else class="form-btn" @click="clickGranted">클래스 개설승인</el-button>
+      <el-button v-if="state.form.classPermission === '002'" style="display: none" >클래스 개설미승인</el-button>
+      <el-button v-else class="form-btn" @click="clickNotGranted">클래스 개설미승인</el-button>
+      <el-button v-if="state.form.classPermission === '003'" style="display: none" >클래스 개설거절</el-button>
+      <el-button v-else class="form-btn-delete" @click="clickDenied">클래스 개설거절</el-button>
+    </div>
   </el-tabs>
 </template>
 
 <script>
 import { reactive, computed, ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 
 export default {
@@ -106,6 +114,7 @@ export default {
   },
   setup(props) {
     const store = useStore();
+    const router = useRouter();
     const state = reactive({
       form: {
         classTitle: "",
@@ -116,10 +125,10 @@ export default {
     });
 
     onMounted(() => {
-      getClassDetail();
+      getAdminClassDetail();
     });
 
-    const getClassDetail = function() {
+    const getAdminClassDetail = function() {
       store
         .dispatch("root/getAdminClassDetail", { classNo: props.classNo })
         .then(function(result) {
@@ -136,6 +145,9 @@ export default {
           state.form.classLevelName = result.data.classLevelName;
           state.form.classTcnt = result.data.classTcnt;
           state.form.classPrice = result.data.classPrice;
+          state.form.classPermission = result.data.classPermission;
+
+          console.log("adminclass-content : " + state.form.classPermission);
 
           var startMonth = parseInt(result.data.classStartDate.split("-")[1]);
           var endMonth = parseInt(result.data.classEndDate.split("-")[1]);
@@ -148,7 +160,48 @@ export default {
         });
     };
 
-    return { getClassDetail, state };
+    const clickGranted = function() {
+      state.form.classPermission = '001';
+      updateClassPermission();
+      alert("클래스 개설 승인 처리 하셨습니다. 원활한 클래스 관리를 기원합니다.");
+      router.push("/adminClass");
+    }
+    const clickNotGranted = function() {
+      state.form.classPermission = '002';
+      updateClassPermission();
+      alert("클래스 개설 미승인 처리 하셨습니다.");
+      router.push("/adminClass");
+    }
+    const clickDenied = function() {
+      state.form.classPermission = '003';
+      updateClassPermission();
+      alert("클래스 개설 거절 처리 하셨습니다.");
+      router.push("/adminClass");
+    }
+
+    const updateClassPermission = function() {
+      store
+        .dispatch("root/updateClassPermission", {
+          classNo: props.classNo,
+          permission: state.form.classPermission
+        })
+        .then(function(result) {
+          console.log(result.data.message);
+        })
+        .catch(function(err) {
+          console.log(err);
+        })
+    }
+
+    return {
+      state,
+      router,
+      getAdminClassDetail,
+      updateClassPermission,
+      clickGranted,
+      clickNotGranted,
+      clickDenied
+    };
   },
   data() {
     return {
@@ -213,5 +266,10 @@ export default {
   height: 40px;
   font-size: 18px;
   font-weight: bold;
+}
+.permission-btn {
+  display: flex;
+  margin-top: 25px;
+  justify-content: center;
 }
 </style>

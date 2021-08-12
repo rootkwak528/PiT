@@ -120,6 +120,18 @@ export function getAdminClassDetail({ state }, payload) {
   });
 }
 
+// [관리자] 해당 클래스 승인 여부 상태 변경
+export function updateClassPermission({ state }, payload) {
+  const url = `/class/admin/${payload.classNo}`;
+  let body = payload;
+  let token = "Bearer " + localStorage.getItem("jwt-auth-token");
+  return $axios.put(url, body, {
+    headers: {
+      Authorization: token
+    }
+  })
+}
+
 // 수강중 클래스 목록 조회
 export function getRegisterClassList() {
   const url = `/class/registerclass`;
