@@ -30,5 +30,6 @@ public class ClassDetailGetRes {
 	int classPrice;
 	String classTeacherName;
 	String classDay;
+	String classPermission;
 	
 }
