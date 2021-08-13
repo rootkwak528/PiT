@@ -8,15 +8,15 @@
       </div>
       <div class="search-field">
         <el-select
-          v-model="selectValue"
-          placeholder="Select"
-          style="margin-right: 5px"
+          v-model="state.searchSelect"
+          placeholder="전체 검색"
+          style="margin-right: 5px; width: 250px"
         >
-          <el-option>전체 검색</el-option>
-          <el-option>클래스 명 검색</el-option>
-          <el-option>강사 명 검색</el-option>
+          <el-option value="전체 검색">전체 검색</el-option>
+          <el-option value="클래스 명 검색">클래스 명 검색</el-option>
+          <el-option value="강사 명 검색">강사 명 검색</el-option>
         </el-select>
-        <el-input placeholder="검색" v-model="state.searchValue"></el-input>
+        <el-input placeholder="검색" v-model="state.searchKeyword"></el-input>
         <el-button
           icon="el-icon-search"
           @click="search"
@@ -149,38 +149,43 @@ export default {
     const store = useStore();
     const router = useRouter();
     const state = reactive({
-      searchValue: null,
-      isCollapse: true,
-      menuItems: computed(() => {
-        const MenuItems = store.getters["root/getMenus"];
-        let keys = Object.keys(MenuItems);
-        let menuArray = [];
-        for (let i = 0; i < keys.length; ++i) {
-          let menuObject = {};
-          menuObject.icon = MenuItems[keys[i]].icon;
-          menuObject.title = MenuItems[keys[i]].name;
-          menuArray.push(menuObject);
-        }
-        return menuArray;
-      }),
-      activeIndex: computed(() => store.getters["root/getActiveMenuIndex"]),
+      searchSelect: "",
+      searchType: "0",
+      searchKeyword: "",
+      classType: computed(() => store.getters["root/getClassType"]),
+      classLevel: computed(() => store.getters["root/getClassLevel"]),
+      classDay: computed(() => store.getters["root/getClassDay"]),
+      classStartTime: computed(() => store.getters["root/getClassStartTime"]),
+      classEndTime: computed(() => store.getters["root/getClassEndTime"]),
+
       isLogined: computed(() => store.getters["root/getIsLogined"]),
       profileUrl: computed(() => store.getters["root/getProfileUrl"]),
       userType: computed(() => store.getters["root/getUserType"]),
       userNickname: computed(() => store.getters["root/getUserNickname"]),
     });
 
-    if (state.activeIndex === -1) {
-      state.activeIndex = 0;
-      store.commit("root/setMenuActive", 0);
-    }
-
     const search = () => {
-      if (state.searchValue === null) {
-        alert("검색어를 입력해주세요.");
-      } else {
-        router.push("/searchresult?word=" + state.searchValue);
+      // console.log("변환 전 state.searchType : " + state.searchSelect);
+      // searchType 변환 처리 전체 : 0 , 클래스명 : 1, 강사명 : 2
+      if ( state.searchSelect == "전체 검색" ) {
+        state.searchType = "0"
       }
+      else if ( state.searchSelect == "클래스 명 검색" ) {
+        state.searchType = "1"
+      }
+      else if ( state.searchSelect == "강사 명 검색" ) {
+        state.searchType = "2"
+      }
+
+      console.log("searchType : " + state.searchType);
+      console.log("searchKeyword : " + state.searchKeyword);
+      console.log("classType : " + state.classType)
+      console.log("classLevel : " + state.classLevel)
+      console.log("classDay : " + state.classDay)
+      console.log("classStartTime : " + state.classStartTime)
+      console.log("classEndTime : " + state.classEndTime)
+
+      router.push("/searchresult?word=" + state.searchKeyword);
     };
 
     const clickLogin = () => {
@@ -193,7 +198,6 @@ export default {
 
     const clickSearchDetail = () => {
       emit("openSearchDialog");
-      console.log("검색 버튼 열려라참깨..");
       //this.searchDialogVisible = true;
     };
 
@@ -205,7 +209,6 @@ export default {
       localStorage.removeItem("jwt-auth-token");
       store.commit("root/setIsLogined", false);
       //store.state.isLogined = false;
-      console.log("logout clicked!! : " + store.state.isLogined);
       router.push("/");
     };
 

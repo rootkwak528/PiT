@@ -82,23 +82,26 @@ public class ClassServiceImpl implements ClassService {
 		List<ClassListGetRes> classListGetRes = new ArrayList();
 		// 조건 없는 경우, 전체검색
 		if (searchType.equals("0")) {
-			classesList = classRepositorySupport.getClassListByTotal(searchKeyword, classType, classLevel, classStartTime, classEndTime);
+			classesList = classRepositorySupport.getClassListByTotal(searchKeyword, classStartTime, classEndTime, permission);
+//			classesList = classRepositorySupport.getClassListByTotal(searchKeyword, classType, classLevel, classStartTime, classEndTime, permission);
 		}
 		// 클래스명으로 검색
 		else if (searchType.equals("1")) {
-			classesList = classRepositorySupport.getClassListByClassTitle(searchKeyword, classType, classLevel, classStartTime, classEndTime);
+			classesList = classRepositorySupport.getClassListByClassTitle(searchKeyword, classStartTime, classEndTime, permission);
+//			classesList = classRepositorySupport.getClassListByClassTitle(searchKeyword, classType, classLevel, classStartTime, classEndTime, permission);
 		}
 		// 강사명 검색
 		else if (searchType.equals("2")){
-			classesList = classRepositorySupport.getClassListByTrainerName(searchKeyword, classType, classLevel, classStartTime, classEndTime);
+			classesList = classRepositorySupport.getClassListByTrainerName(searchKeyword, classStartTime, classEndTime, permission);
+//			classesList = classRepositorySupport.getClassListByTrainerName(searchKeyword, classType, classLevel, classStartTime, classEndTime, permission);
 		}
 		
 		for(Classes classes: classesList) {
 			ClassListGetRes classGetRes = new ClassListGetRes();
 			// 클래스 요일은 query로 작성하기 힘들어서 자바에서 처리를 해줌
 			String dbClassDay = classes.getClassDay();
-			String[] days = classDay.split("");
-			int dayCnt = 0;
+			String[] days = classDay.split("");				// 입력받은 요일들을 배열로 하나씩 받는다.
+			int dayCnt = 0;									// 
 			for(int i=0, size=days.length; i<size; i++) {
 				String day = days[i];
 				if(dbClassDay.contains(day)) {
@@ -107,6 +110,31 @@ public class ClassServiceImpl implements ClassService {
 			}
 			
 			if(dayCnt == 0) continue;
+			
+			String dbClassType = classes.getClassType();
+			String[] types = classType.split(" ");
+			int typeCnt = 0;
+			for (int i = 0, size=types.length; i<size; i++) {
+				String type = types[i];
+				if(dbClassType.contains(type)) {
+					typeCnt++;
+				}
+			}
+			
+			if(typeCnt == 0) continue;
+			
+			String dbClassLevel = classes.getClassLevel();
+			String[] levels = classLevel.split(" ");
+			int levelCnt = 0;
+			for (int i = 0, size=levels.length; i < size; i++) {
+				String level = levels[i];
+				if(dbClassLevel.contains(level)) {
+					levelCnt++;
+				}
+			}
+			
+			if(levelCnt == 0) continue;
+			
 			int classNo = classes.getClassNo();
 			BeanUtils.copyProperties(classes, classGetRes);
 			String classThumbnail = classPhotoRepositorySupport.getThumbnail(classNo);
@@ -116,7 +144,7 @@ public class ClassServiceImpl implements ClassService {
 			else {
 				classGetRes.setClassThumbnail("");
 			}
-			classListGetRes.add(classGetRes);	
+			classListGetRes.add(classGetRes); // 조회해야할 클래스를 추가
 		}
 		
 		return classListGetRes;
