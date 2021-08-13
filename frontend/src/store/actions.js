@@ -163,3 +163,16 @@ export function getFinishedClassList() {
     }
   });
 }
+
+// 클래스 생성 요청
+export function createClass({ state }, payload) {
+  const url = `/class/create`;
+  let token = "Bearer " + localStorage.getItem("jwt-auth-token");
+  let body = payload;
+  console.log("body : " + body);
+  return $axios.post(url, body, {
+    headers: {
+      Authorization: token
+    }
+  });
+}
