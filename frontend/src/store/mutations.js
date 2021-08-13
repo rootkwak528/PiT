@@ -42,6 +42,10 @@ export function setClassStartTime(state, classStartTime) {
 export function setClassEndTime(state, classEndTime) {
   state.classEndTime = classEndTime;
 }
+
+export function setClassList(state, classList) {
+  state.classList = classList;
+}
 // export function setPlatform(state, isDesktop) {
 //   state.isDesktopPlatform = isDesktop;
 // }

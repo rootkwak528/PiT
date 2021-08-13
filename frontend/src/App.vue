@@ -97,7 +97,7 @@ export default {
         localStorage.getItem("jwt-auth-token") != null
       ) {
         store.commit("root/setIsLogined", true);
-        store.dispatch("root/requestUserInfo", {
+        store.dispatch("root/getUserInfo", {
           token: localStorage.getItem("jwt-auth-token")
         })
         .then(function(result){

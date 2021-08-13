@@ -95,72 +95,91 @@ export default {
     const clickSearch = function() {
 
       // 타입 처리
-      for(let i = 0; i<state.form.classTypeList.length; i++){
-        if (state.form.classTypeList[i] == "PT"){
-          state.form.classType += "001 "
-        }
-        else if (state.form.classTypeList[i] == "요가") {
-          state.form.classType += "002 "
-        }
-        else if (state.form.classTypeList[i] == "필라테스") {
-          state.form.classType += "003 "
-        }
-        else if (state.form.classTypeList[i] == "기타") {
-          state.form.classType += "004 "
+      if (state.form.classTypeList.length == 0){
+        state.form.classType = "00"
+      }
+      else {
+        for(let i = 0; i<state.form.classTypeList.length; i++){
+          if (state.form.classTypeList[i] == "PT"){
+            state.form.classType += "001 "
+          }
+          else if (state.form.classTypeList[i] == "요가") {
+            state.form.classType += "002 "
+          }
+          else if (state.form.classTypeList[i] == "필라테스") {
+            state.form.classType += "003 "
+          }
+          else if (state.form.classTypeList[i] == "기타") {
+            state.form.classType += "004 "
+          }
         }
       }
       // 레벨 처리
-      for(let i = 0; i<state.form.classLevelList.length; i++){
-        if (state.form.classLevelList[i] == "입문"){
-          state.form.classLevel += "001 "
-        }
-        else if (state.form.classLevelList[i] == "초급") {
-          state.form.classLevel += "002 "
-        }
-        else if (state.form.classLevelList[i] == "중급") {
-          state.form.classLevel += "003 "
-        }
-        else if (state.form.classLevelList[i] == "고급") {
-          state.form.classLevel += "004 "
+      if (state.form.classLevelList.length == 0){
+        state.form.classLevel = "00"
+      }
+      else{
+        for(let i = 0; i<state.form.classLevelList.length; i++){
+          if (state.form.classLevelList[i] == "입문"){
+            state.form.classLevel += "001 "
+          }
+          else if (state.form.classLevelList[i] == "초급") {
+            state.form.classLevel += "002 "
+          }
+          else if (state.form.classLevelList[i] == "중급") {
+            state.form.classLevel += "003 "
+          }
+          else if (state.form.classLevelList[i] == "고급") {
+            state.form.classLevel += "004 "
+          }
         }
       }
 
       // 요일 처리
-      for(let i = 0; i<state.form.classDayList.length; i++){
-        if ( state.form.classDayList[i] == "월"){
-          state.form.classDay = state.form.classDay + state.form.classDayList[i]
-        }
-        else if ( state.form.classDayList[i] == "화"){
-          state.form.classDay = state.form.classDay + state.form.classDayList[i]
-        }
-        else if ( state.form.classDayList[i] == "수"){
-          state.form.classDay = state.form.classDay + state.form.classDayList[i]
-        }
-        else if ( state.form.classDayList[i] == "목"){
-          state.form.classDay = state.form.classDay + state.form.classDayList[i]
-        }
-        else if ( state.form.classDayList[i] == "금"){
-          state.form.classDay = state.form.classDay + state.form.classDayList[i]
-        }
-        else if ( state.form.classDayList[i] == "토"){
-          state.form.classDay = state.form.classDay + state.form.classDayList[i]
-        }
-        else if ( state.form.classDayList[i] == "일"){
-          state.form.classDay = state.form.classDay + state.form.classDayList[i]
+      if (state.form.classDayList.length == 0){
+        state.form.classDay = "월화수목금토일"
+      }
+      else {
+        for(let i = 0; i<state.form.classDayList.length; i++){
+          if ( state.form.classDayList[i] == "월"){
+            state.form.classDay += "월"
+          }
+          else if ( state.form.classDayList[i] == "화"){
+            state.form.classDay += "화"
+          }
+          else if ( state.form.classDayList[i] == "수"){
+            state.form.classDay += "수"
+          }
+          else if ( state.form.classDayList[i] == "목"){
+            state.form.classDay += "목"
+          }
+          else if ( state.form.classDayList[i] == "금"){
+            state.form.classDay += "금"
+          }
+          else if ( state.form.classDayList[i] == "토"){
+            state.form.classDay += "토"
+          }
+          else if ( state.form.classDayList[i] == "일"){
+            state.form.classDay += "일"
+          }
         }
       }
 
       // 시간 처리
-      if (state.form.time == "오전(12시 이전)") {
-        state.form.classStartTime = "00"
+      if (state.form.time == ""){
+        state.form.classStartTime = "00";
+        state.form.classEndTime = "23";
+      }
+      else if (state.form.time == "오전(12시 이전)") {
+        state.form.classStartTime = "00";
         state.form.classEndTime = "13";
       }
       else if (state.form.time == "오후(18시 이전)"){
-        state.form.classStartTime = "12"
+        state.form.classStartTime = "12";
         state.form.classEndTime = "19";
       }
       else if (state.form.time == "오후(18시 이후)") {
-        state.form.classStartTime = "18"
+        state.form.classStartTime = "18";
         state.form.classEndTime = "23";
       }
 

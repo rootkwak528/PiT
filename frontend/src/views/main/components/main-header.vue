@@ -150,7 +150,7 @@ export default {
     const router = useRouter();
     const state = reactive({
       searchSelect: "",
-      searchType: "0",
+      searchType: computed(() => store.getters["root/getSearchType"]),
       searchKeyword: "",
       classType: computed(() => store.getters["root/getClassType"]),
       classLevel: computed(() => store.getters["root/getClassLevel"]),
@@ -168,14 +168,16 @@ export default {
       // console.log("변환 전 state.searchType : " + state.searchSelect);
       // searchType 변환 처리 전체 : 0 , 클래스명 : 1, 강사명 : 2
       if ( state.searchSelect == "전체 검색" ) {
-        state.searchType = "0"
+        store.commit("root/setSearchType", "0");
       }
       else if ( state.searchSelect == "클래스 명 검색" ) {
-        state.searchType = "1"
+        store.commit("root/setSearchType", "1");
       }
       else if ( state.searchSelect == "강사 명 검색" ) {
-        state.searchType = "2"
+        store.commit("root/setSearchType", "2");
       }
+
+      store.commit("root/setSearchKeyword", state.searchKeyword);
 
       console.log("searchType : " + state.searchType);
       console.log("searchKeyword : " + state.searchKeyword);
@@ -185,7 +187,42 @@ export default {
       console.log("classStartTime : " + state.classStartTime)
       console.log("classEndTime : " + state.classEndTime)
 
+      getSearchClassList()
+      // 이미 스토어에 필요한 값들은 모두 커밋되어 있는 상태.
+      // main-header의 state에 있는 값들로 조회
+      // 조회에 성공하면 searchresult로 이동하고 searchSelect, Keyword = ""
       router.push("/searchresult?word=" + state.searchKeyword);
+      state.searchSelect = "";
+      state.searchKeyword = "";
+    };
+
+    const getSearchClassList = function() {
+      store
+        .dispatch("root/getSearchClassList",{
+          searchType: store.getters["root/getSearchType"],
+          searchKeyword: store.getters["root/getSearchKeyword"],
+          classType: store.getters["root/getClassType"],
+          classLevel: store.getters["root/getClassLevel"],
+          classDay: store.getters["root/getClassDay"],
+          classStartTime: store.getters["root/getClassStartTime"],
+          classEndTime: store.getters["root/getClassEndTime"],
+        })
+        .then(function(result) {
+          store.commit("root/setClassList", result.data);
+
+          for (var i = 0; i < state.list.length; i++) {
+            var startMonth = parseInt(
+              result.data[i].classStartDate.split("-")[1]
+            );
+            var endMonth = parseInt(result.data[i].classEndDate.split("-")[1]);
+            result.data[i].classPrice = Math.ceil(
+              result.data[i].classPrice / (endMonth - startMonth + 1)
+            );
+          }
+        })
+        .catch(function(err) {
+          // alert(err.response);
+        });
     };
 
     const clickLogin = () => {
@@ -229,7 +266,8 @@ export default {
       changeCollapse,
       logout,
       mvCart,
-      checkAlert
+      checkAlert,
+      getSearchClassList
     };
   }
 };

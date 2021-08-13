@@ -78,6 +78,13 @@ public class ClassServiceImpl implements ClassService {
 		String classStartTime = searchInfo.getClassStartTime();  //시작시간 "09"
 		String classEndTime = searchInfo.getClassEndTime();  //종료시간 "12"
 		
+//		if (searchKeyword == "    ") {
+//		}
+		searchKeyword = searchKeyword.trim();
+		System.out.println("searchKeyword :"+ searchKeyword.trim());
+			
+		System.out.println("classDay : "+ classDay);
+		
 		List<Classes> classesList = new ArrayList<Classes>();
 		List<ClassListGetRes> classListGetRes = new ArrayList();
 		// 조건 없는 경우, 전체검색

@@ -43,11 +43,13 @@ export default {
   userType: "",
   userNickname: "",
 
-  searchType: "",
+  searchType: "0",
   searchKeyword: "",
   classType: "00",
   classLevel: "00",
   classDay: "월화수목금토일",
   classStartTime: "00",
-  classEndTime: "23"
+  classEndTime: "23",
+
+  classList: [],
 };

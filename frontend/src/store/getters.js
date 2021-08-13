@@ -43,6 +43,10 @@ export function getClassEndTime(state) {
   return state.classEndTime;
 }
 
+export function getClassList(state) {
+  return state.classList;
+}
+
 // // 플랫폼 관련 정보 가져오기
 // export function getIsDesktopPlatform(state) {
 //   return state.isDesktopPlatform;
