@@ -1,7 +1,7 @@
 import { createWebHistory, createRouter } from "vue-router";
 import Main from "@/views/main/main.vue";
 import Event from "@/views/event.vue";
-import SearchResult from "@/views/search-result";
+import SearchResult from "@/views/searchResult/search-result";
 import ClassDetail from "@/views/classdetail/class-detail";
 
 import MypageMain from "@/views/mypage/mypageMain";

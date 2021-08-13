@@ -45,9 +45,8 @@
 </template>
 
 <script>
-import { reactive } from "@vue/reactivity";
+import { reactive, computed, onMounted } from "vue";
 import { useStore } from "vuex";
-import { onMounted } from "@vue/runtime-core";
 
 export default {
   name: "ClassSection",
@@ -57,12 +56,12 @@ export default {
   setup() {
     const store = useStore();
     const state = reactive({
-      list: []
+      list: computed(() => store.getters["root/getClassList"])
     });
 
     onMounted(() => {
       // getSearchClassList();
-      getClassList();
+      // getClassList();
     });
 
     // const getSearchClassList = function() {
@@ -94,31 +93,31 @@ export default {
     //     });
     // };
 
-    const getClassList = function() {
-      store
-        .dispatch("root/getClassList")
-        .then(function(result) {
-          state.list = result.data;
+    // const getClassList = function() {
+    //   store
+    //     .dispatch("root/getClassList")
+    //     .then(function(result) {
+    //       state.list = result.data;
 
-          for (var i = 0; i < state.list.length; i++) {
-            var startMonth = parseInt(
-              result.data[i].classStartDate.split("-")[1]
-            );
-            var endMonth = parseInt(result.data[i].classEndDate.split("-")[1]);
-            result.data[i].classPrice = Math.ceil(
-              result.data[i].classPrice / (endMonth - startMonth + 1)
-            );
-          }
-        })
-        .catch(function(err) {
-          alert(err.response);
-        });
-    };
+    //       for (var i = 0; i < state.list.length; i++) {
+    //         var startMonth = parseInt(
+    //           result.data[i].classStartDate.split("-")[1]
+    //         );
+    //         var endMonth = parseInt(result.data[i].classEndDate.split("-")[1]);
+    //         result.data[i].classPrice = Math.ceil(
+    //           result.data[i].classPrice / (endMonth - startMonth + 1)
+    //         );
+    //       }
+    //     })
+    //     .catch(function(err) {
+    //       alert(err.response);
+    //     });
+    // };
 
     return {
       state,
       // getSearchClassList,
-      getClassList,
+      // getClassList,
     };
   }
 };

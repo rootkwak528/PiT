@@ -42,4 +42,14 @@ export default {
   profileUrl: "",
   userType: "",
   userNickname: "",
+
+  searchType: "0",
+  searchKeyword: "",
+  classType: "00",
+  classLevel: "00",
+  classDay: "월화수목금토일",
+  classStartTime: "00",
+  classEndTime: "23",
+
+  classList: [],
 };

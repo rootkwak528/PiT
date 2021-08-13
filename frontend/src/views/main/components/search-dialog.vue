@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     custom-class="search-dialog"
-    title="회원가입"
+    title="상세검색"
     v-model="state.dialogVisible"
     @close="handleClose"
   >
@@ -12,49 +12,204 @@
       ref="searchForm"
       :label-position="state.form.align"
     >
-      <el-form-item prop="type" label="운동 종목" :label-width="formLabelWidth">
-        <el-checkbox-group v-model="state.form.type">
-          <el-checkbox label="PT" name="type"></el-checkbox>
-          <el-checkbox label="요가" name="type"></el-checkbox>
-          <el-checkbox label="필라테스" name="type"></el-checkbox>
-          <el-checkbox label="크로스핏" name="type"></el-checkbox>
+      <el-form-item prop="classTypeList" label="운동 종목" :label-width="formLabelWidth">
+        <el-checkbox-group v-model="state.form.classTypeList">
+          <el-checkbox label="PT" name="classTypeList"></el-checkbox>
+          <el-checkbox label="요가" name="classTypeList"></el-checkbox>
+          <el-checkbox label="필라테스" name="classTypeList"></el-checkbox>
+          <el-checkbox label="기타" name="classTypeList"></el-checkbox>
         </el-checkbox-group>
       </el-form-item>
-      <el-form-item prop="level" label="난이도" :label-width="formLabelWidth">
-        <el-checkbox-group v-model="state.form.level">
-          <el-checkbox label="입문" name="level"></el-checkbox>
-          <el-checkbox label="초급" name="level"></el-checkbox>
-          <el-checkbox label="중급" name="level"></el-checkbox>
-          <el-checkbox label="고급" name="level"></el-checkbox>
+      <el-form-item prop="classLevelList" label="난이도" :label-width="formLabelWidth">
+        <el-checkbox-group v-model="state.form.classLevelList">
+          <el-checkbox label="입문" name="classLevelList"></el-checkbox>
+          <el-checkbox label="초급" name="classLevelList"></el-checkbox>
+          <el-checkbox label="중급" name="classLevelList"></el-checkbox>
+          <el-checkbox label="고급" name="classLevelList"></el-checkbox>
         </el-checkbox-group>
       </el-form-item>
-      <el-form-item prop="day" label="요일" :label-width="formLabelWidth">
-        <el-checkbox-group v-model="state.form.day">
-          <el-checkbox label="월" name="day"></el-checkbox>
-          <el-checkbox label="화" name="day"></el-checkbox>
-          <el-checkbox label="수" name="day"></el-checkbox>
-          <el-checkbox label="목" name="day"></el-checkbox>
-          <el-checkbox label="금" name="day"></el-checkbox>
-          <el-checkbox label="토" name="day"></el-checkbox>
-          <el-checkbox label="일" name="day"></el-checkbox>
+      <el-form-item prop="classDayList" label="요일" :label-width="formLabelWidth">
+        <el-checkbox-group v-model="state.form.classDayList">
+          <el-checkbox label="월" name="classDayList"></el-checkbox>
+          <el-checkbox label="화" name="classDayList"></el-checkbox>
+          <el-checkbox label="수" name="classDayList"></el-checkbox>
+          <el-checkbox label="목" name="classDayList"></el-checkbox>
+          <el-checkbox label="금" name="classDayList"></el-checkbox>
+          <el-checkbox label="토" name="classDayList"></el-checkbox>
+          <el-checkbox label="일" name="classDayList"></el-checkbox>
         </el-checkbox-group>
       </el-form-item>
       <el-form-item prop="time" label="시간" :label-width="formLabelWidth">
-        <el-checkbox-group v-model="state.form.time">
-          <el-checkbox label="오전(12시 이전)" name="time"></el-checkbox>
-          <el-checkbox label="오후(18시 이전)" name="time"></el-checkbox>
-          <el-checkbox label="오후(18시 이후)" name="time"></el-checkbox>
-        </el-checkbox-group>
+        <el-radio-group v-model="state.form.time">
+          <el-radio label="오전(12시 이전)" name="time"></el-radio>
+          <el-radio label="오후(18시 이전)" name="time"></el-radio>
+          <el-radio label="오후(18시 이후)" name="time"></el-radio>
+        </el-radio-group>
       </el-form-item>
     </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">취소</el-button>
+        <el-button @click="handleClose">취소</el-button>
         <el-button type="primary" @click="clickSearch">설정</el-button>
       </span>
     </template>
   </el-dialog>
 </template>
+<script>
+import { reactive, computed, ref, onMounted } from "vue";
+import { useStore } from "vuex";
+
+export default {
+  name: "search-dialog",
+
+  props: {
+    open: {
+      type: Boolean,
+      default: false
+    }
+  },
+
+  setup(props, { emit }) {
+    const store = useStore();
+    const searchForm = ref(null);
+    const loading = ref(false);
+
+    const state = reactive({
+      form: {
+        classTypeList: [],
+        classType: "",
+        classLevelList: [],
+        classLevel: "",
+        classDayList: [],
+        classDay: "",
+        classStartTime: "",
+        classEndTime: "",
+        time: "",
+        align: "left"
+      },
+
+      dialogVisible: computed(() => props.open),
+      formLabelWidth: "120px"
+    });
+
+    const clickSearch = function() {
+
+      // 타입 처리
+      if (state.form.classTypeList.length == 0){
+        state.form.classType = "00"
+      }
+      else {
+        for(let i = 0; i<state.form.classTypeList.length; i++){
+          if (state.form.classTypeList[i] == "PT"){
+            state.form.classType += "001 "
+          }
+          else if (state.form.classTypeList[i] == "요가") {
+            state.form.classType += "002 "
+          }
+          else if (state.form.classTypeList[i] == "필라테스") {
+            state.form.classType += "003 "
+          }
+          else if (state.form.classTypeList[i] == "기타") {
+            state.form.classType += "004 "
+          }
+        }
+      }
+      // 레벨 처리
+      if (state.form.classLevelList.length == 0){
+        state.form.classLevel = "00"
+      }
+      else{
+        for(let i = 0; i<state.form.classLevelList.length; i++){
+          if (state.form.classLevelList[i] == "입문"){
+            state.form.classLevel += "001 "
+          }
+          else if (state.form.classLevelList[i] == "초급") {
+            state.form.classLevel += "002 "
+          }
+          else if (state.form.classLevelList[i] == "중급") {
+            state.form.classLevel += "003 "
+          }
+          else if (state.form.classLevelList[i] == "고급") {
+            state.form.classLevel += "004 "
+          }
+        }
+      }
+
+      // 요일 처리
+      if (state.form.classDayList.length == 0){
+        state.form.classDay = "월화수목금토일"
+      }
+      else {
+        for(let i = 0; i<state.form.classDayList.length; i++){
+          if ( state.form.classDayList[i] == "월"){
+            state.form.classDay += "월"
+          }
+          else if ( state.form.classDayList[i] == "화"){
+            state.form.classDay += "화"
+          }
+          else if ( state.form.classDayList[i] == "수"){
+            state.form.classDay += "수"
+          }
+          else if ( state.form.classDayList[i] == "목"){
+            state.form.classDay += "목"
+          }
+          else if ( state.form.classDayList[i] == "금"){
+            state.form.classDay += "금"
+          }
+          else if ( state.form.classDayList[i] == "토"){
+            state.form.classDay += "토"
+          }
+          else if ( state.form.classDayList[i] == "일"){
+            state.form.classDay += "일"
+          }
+        }
+      }
+
+      // 시간 처리
+      if (state.form.time == ""){
+        state.form.classStartTime = "00";
+        state.form.classEndTime = "23";
+      }
+      else if (state.form.time == "오전(12시 이전)") {
+        state.form.classStartTime = "00";
+        state.form.classEndTime = "13";
+      }
+      else if (state.form.time == "오후(18시 이전)"){
+        state.form.classStartTime = "12";
+        state.form.classEndTime = "19";
+      }
+      else if (state.form.time == "오후(18시 이후)") {
+        state.form.classStartTime = "18";
+        state.form.classEndTime = "23";
+      }
+
+      store.commit("root/setClassType", state.form.classType)
+      store.commit("root/setClassLevel", state.form.classLevel)
+      store.commit("root/setClassDay", state.form.classDay)
+      store.commit("root/setClassStartTime", state.form.classStartTime)
+      store.commit("root/setClassEndTime", state.form.classEndTime)
+
+      // console.log("설정창 classType : " + state.form.classType)
+      // console.log("설정창 classLevel : " + state.form.classLevel)
+      // console.log("설정창 classDay : " + state.form.classDay)
+      // console.log("설정창 classStartTime : " + state.form.classStartTime)
+      // console.log("설정창 classEndTime : " + state.form.classEndTime)
+
+      emit("closeSearchDialog");
+    };
+
+    const handleClose = function() {
+      // state.form.classTypeList = []
+      // state.form.classLevelList = []
+      // state.form.classDayList = []
+      // state.form.time = ""
+      emit("closeSearchDialog");
+    };
+
+    return { searchForm, loading, state, clickSearch, handleClose };
+  }
+};
+</script>
 <style>
 .join-dialog {
   width: 500px !important;
@@ -88,72 +243,3 @@
   width: 120px;
 }
 </style>
-<script>
-import { reactive, computed, ref, onMounted } from "vue";
-import { useStore } from "vuex";
-
-export default {
-  name: "search-dialog",
-
-  props: {
-    open: {
-      type: Boolean,
-      default: false
-    }
-  },
-
-  setup(props, { emit }) {
-    const store = useStore();
-    // 마운드 이후 바인딩 될 예정 - 컨텍스트에 노출시켜야함. <return>
-    const searchForm = ref(null);
-    const loading = ref(false);
-
-    /*
-      // Element UI Validator
-      // rules의 객체 키 값과 form의 객체 키 값이 같아야 매칭되어 적용됨
-      //
-    */
-
-    const state = reactive({
-      form: {
-        type: [],
-        level: [],
-        day: [],
-        time: [],
-        align: "left"
-      },
-
-      dialogVisible: computed(() => props.open),
-      formLabelWidth: "120px"
-    });
-
-    const clickSearch = function() {
-      alert(
-        "당신의 선택은? \ntype : " +
-          state.form.type +
-          "\nlevel : " +
-          state.form.level +
-          "\nday : " +
-          state.form.day +
-          "\ntime : " +
-          state.form.time
-      );
-      // console.log("type : "+state.form.type)
-      // console.log("level : "+state.form.level)
-      // console.log("day : "+state.form.day)
-      // console.log("time : "+state.form.time)
-      emit("closeSearchDialog");
-    };
-
-    const handleClose = function() {
-      // state.form.type = []
-      // state.form.level = []
-      // state.form.day = []
-      // state.form.time = []
-      emit("closeSearchDialog");
-    };
-
-    return { searchForm, loading, state, clickSearch, handleClose };
-  }
-};
-</script>

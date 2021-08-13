@@ -91,6 +91,16 @@ export function getClassList({ state }) {
   return $axios.get(url);
 }
 
+// 클래스 검색하기
+export function getSearchClassList({ state }, payload) {
+  let p = payload;
+  const url =
+    `/class?searchType=${p.searchType}&searchKeyword=${p.searchKeyword}
+    &classType=${p.classType}&classLevel=${p.classLevel}&classDay=${p.classDay}
+    &classStartTime=${p.classStartTime}&classEndTime=${p.classEndTime}`;
+  return $axios.get(url);
+}
+
 // 클래스 상세 조회
 export function getClassDetail({}, payload) {
   let body = payload;

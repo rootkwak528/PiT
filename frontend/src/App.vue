@@ -97,15 +97,14 @@ export default {
         localStorage.getItem("jwt-auth-token") != null
       ) {
         store.commit("root/setIsLogined", true);
-        store
-          .dispatch("root/getUserInfo", {
-            token: localStorage.getItem("jwt-auth-token")
-          })
-          .then(function(result) {
-            store.commit("root/setProfileUrl", result.data.userProfile);
-            store.commit("root/setUserType", result.data.userTypeName);
-            store.commit("root/setUserType", result.data.userNickname);
-          });
+        store.dispatch("root/getUserInfo", {
+          token: localStorage.getItem("jwt-auth-token")
+        })
+        .then(function(result){
+          store.commit("root/setProfileUrl", result.data.userProfile);
+          store.commit("root/setUserType", result.data.userTypeName);
+          store.commit("root/setUserNickname", result.data.userNickname);
+        })
       }
     }
     return { store };

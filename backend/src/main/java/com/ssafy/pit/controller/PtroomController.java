@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -27,6 +28,18 @@ public class PtroomController {
 	@Autowired
 	PtroomService ptroomService;
 	
+	// PTroom 생성
+	@PostMapping()
+	public ResponseEntity<BaseResponseBody> createPtroom(Authentication authentication){
+		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
+		String userType = userDetails.getUser().getUserType();
+		System.out.println(userType);
+		
+		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "ptroom이 개설되었습니다."));
+	}
+	
+	
+	// PTroom 입장
 	@PutMapping("/enter/{classNo}")
 	public ResponseEntity<Integer> enterPtroom(Authentication authentication, @PathVariable int classNo) {
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
@@ -47,6 +60,7 @@ public class PtroomController {
 		}
 	}
 	
+	// PTroom 퇴장
 	@PutMapping("/leave/{classNo}")
 	public ResponseEntity<BaseResponseBody> leavePtroom(Authentication authentication, @PathVariable int classNo) {
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
