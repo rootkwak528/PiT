@@ -136,9 +136,9 @@
 </template>
 
 <script>
-import { reactive, computed, ref, onMounted } from "vue";
+import { reactive, computed, ref } from "vue";
 import { useStore } from "vuex";
-import { ElMessage, ElMessageBox } from "element-plus";
+import { ElMessage } from "element-plus";
 
 export default {
   name: "join-dialog",
