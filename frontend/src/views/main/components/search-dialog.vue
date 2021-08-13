@@ -194,6 +194,7 @@ export default {
       // console.log("설정창 classDay : " + state.form.classDay)
       // console.log("설정창 classStartTime : " + state.form.classStartTime)
       // console.log("설정창 classEndTime : " + state.form.classEndTime)
+
       emit("closeSearchDialog");
     };
 

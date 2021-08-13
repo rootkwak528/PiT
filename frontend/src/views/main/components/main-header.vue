@@ -193,7 +193,13 @@ export default {
       // 조회에 성공하면 searchresult로 이동하고 searchSelect, Keyword = ""
       router.push("/searchresult?word=" + state.searchKeyword);
       state.searchSelect = "";
+      // store.commit("root/setSearchType", "0");
       state.searchKeyword = "";
+      // store.commit("root/setClassType", "00");
+      // store.commit("root/setClassLevel", "00");
+      // store.commit("root/setClassDay", "월화수목금토일");
+      // store.commit("root/setClassStartTime", "00");
+      // store.commit("root/setClassEndTime", "23");
     };
 
     const getSearchClassList = function() {
@@ -209,6 +215,13 @@ export default {
         })
         .then(function(result) {
           store.commit("root/setClassList", result.data);
+          store.commit("root/setSearchType", "0");
+          store.commit("root/searchKeyword", "");
+          store.commit("root/setClassType", "00");
+          store.commit("root/setClassLevel", "00");
+          store.commit("root/setClassDay", "월화수목금토일");
+          store.commit("root/setClassStartTime", "00");
+          store.commit("root/setClassEndTime", "23");
 
           for (var i = 0; i < state.list.length; i++) {
             var startMonth = parseInt(
