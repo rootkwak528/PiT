@@ -194,7 +194,7 @@
 
 <script>
 import { reactive, computed, ref } from "vue";
-import { ElMessage } from "element-plus";
+import { ElMessage, ElSelect } from "element-plus";
 import { useStore } from "vuex";
 
 export default {
@@ -382,6 +382,15 @@ export default {
       isNicknameChecked: false
     });
 
+    const convertDataFormat = function(date) {
+      var year = date.getFullYear();
+      var month = date.getMonth() + 1;
+      month = month >= 10 ? month : "0" + month;
+      var day = date.getDate();
+      day = day >= 10 ? day : "0" + day;
+      return [year, month, day].join("-");
+    };
+
     const clickRegister = function() {
       openclassForm.value.validate(valid => {
         if (valid) {
@@ -391,11 +400,18 @@ export default {
               type: "error"
             });
           } else {
-            state.form.classStartDate = state.form.classDate[0].toDateString();
-            state.form.classEndDate = state.form.classDate[1].toDateString();
+            console.log(state.form.classDate[0]);
+            state.form.classStartDate = convertDataFormat(
+              state.form.classDate[0]
+            );
+            state.form.classEndDate = convertDataFormat(
+              state.form.classDate[1]
+            );
 
-            console.log(state.form.classStartDate.getMonth());
-            console.log(state.form.classEndDate);
+            console.log(convertDataFormat(state.form.classDate[0]));
+
+            //console.log(startString);
+            //console.log(endString);
 
             state.form.classStartTime = state.form.classStartTime.split(":")[0];
             state.form.classEndTime = state.form.classEndTime.split(":")[1];
@@ -404,44 +420,43 @@ export default {
             for (var i = 0; i < state.form.classDay.length; i++) {
               day += state.form.classDay[i];
             }
-
-            // store
-            //   .dispatch("root/createClass", {
-            //     classType: state.form.classType,
-            //     classTitle: state.form.classTitle,
-            //     classDay: day,
-            //     classDesc: state.form.classDesc,
-            //     classStartDate: state.form.classStartDate,
-            //     classEndDate: state.form.classEndDate,
-            //     classStartTime: state.form.classStartTime,
-            //     classEndTime: state.form.classEndTime,
-            //     classCurri: state.form.classCurri,
-            //     classPrice: state.form.classPrice,
-            //     classMaterial: state.form.classMaterial,
-            //     classLevel: state.form.classLevel,
-            //     classLimit: state.form.classLimit,
-            //     classTcnt: state.form.classTcnt,
-            //     classThumbnail: state.form.classThumbnail,
-            //     classSubPhotos: "",
-            //     ptroomUrl: ""
-            //   })
-            //   .then(function(result) {
-            //     // localStorage 에 jwt 토큰 저장
-            //     ElMessage({
-            //       message: "회원가입이 완료되었습니다.",
-            //       type: "success"
-            //     });
-            //     loading.value = false;
-            //     emit("closeJoinDialog");
-            //   })
-            //   .catch(function(err) {
-            //     ElMessage({
-            //       message: err.response.data.message,
-            //       type: "error"
-            //     });
-            //     loading.value = false;
-            //     emit("closeJoinDialog");
-            //   });
+            var subPhotoArr = [];
+            store
+              .dispatch("root/createClass", {
+                classType: state.form.classType,
+                classTitle: state.form.classTitle,
+                classDay: day,
+                classDesc: state.form.classDesc,
+                classStartDate: state.form.classStartDate,
+                classEndDate: state.form.classEndDate,
+                classStartTime: state.form.classStartTime,
+                classEndTime: state.form.classEndTime,
+                classCurri: state.form.classCurri,
+                classPrice: state.form.classPrice,
+                classMaterial: state.form.classMaterial,
+                classLevel: state.form.classLevel,
+                classLimit: state.form.classLimit,
+                classTcnt: state.form.classTcnt,
+                classThumbnail: state.form.classThumbnail,
+                classSubPhotos: subPhotoArr
+              })
+              .then(function(result) {
+                // localStorage 에 jwt 토큰 저장
+                ElMessage({
+                  message: "회원가입이 완료되었습니다.",
+                  type: "success"
+                });
+                loading.value = false;
+                emit("closeJoinDialog");
+              })
+              .catch(function(err) {
+                ElMessage({
+                  message: err.response.data.message,
+                  type: "error"
+                });
+                loading.value = false;
+                emit("closeJoinDialog");
+              });
           }
         }
       });
@@ -458,13 +473,6 @@ export default {
       state.form.classThumbnail = URL.createObjectURL(file.raw);
     };
 
-    const toStringByFormatting = function(source, delimiter = "-") {
-      const year = source.getFullYear();
-      const month = leftPad(source.getMonth() + 1);
-      const day = leftPad(source.getDate());
-      return [year, month, day].join(delimiter);
-    };
-
     return {
       loading,
       state,
@@ -474,7 +482,7 @@ export default {
       handleExceed,
       handleFileSuccess,
       openclassForm,
-      toStringByFormatting
+      convertDataFormat
     };
   },
   methods: {
