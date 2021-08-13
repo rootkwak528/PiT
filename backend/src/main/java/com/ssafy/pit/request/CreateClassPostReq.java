@@ -26,6 +26,5 @@ public class CreateClassPostReq {
 	int classTcnt;
 	String classThumbnail;
 	List<String> classSubPhotos;
-	String ptroomUrl;
 	
 }

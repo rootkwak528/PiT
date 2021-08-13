@@ -22,12 +22,12 @@ public class PtroomServiceImpl implements PtroomService {
 	ClassRepository classRepository;
 	
 	@Override
-	public void createPtroom(String ptroomUrl, int classNo) {
+	public void createPtroom(String ptroomSessionName, int classNo) {
 		Ptroom ptroom = new Ptroom();
 		Classes classes = classRepository.findClassByClassNo(classNo);
 		ptroom.setClasses(classes);
 		ptroom.setPtroomLimit(classes.getClassLimit());
-		ptroom.setPtroomUrl(ptroomUrl);
+		ptroom.setPtroomSessionName(ptroomSessionName);
 		ptroomRepository.save(ptroom);
 		return;
 	}

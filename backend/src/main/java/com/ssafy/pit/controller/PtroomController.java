@@ -4,13 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ssafy.pit.common.auth.PitUserDetails;
 import com.ssafy.pit.common.response.BaseResponseBody;
+import com.ssafy.pit.repository.PtroomRepositorySupport;
 import com.ssafy.pit.service.ClassService;
 import com.ssafy.pit.service.PtroomService;
 import com.ssafy.pit.service.UserService;
@@ -28,22 +29,35 @@ public class PtroomController {
 	@Autowired
 	PtroomService ptroomService;
 	
-	// PTroom 생성
-	@PostMapping()
-	public ResponseEntity<BaseResponseBody> createPtroom(Authentication authentication){
-		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
-		String userType = userDetails.getUser().getUserType();
-		System.out.println(userType);
-		
-		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "ptroom이 개설되었습니다."));
-	}
+	@Autowired
+	PtroomRepositorySupport ptroomRepositorySupport;
 	
+	// PTroom 세션 네임 반환
+	@GetMapping("/enter/{classNo}")
+	public ResponseEntity<String> getSessionName(Authentication authentication, @PathVariable int classNo) {
+		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
+		String userEmail = userDetails.getUsername();
+		if(userService.validateUserType(userEmail) == 1) {
+			return ResponseEntity.status(403).body(null);
+		}
+		else {
+			try {
+				String sessionName = ptroomRepositorySupport.getPtroomByClassNo(classNo).getPtroomSessionName();
+				return ResponseEntity.status(200).body(sessionName);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				return ResponseEntity.status(500).body(null);
+			}
+		}
+	}
 	
 	// PTroom 입장
 	@PutMapping("/enter/{classNo}")
 	public ResponseEntity<Integer> enterPtroom(Authentication authentication, @PathVariable int classNo) {
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
 		String userEmail = userDetails.getUsername();
+		System.out.println("userType : "+userService.validateUserType(userEmail));
 		if(userService.validateUserType(userEmail) == 1) {
 			return ResponseEntity.status(403).body(null);
 		}
@@ -60,11 +74,12 @@ public class PtroomController {
 		}
 	}
 	
-	// PTroom 퇴장
+	// PTroom 종료하기
 	@PutMapping("/leave/{classNo}")
 	public ResponseEntity<BaseResponseBody> leavePtroom(Authentication authentication, @PathVariable int classNo) {
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
 		String userEmail = userDetails.getUsername();
+		System.out.println("userType : "+userService.validateUserType(userEmail));
 		if(userService.validateUserType(userEmail) == 2) {
 			try {
 				ptroomService.leavePtroom(classNo);

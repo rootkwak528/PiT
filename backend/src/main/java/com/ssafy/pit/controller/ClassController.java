@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,6 +41,9 @@ public class ClassController {
 	
 	@Autowired
 	PtroomService ptroomService;
+	
+	@Autowired
+	PasswordEncoder passwordEncoder;
 	
 	// 클래스 상세값 가져오기 (모든 사용자가 사용가능, 001만 조회)
 	@GetMapping("/{classNo}")
@@ -204,8 +208,11 @@ public class ClassController {
 				int classNo = classService.getLatestClassNo();
 				System.out.println("추가된 클래스의 최신 classNo: " + classNo );
 				
-				String ptroomUrl = createClassInfo.getPtroomUrl();
-				ptroomService.createPtroom(ptroomUrl, classNo);
+				// 클래스 개설한 userName, classTitle, classDay를 encode 하여 ptroomSessionName 생성
+				String ptroomSessionName = 
+						passwordEncoder.encode(user.getUserName()+createClassInfo.getClassTitle()+createClassInfo.getClassDay());
+ 
+				ptroomService.createPtroom(ptroomSessionName, classNo);
 				
 				String thumbnailPhoto = createClassInfo.getClassThumbnail();
 				// 썸네일 이미지 넣기

@@ -15,10 +15,10 @@ public class PtroomRepositorySupport {
 	
 	QPtroom qPtroom= QPtroom.ptroom;
 	
-	public String getPtroomUrl(int classNo) {
-		String ptroomUrl = query.select(qPtroom.ptroomUrl).from(qPtroom).where(qPtroom.classes.classNo.eq(classNo)).fetchOne();
-		return ptroomUrl;
-	}
+//	public String getPtroomUrl(int classNo) {
+//		String ptroomUrl = query.select(qPtroom.ptroomUrl).from(qPtroom).where(qPtroom.classes.classNo.eq(classNo)).fetchOne();
+//		return ptroomUrl;
+//	}
 	
 	public Ptroom getPtroomByClassNo(int classNo) {
 		Ptroom ptroom = query.selectFrom(qPtroom).where(qPtroom.classes.classNo.eq(classNo)).fetchOne();

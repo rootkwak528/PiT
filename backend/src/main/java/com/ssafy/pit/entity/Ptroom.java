@@ -53,7 +53,9 @@ public class Ptroom {
 	int ptroomLimit;
 	@Column(name="ptroom_ucnt")
 	int ptroomUcnt;
-	@Column(name="ptroom_url")
-	String ptroomUrl;
+//	@Column(name="ptroom_url")
+//	String ptroomUrl;
+	@Column(name="ptroom_session_name")
+	String ptroomSessionName;
 	
 }
