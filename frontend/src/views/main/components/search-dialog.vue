@@ -94,6 +94,12 @@ export default {
 
     const clickSearch = function() {
 
+      state.form.classType = "";
+      state.form.classLevel = "";
+      state.form.classDay = "";
+      state.form.classStartTime = "";
+      state.form.classEndTime = "";
+
       // 타입 처리
       if (state.form.classTypeList.length == 0){
         state.form.classType = "00"

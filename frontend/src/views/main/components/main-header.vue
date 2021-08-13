@@ -216,7 +216,7 @@ export default {
         .then(function(result) {
           store.commit("root/setClassList", result.data);
           store.commit("root/setSearchType", "0");
-          store.commit("root/searchKeyword", "");
+          store.commit("root/setSearchKeyword", "");
           store.commit("root/setClassType", "00");
           store.commit("root/setClassLevel", "00");
           store.commit("root/setClassDay", "월화수목금토일");
