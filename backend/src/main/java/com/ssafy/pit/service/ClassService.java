@@ -5,6 +5,7 @@ import java.util.List;
 import com.ssafy.pit.entity.User;
 import com.ssafy.pit.request.ClassSearchGetReq;
 import com.ssafy.pit.request.CreateClassPostReq;
+import com.ssafy.pit.request.SetVideoUrlsPostReq;
 import com.ssafy.pit.response.ClassDetailGetRes;
 import com.ssafy.pit.response.ClassListGetRes;
 import com.ssafy.pit.response.RegisterClassGetRes;
@@ -25,6 +26,6 @@ public interface ClassService {
 	int enrollClass(User user, int classNo) throws Exception;
 	void updateClassPermission(int classNo, String permission) throws Exception;
 	List<String> getVideoUrls(int userNo, int classNo) throws Exception;
-	 
+	void setVideoUrls(int userNo, int classNo, SetVideoUrlsPostReq setVideoUrlsInfo) throws Exception;
 	
 }

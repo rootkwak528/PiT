@@ -48,7 +48,7 @@ public class UserVideo {
 	Ptroom ptroom;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="video_savetime")
+	@Column(name="video_savetime", nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	Date videoSavetime;
 	@Column(name="video_url")
 	String videoUrl;

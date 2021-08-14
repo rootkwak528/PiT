@@ -1,6 +1,7 @@
 package com.ssafy.pit.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -14,6 +15,7 @@ import com.ssafy.pit.entity.Ptroom;
 import com.ssafy.pit.entity.User;
 import com.ssafy.pit.entity.UserClass;
 import com.ssafy.pit.entity.UserLikes;
+import com.ssafy.pit.entity.UserVideo;
 import com.ssafy.pit.repository.ClassPhotoRepository;
 import com.ssafy.pit.repository.ClassPhotoRepositorySupport;
 import com.ssafy.pit.repository.ClassRepository;
@@ -24,9 +26,11 @@ import com.ssafy.pit.repository.PtroomRepositorySupport;
 import com.ssafy.pit.repository.UserClassRepository;
 import com.ssafy.pit.repository.UserLikesRepository;
 import com.ssafy.pit.repository.UserRepository;
+import com.ssafy.pit.repository.UserVideoRepository;
 import com.ssafy.pit.repository.UserVideoRepositorySupport;
 import com.ssafy.pit.request.ClassSearchGetReq;
 import com.ssafy.pit.request.CreateClassPostReq;
+import com.ssafy.pit.request.SetVideoUrlsPostReq;
 import com.ssafy.pit.response.ClassDetailGetRes;
 import com.ssafy.pit.response.ClassListGetRes;
 import com.ssafy.pit.response.CommentRes;
@@ -64,6 +68,9 @@ public class ClassServiceImpl implements ClassService {
 	
 	@Autowired
 	PtroomRepositorySupport ptroomRepositorySupport;
+	
+	@Autowired
+	UserVideoRepository userVideoRepository;
 	
 	@Autowired
 	UserVideoRepositorySupport userVideoRepositorySupport;
@@ -437,11 +444,18 @@ public class ClassServiceImpl implements ClassService {
 		return;
 	}
 	
-//	@Override
-//	public void setVideoUrls(int userNo, int classNo) throws Exception {
-//		Classes classes = classRepository.findClassByClassNo(classNo);
-//		return;
-//	}
+	@Override
+	public void setVideoUrls(int userNo, int classNo, SetVideoUrlsPostReq setVideoUrlsInfo) throws Exception {
+		UserVideo userVideo = new UserVideo();
+		User user = userRepository.findUserByUserNo(userNo);
+		Ptroom ptroom = ptroomRepositorySupport.getPtroomByClassNo(classNo);
+		BeanUtils.copyProperties(setVideoUrlsInfo, userVideo);
+		userVideo.setUser(user);
+		userVideo.setPtroom(ptroom);
+//		userVideo.setVideoUrl(videoUrl);
+		userVideoRepository.save(userVideo);
+		return;
+	}
 
 	@Override
 	public List<String> getVideoUrls(int userNo, int classNo) throws Exception {
