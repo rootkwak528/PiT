@@ -4,7 +4,7 @@
     <div v-if="state.list.length == 0">찜한 클래스가 없어요!</div>
     <div class="class-card-wrapper">
       <el-card
-        class="class-card"
+        class="wrap"
         shadow="none"
         v-for="classItem in state.list"
         :key="classItem"
@@ -15,11 +15,13 @@
         }"
         style="margin: 5px"
       >
+        <span class="delete" @click="testDelete">삭제버튼</span>
         <router-link
           :to="`/classdetail?classNo=${classItem.classNo}`"
           style="text-decoration: none; color: inherit;"
         >
           <el-image
+            id="#elImage"
             :src="classItem.classThumbnail"
             fit="cover"
             style="width: 300px; height: 200px;"
@@ -47,13 +49,12 @@
       </el-card>
     </div>
   </div>
-
 </template>
 
 <script>
-import { useStore } from 'vuex'
+import { useStore } from "vuex";
 import { reactive } from "@vue/reactivity";
-import { onMounted } from '@vue/runtime-core';
+import { onMounted } from "@vue/runtime-core";
 
 export default {
   name: "FavoriteClass",
@@ -65,7 +66,13 @@ export default {
 
     onMounted(() => {
       getClassLikesList();
-    })
+    });
+
+    const testDelete = function(event) {
+      alert("테스트 삭제");
+      event.stopPropagation();
+    };
+
     // 찜한 클래스 목록 조회하기 함수
     const getClassLikesList = function() {
       store
@@ -83,20 +90,27 @@ export default {
             );
           }
         })
-        .catch(function(err){
+        .catch(function(err) {
           alert(err.response);
-        })
-    }
+        });
+    };
 
     return {
       state,
-      getClassLikesList
-    }
+      getClassLikesList,
+      testDelete
+    };
   }
-}
+};
 </script>
 <style>
-.class-card:hover{
-  box-shadow: 8px 8px 20px #ddd;
+.delete {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  z-index: 100;
+}
+.wrap {
+  position: relative;
 }
 </style>
