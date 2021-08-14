@@ -25,12 +25,24 @@
           <div class="title">{{ classItem.classTitle }}</div>
           <!-- <div class="desc">{{ classItem.classDesc }}</div> -->
           <div class="registerclass-card-bottom">
+            
+            <!-- PT룸 입장 버튼 -->
             <el-button
+              v-if="classItem.classTeacherName==userNickname"
               icon="el-icon-s-home"
               class="btn-enter"
-              @click="joinSession"
-              >입장하기
+              @click="onClickPTRoomBtn"
+              >PT룸 개설하기
             </el-button>
+
+            <el-button
+              v-else
+              icon="el-icon-s-home"
+              class="btn-enter"
+              @click="onClickPTRoomBtn"
+              >PT룸 입장하기
+            </el-button>
+
             <el-progress
               :text-inside="true"
               :stroke-width="24"
@@ -53,45 +65,14 @@
 
 <script>
 import { onMounted } from "@vue/runtime-core";
-import { useStore } from "vuex";
+import { useStore, mapState } from "vuex";
 import { reactive } from "@vue/reactivity";
+import axios from 'axios'
 
 export default {
   name: "RegisterClassTest",
   components: {
     // Calendar,
-  },
-  methods: {
-    format(percentage) {
-      return percentage === 100 ? "Full" : `${percentage}%`;
-    },
-
-    joinSession(event) {
-      const trainerName = event.target.parentElement.parentElement.parentElement.querySelector(
-        ".trainer"
-      ).innerText;
-      const sessionName = this.hashCode(trainerName);
-      const nickname = "abc";
-      const redirectUrl = "https://i5a204.p.ssafy.io:5000/";
-
-      const targetWindow = window.open(redirectUrl);
-      setTimeout(function() {
-        targetWindow.postMessage({ sessionName, nickname }, redirectUrl);
-      }, 500);
-    },
-
-    hashCode(str) {
-      var hash = 0,
-        i,
-        chr;
-      if (str.length === 0) return hash;
-      for (i = 0; i < str.length; i++) {
-        chr = str.charCodeAt(i);
-        hash = (hash << 5) - hash + chr;
-        hash |= 0;
-      }
-      return hash;
-    }
   },
   setup() {
     const store = useStore();
@@ -211,9 +192,77 @@ export default {
           console.log(err);
         });
     };
+    return { store, getRegisterClassList, classData };
+  },
 
-    return { getRegisterClassList, classData };
-  }
+  computed: {
+    ...mapState({
+      userNickname: state => state.root.userNickname,
+    })
+  },
+
+  methods: {
+    format(percentage) {
+      return percentage === 100 ? "Full" : `${percentage}%`;
+    },
+
+    onClickPTRoomBtn(event) {
+      const trainerName = event.target.parentElement.parentElement.parentElement.querySelector(
+        ".trainer"
+      ).innerText;
+      const classTitle = event.target.parentElement.parentElement.parentElement.querySelector(
+        ".title"
+      ).innerText;
+      
+      let sessionName
+      let classNo
+
+      for (let i=0; i<this.classData.classList.length; i++) {
+        if (classTitle == this.classData.classList[i].classTitle) {
+          classNo = this.classData.classList[i].classNo
+          this.$store
+            .dispatch("root/getSessionName", {classNo})
+            .then(res => {
+              sessionName = res.data
+            })
+          break
+        }
+      }
+
+      const nickname = this.userNickname;
+      const isTrainer = trainerName == nickname;
+      const redirectUrl = "https://i5a204.p.ssafy.io:5000/";
+      let isAvail
+
+      // 피티룸 개설됐는지 확인
+      this.$store
+        .dispatch("root/getSessionAvail", {classNo})
+        .then(res => {
+          isAvail = res.data
+        })
+
+      // 수강생은 빈 피티룸에 입장 불가
+      if (!isTrainer && !isAvail) {
+        alert('아직 PT룸이 개설되지 않았습니다.')
+        
+      } else {
+        const targetWindow = window.open(redirectUrl);
+        setTimeout(function() {
+          targetWindow.postMessage(
+            { sessionName, nickname, isTrainer, classNo, classTitle },
+            redirectUrl
+          );
+
+          // 트레이너가 피티룸 개설하면 입장 확인
+          if (isTrainer) {
+            this.$store
+              .dispatch("root/enterSession", {classNo})
+              .then()
+          }
+        }, 1000);
+      }
+    },
+  },
 };
 </script>
 

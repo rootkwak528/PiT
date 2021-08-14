@@ -212,3 +212,36 @@ export function enrollClass({ state }, payload) {
     }
   });
 }
+
+// 세션 네임 조회 - /ptroom/enter/{classNo}  GET
+export function getSessionName({ state }, payload) {
+  const url = `/ptroom/enter/${payload.classNo}`
+  let token = "Bearer " + localStorage.getItem("jwt-auth-token");
+  return $axios.get(url, {
+    headers: {
+      Authorization: token
+    }
+  })
+}
+
+// 세션 개설여부 조회 - /ptroom/{classNo}  GET
+export function getSessionAvail({ state }, payload) {
+  const url = `/ptroom/${payload.classNo}`
+  let token = "Bearer " + localStorage.getItem("jwt-auth-token");
+  return $axios.get(url, {
+    headers: {
+      Authorization: token
+    }
+  })
+}
+
+// 세션 입장 - /ptroom/enter/{classNo}  PUT
+export function enterSession({ state }, payload) {
+  const url = `/ptroom/enter/${payload.classNo}`
+  let token = "Bearer " + localStorage.getItem("jwt-auth-token");
+  return $axios.put(url, {
+    headers: {
+      Authorization: token
+    }
+  })
+}
