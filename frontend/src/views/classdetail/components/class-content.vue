@@ -11,14 +11,14 @@
         <pre>{{ state.form.classCurri }}</pre>
         <el-divider />
         <h3>커뮤니티</h3>
-        <div v-for="o in state.form.comments" :key="o">
+        <div v-for="comment in state.form.comments" :key="comment">
           <el-card class="box-card">
             <div class="rate">
-              <div style="margin-right: 20px">사용자</div>
-              <div>{{ o.commentWriteDate }}</div>
+              <div style="margin-right: 20px">{{ comment.userNickname }}</div>
+              <div>{{ comment.commentWriteDate }}</div>
             </div>
             <div>
-              {{ o.commentContent }}
+              {{ comment.commentContent }}
             </div>
           </el-card>
         </div>
@@ -31,14 +31,14 @@
     <el-tab-pane label="커뮤니티" name="review"
       ><h3>커뮤니티</h3>
       <div>
-        <div v-for="o in state.form.comments" :key="o">
+        <div v-for="comment in state.form.comments" :key="comment">
           <el-card class="box-card">
             <div class="rate">
-              <div style="margin-right: 20px">사용자</div>
-              <div>{{ o.commentWriteDate }}</div>
+              <div style="margin-right: 20px">{{ comment.userNickname }}</div>
+              <div>{{ comment.commentWriteDate }}</div>
             </div>
             <div>
-              {{ o.commentContent }}
+              {{ comment.commentContent }}
             </div>
           </el-card>
         </div>
