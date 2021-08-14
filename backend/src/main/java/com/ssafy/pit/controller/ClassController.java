@@ -133,8 +133,12 @@ public class ClassController {
 			else if(classService.registerClassLikes(userNo, classNo) == 2) {
 				return ResponseEntity.status(200).body(BaseResponseBody.of(403, "접근할 수 없는 페이지입니다."));
 			}
-			else {				
+			else if(classService.registerClassLikes(userNo, classNo) == 3){				
+				return ResponseEntity.status(409).body(BaseResponseBody.of(409, "이미 찜한 클래스입니다."));
+			}
+			else {
 				return ResponseEntity.status(500).body(BaseResponseBody.of(500, "등록과정에 문제가 생겼습니다."));
+				
 			}
 		}
 		else {

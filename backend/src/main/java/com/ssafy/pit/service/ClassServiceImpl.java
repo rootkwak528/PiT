@@ -253,6 +253,10 @@ public class ClassServiceImpl implements ClassService {
 				return 2;
 			}
 			
+			if (classRepositorySupport.getUserLikesNo(userNo, classNo) > 0) {
+				return 3;
+			}
+			
 			UserLikes userLikes = new UserLikes();
 			userLikes.setUser(user);
 			userLikes.setClasses(classes);
