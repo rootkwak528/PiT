@@ -157,6 +157,7 @@ export default {
           alert("찜 목록에 추가 되었습니다.");
         })
         .catch(function(err) {
+          alert(err.response.data.message);
           console.log(err);
         });
     };

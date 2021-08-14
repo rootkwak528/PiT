@@ -15,6 +15,7 @@
     <div class="class-card-wrapper">
       <el-card
         shadow="none"
+        class="class-card"
         v-for="classItem in state.list"
         :key="classItem"
         :body-style="{
