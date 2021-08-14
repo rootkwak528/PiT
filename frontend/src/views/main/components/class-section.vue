@@ -69,8 +69,10 @@ export default {
         .dispatch("root/getClassList")
         .then(function(result) {
           state.list = result.data;
+          const today = new Date();
 
           for (var i = 0; i < state.list.length; i++) {
+            // 월단위 가격 계산
             var startMonth = parseInt(
               result.data[i].classStartDate.split("-")[1]
             );
@@ -81,6 +83,22 @@ export default {
               ) * 10;
 
             result.data[i].classPrice = tmp;
+
+            // 날짜 지난 클래스 삭제
+            var classEndMonth = parseInt(
+              result.data[i].classEndDate.split("-")[1]
+            );
+            var classEndDate = parseInt(
+              result.data[i].classEndDate.split("-")[2]
+            );
+
+            if (
+              classEndMonth <= today.getMonth() + 1 &&
+              classEndDate < today.getDate()
+            ) {
+              console.log(state.list[i].classTitle);
+              state.list.splice(i, 1);
+            }
           }
         })
         .catch(function(err) {
