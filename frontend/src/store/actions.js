@@ -189,6 +189,16 @@ export function getClassLikesList() {
 }
 
 // 찜한 클래스 등록 -  /class/likes/{classNo}  POST
+export function registerClassLikes({state}, payload) {
+  const url = `/class/likes/${payload.classNo}`
+  let body = payload
+  let token = "Bearer " + localStorage.getItem("jwt-auth-token");
+  return $axios.post(url, body, {
+    headers: {
+      Authorization: token
+    }
+  })
+}
 
 
 // 찜한 클래스 삭제 -  /class/likes/{classNo}  DELETE

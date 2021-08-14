@@ -47,6 +47,10 @@ export function getClassList(state) {
   return state.classList;
 }
 
+export function getUserLikesClassList(state) {
+  return state.userLikesClassNo;
+}
+
 // // 플랫폼 관련 정보 가져오기
 // export function getIsDesktopPlatform(state) {
 //   return state.isDesktopPlatform;

@@ -37,7 +37,8 @@
         <div></div>
         <div>월 {{ state.form.classPricePerMonth }}원</div>
       </div>
-      <button class="btn-submit">신청하기</button>
+      <button class="btn-submit" @click="clickRegisterClass">신청하기</button>
+      <button class="btn-favo" @click="clickClassLikes">찜하기</button>
     </div>
   </el-card>
 </template>
@@ -65,8 +66,14 @@ export default {
         classTcnt: "",
         classPrice: "",
         classPricePerMonth: ""
-      }
+      },
+      isInUserLikes: false,
+      userLikesClassList: computed(() => store.getters["root/getUserLikesClassList"])
     });
+
+    console.log("state.userLikesClassList : "+state.userLikesClassList);
+    console.log("getters.userLikesClassList : "+ store.getters["root/getUserLikesClassList"]);
+
 
     store
       .dispatch("root/getClassDetail", { classNo: props.classNo })
@@ -89,7 +96,28 @@ export default {
       .catch(function(err) {
         console.log(err);
       });
-    return { state };
+
+    const clickRegisterClass = function() {
+      alert("신청하기 클릭");
+    }
+
+    const clickClassLikes = function() {
+      store
+        .dispatch("root/registerClassLikes",{
+          classNo: props.classNo
+        })
+        .then(function(){
+          alert("찜 목록에 추가 되었습니다.");
+        })
+        .catch(function(err){
+          console.log(err);
+        })
+    }
+    return {
+      state,
+      clickRegisterClass,
+      clickClassLikes
+    };
   }
 };
 </script>
@@ -137,6 +165,17 @@ export default {
 .btn-submit {
   margin-top: 30px;
   background-color: #ef7764;
+  width: 100%;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  height: 40px;
+  font-size: 18px;
+  font-weight: bold;
+}
+.btn-favo {
+  margin-top: 10px;
+  background-color: rgb(239, 201, 128);
   width: 100%;
   color: white;
   border: none;
