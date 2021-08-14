@@ -61,38 +61,8 @@ export default {
     });
 
     onMounted(() => {
-      // getSearchClassList();
       getClassList();
     });
-
-    // const getSearchClassList = function() {
-    //   store
-    //     .dispatch("root/getSearchClassList",{
-    //       searchType: store.getters["root/getSearchType"],
-    //       searchKeyword: store.getters["root/getSearchKeyword"],
-    //       classType: store.getters["root/getClassType"],
-    //       classLevel: store.getters["root/getClassLevel"],
-    //       classDay: store.getters["root/getClassDay"],
-    //       classStartTime: store.getters["root/getClassStartTime"],
-    //       classEndTime: store.getters["root/getClassEndTime"],
-    //     })
-    //     .then(function(result) {
-    //       state.list = result.data;
-
-    //       for (var i = 0; i < state.list.length; i++) {
-    //         var startMonth = parseInt(
-    //           result.data[i].classStartDate.split("-")[1]
-    //         );
-    //         var endMonth = parseInt(result.data[i].classEndDate.split("-")[1]);
-    //         result.data[i].classPrice = Math.ceil(
-    //           result.data[i].classPrice / (endMonth - startMonth + 1)
-    //         );
-    //       }
-    //     })
-    //     .catch(function(err) {
-    //       alert(err.response);
-    //     });
-    // };
 
     const getClassList = function() {
       store
@@ -117,7 +87,6 @@ export default {
 
     return {
       state,
-      // getSearchClassList,
       getClassList,
     };
   }

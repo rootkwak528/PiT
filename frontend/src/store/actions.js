@@ -176,3 +176,19 @@ export function createClass({ state }, payload) {
     }
   });
 }
+
+// 찜한 클래스 목록 조회 -  /class/likes  GET
+export function getClassLikesList() {
+  const url = `/class/likes`;
+  let token = "Bearer " + localStorage.getItem("jwt-auth-token");
+  return $axios.get(url, {
+    headers: {
+      Authorization: token
+    }
+  })
+}
+
+// 찜한 클래스 등록 -  /class/likes/{classNo}  POST
+
+
+// 찜한 클래스 삭제 -  /class/likes/{classNo}  DELETE

@@ -9,6 +9,7 @@ import FinishedClass from "@/views/mypage/finishedClass";
 import RegisterClass from "@/views/mypage/registerClass";
 import RecordedVideo from "@/views/mypage/recordedVideo";
 import MyInfo from "@/views/mypage/myInfo";
+import FavoriteClass from "@/views/mypage/favoriteClass";
 import OpenClass from "@/views/mypage/openClass";
 
 import AdminMain from "@/views/adminpage/adminMain";
@@ -60,6 +61,11 @@ const routes = [
         path: "/myinfo",
         name: "MyInfo",
         component: MyInfo
+      },
+      {
+        path: "/favoriteclass",
+        name: "FavoriteClass",
+        component: FavoriteClass
       },
       {
         path: "/openClass",

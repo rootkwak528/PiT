@@ -24,7 +24,7 @@
         <el-menu-item index="openClass">클래스 개설</el-menu-item>
       </el-menu-item-group>
     </el-submenu>
-    <el-menu-item index="2" v-if="userTypeName == '수강생'">
+    <el-menu-item index="favoriteclass" v-if="userTypeName == '수강생'">
       <i class="el-icon-star-on"></i>
       <span>찜한 클래스</span>
     </el-menu-item>
