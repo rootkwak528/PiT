@@ -97,8 +97,11 @@ export default {
       if (!state.form.isLogined) {
         alert("로그인해주세요.");
       } else {
-        console.log(state.form.userType);
-        //if(store.state.userType == "");
+        if (state.form.userType === "수강생") {
+          // 여기에 클래스 신청하기 로직 추가하자.
+        } else {
+          alert("클래스는 수강생만 신청할 수 있습니다.");
+        }
       }
     };
 
