@@ -97,9 +97,13 @@ export default {
 
         var startMonth = parseInt(result.data.classStartDate.split("-")[1]);
         var endMonth = parseInt(result.data.classEndDate.split("-")[1]);
-        state.form.classPricePerMonth = Math.ceil(
-          result.data.classPrice / (endMonth - startMonth + 1)
-        );
+
+        var tmp =
+          Math.floor(
+            result.data.classPrice / (endMonth - startMonth + 1) / 10
+          ) * 10;
+
+        state.form.classPricePerMonth = tmp;
       })
       .catch(function(err) {
         console.log(err);

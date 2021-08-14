@@ -75,19 +75,23 @@ export default {
               result.data[i].classStartDate.split("-")[1]
             );
             var endMonth = parseInt(result.data[i].classEndDate.split("-")[1]);
-            result.data[i].classPrice = Math.ceil(
-              result.data[i].classPrice / (endMonth - startMonth + 1)
-            );
+            var tmp =
+              Math.floor(
+                result.data[i].classPrice / (endMonth - startMonth + 1) / 10
+              ) * 10;
+
+            result.data[i].classPrice = tmp;
           }
         })
         .catch(function(err) {
           alert(err.response);
+          console.log(err);
         });
     };
 
     return {
       state,
-      getClassList,
+      getClassList
     };
   }
 };
