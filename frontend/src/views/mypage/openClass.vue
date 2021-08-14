@@ -208,7 +208,7 @@ export default {
       { value: "001", label: "PT" },
       { value: "002", label: "요가" },
       { value: "003", label: "필라테스" },
-      { value: "003", label: "기타" }
+      { value: "004", label: "기타" }
     ];
 
     const classLevelOptions = [
@@ -414,7 +414,7 @@ export default {
             //console.log(endString);
 
             state.form.classStartTime = state.form.classStartTime.split(":")[0];
-            state.form.classEndTime = state.form.classEndTime.split(":")[1];
+            state.form.classEndTime = state.form.classEndTime.split(":")[0];
 
             var day = "";
             for (var i = 0; i < state.form.classDay.length; i++) {
@@ -441,9 +441,8 @@ export default {
                 classSubPhotos: subPhotoArr
               })
               .then(function(result) {
-                // localStorage 에 jwt 토큰 저장
                 ElMessage({
-                  message: "회원가입이 완료되었습니다.",
+                  message: "등록이 완료되었습니다.",
                   type: "success"
                 });
                 loading.value = false;

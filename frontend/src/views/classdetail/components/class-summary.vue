@@ -37,14 +37,14 @@
         <div></div>
         <div>월 {{ state.form.classPricePerMonth }}원</div>
       </div>
-      <button class="btn-submit">신청하기</button>
+      <button class="btn-submit" @click="clickRegister">신청하기</button>
     </div>
   </el-card>
 </template>
 
 <script>
 import { useStore } from "vuex";
-import { reactive, computed, ref, onMounted } from "vue";
+import { reactive, computed } from "vue";
 
 export default {
   name: "ClassSummary",
@@ -64,7 +64,10 @@ export default {
         classLevelName: "",
         classTcnt: "",
         classPrice: "",
-        classPricePerMonth: ""
+        classPricePerMonth: "",
+        userTypeName: "",
+        isLogined: computed(() => store.getters["root/getIsLogined"]),
+        userType: computed(() => store.getters["root/getUserType"])
       }
     });
 
@@ -89,7 +92,17 @@ export default {
       .catch(function(err) {
         console.log(err);
       });
-    return { state };
+
+    const clickRegister = function() {
+      if (!state.form.isLogined) {
+        alert("로그인해주세요.");
+      } else {
+        console.log(state.form.userType);
+        //if(store.state.userType == "");
+      }
+    };
+
+    return { state, clickRegister };
   }
 };
 </script>
