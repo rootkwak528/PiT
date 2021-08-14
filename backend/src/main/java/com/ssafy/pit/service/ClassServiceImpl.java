@@ -253,7 +253,7 @@ public class ClassServiceImpl implements ClassService {
 				return 2;
 			}
 			
-			if (classRepositorySupport.getUserLikesNo(userNo, classNo) > 0) {
+			if (classRepositorySupport.getUserLikesNo(userNo, classNo) != null) {
 				return 3;
 			}
 			

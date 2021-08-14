@@ -61,8 +61,8 @@ public class ClassRepositorySupport {
 		return classesList;
 	}
 
-	public int getUserLikesNo(int userNo, int classNo) {
-		int userLikesNo = query.select(qUserLikes.userLikesNo).from(qUserLikes).where(qUserLikes.user.userNo.eq(userNo).
+	public Integer getUserLikesNo(int userNo, int classNo) {
+		Integer userLikesNo = query.select(qUserLikes.userLikesNo).from(qUserLikes).where(qUserLikes.user.userNo.eq(userNo).
 				and(qUserLikes.classes.classNo.eq(classNo))).fetchOne();
 		return userLikesNo;
 	}
