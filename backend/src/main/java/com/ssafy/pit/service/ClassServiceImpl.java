@@ -362,8 +362,6 @@ public class ClassServiceImpl implements ClassService {
 				float classPercentage = Math.round((classCnt/totalCnt)*10000) / (float) 100.0;				
 				registerClass.setClassPercentage(classPercentage);
 				
-				String ptroomUrl = ptroomRepositorySupport.getPtroomUrl(classNo);
-				registerClass.setPtroomUrl(ptroomUrl);
 				
 				registerClass.setClassType(classes.getClassType());
 				
