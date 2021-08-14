@@ -46,6 +46,10 @@ export function setClassEndTime(state, classEndTime) {
 export function setClassList(state, classList) {
   state.classList = classList;
 }
+
+export function setUserLikesClassList(state, userLikesClassNo) {
+  state.userLikesClassNo = userLikesClassNo;
+}
 // export function setPlatform(state, isDesktop) {
 //   state.isDesktopPlatform = isDesktop;
 // }

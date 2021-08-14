@@ -3,7 +3,6 @@
     <div class="submenu-title">찜한 클래스</div>
     <div v-if="state.list.length == 0">찜한 클래스가 없어요!</div>
     <div class="class-card-wrapper">
-
       <el-card
         shadow="none"
         v-for="classItem in state.list"
@@ -53,6 +52,7 @@
 <script>
 import { useStore } from 'vuex'
 import { reactive } from "@vue/reactivity";
+import { onMounted } from '@vue/runtime-core';
 
 export default {
   name: "FavoriteClass",
@@ -62,13 +62,16 @@ export default {
       list: []
     });
 
+    onMounted(() => {
+      getClassLikesList();
+    })
     // 찜한 클래스 목록 조회하기 함수
     const getClassLikesList = function() {
       store
         .dispatch("root/getClassLikesList")
         .then(function(result) {
           state.list = result.data;
-
+          store.commit("root/setUserLikesClassList", result.data);
           for (var i = 0; i < state.list.length; i++) {
             var startMonth = parseInt(
               result.data[i].classStartDate.split("-")[1]

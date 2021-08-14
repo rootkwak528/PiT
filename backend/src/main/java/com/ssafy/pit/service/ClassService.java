@@ -25,5 +25,6 @@ public interface ClassService {
 	int enrollClass(User user, int classNo) throws Exception;
 	void updateClassPermission(int classNo, String permission) throws Exception;
 	List<String> getVideoUrls(int userNo, int classNo) throws Exception;
+	 
 	
 }

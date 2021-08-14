@@ -39,6 +39,7 @@ export default {
   activeMenu: "home",
   menus: menuData,
   isLogined: false,
+
   profileUrl: "",
   userType: "",
   userNickname: "",
@@ -52,4 +53,6 @@ export default {
   classEndTime: "23",
 
   classList: [],
+
+  userLikesClassList: [],
 };
