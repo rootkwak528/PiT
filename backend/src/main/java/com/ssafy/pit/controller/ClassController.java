@@ -296,8 +296,27 @@ public class ClassController {
 		}
 	}
 	
+	// 비디오 URL DB에 저장
+//	@PostMapping("/video")
+//	public ResponseEntity<String> setVideoUrls(Authentication authentication, @PathVariable int classNo, String videoUrls){
+//		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
+//		User user = userDetails.getUser();
+//		String userEmail = userDetails.getUsername();
+//		int userNo = user.getUserNo();
+//		if(userService.validateUserType(userEmail) == 3) {
+//			try {
+//				
+//			}
+//			catch (Exception e) {
+//				return ResponseEntity.status(500).body(null);
+//			}
+//		} else {
+//			return ResponseEntity.status(403).body(null);
+//		}
+//	}
+	
 	// 영상 다시보기 비디오들 리스트
-	@GetMapping("/replay/{classNo}")
+	@GetMapping("/video/{classNo}")
 	public ResponseEntity<List<String>> getVideoUrls(Authentication authentication, @PathVariable int classNo) {
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
 		User user = userDetails.getUser();
