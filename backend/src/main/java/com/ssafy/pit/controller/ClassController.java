@@ -22,6 +22,7 @@ import com.ssafy.pit.common.response.BaseResponseBody;
 import com.ssafy.pit.entity.User;
 import com.ssafy.pit.request.ClassSearchGetReq;
 import com.ssafy.pit.request.CreateClassPostReq;
+import com.ssafy.pit.request.SetVideoUrlsPostReq;
 import com.ssafy.pit.response.ClassDetailGetRes;
 import com.ssafy.pit.response.ClassListGetRes;
 import com.ssafy.pit.response.RegisterClassGetRes;
@@ -297,23 +298,28 @@ public class ClassController {
 	}
 	
 	// 비디오 URL DB에 저장
-//	@PostMapping("/video")
-//	public ResponseEntity<String> setVideoUrls(Authentication authentication, @PathVariable int classNo, String videoUrls){
-//		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
-//		User user = userDetails.getUser();
-//		String userEmail = userDetails.getUsername();
-//		int userNo = user.getUserNo();
-//		if(userService.validateUserType(userEmail) == 3) {
-//			try {
-//				
-//			}
-//			catch (Exception e) {
-//				return ResponseEntity.status(500).body(null);
-//			}
-//		} else {
-//			return ResponseEntity.status(403).body(null);
-//		}
-//	}
+	@PostMapping("/video/{classNo}")
+	public ResponseEntity<BaseResponseBody> setVideoUrls(Authentication authentication, @PathVariable int classNo, @RequestBody SetVideoUrlsPostReq setVideoUrlsInfo){
+		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
+		User user = userDetails.getUser();
+		String userEmail = userDetails.getUsername();
+		int userNo = user.getUserNo();
+		
+//		System.out.println(videoUrl);
+		
+		if(userService.validateUserType(userEmail) == 3) {
+			try {
+				classService.setVideoUrls(userNo, classNo, setVideoUrlsInfo);
+				System.out.println("녹화 비디오 DB에 저장.");
+				return ResponseEntity.status(200).body(BaseResponseBody.of(200, "DB에 URL이 저장되었습니다."));
+			}
+			catch (Exception e) {
+				return ResponseEntity.status(500).body(BaseResponseBody.of(500, "DB 저장에 실패했습니다."));
+			}
+		} else {
+			return ResponseEntity.status(403).body(BaseResponseBody.of(403, "알맞지 않은 사용자입니다."));
+		}
+	}
 	
 	// 영상 다시보기 비디오들 리스트
 	@GetMapping("/video/{classNo}")
