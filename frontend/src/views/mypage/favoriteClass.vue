@@ -4,6 +4,7 @@
     <div v-if="state.list.length == 0">찜한 클래스가 없어요!</div>
     <div class="class-card-wrapper">
       <el-card
+        class="class-card"
         shadow="none"
         v-for="classItem in state.list"
         :key="classItem"
@@ -95,5 +96,7 @@ export default {
 }
 </script>
 <style>
-
+.class-card:hover{
+  box-shadow: 8px 8px 20px #ddd;
+}
 </style>
