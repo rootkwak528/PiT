@@ -317,7 +317,7 @@ public class ClassController {
 				return ResponseEntity.status(500).body(BaseResponseBody.of(500, "DB 저장에 실패했습니다."));
 			}
 		} else {
-			return ResponseEntity.status(403).body(BaseResponseBody.of(403, "접근할 수 없는 페이지입니다."));
+			return ResponseEntity.status(403).body(BaseResponseBody.of(403, "알맞지 않은 사용자입니다."));
 		}
 	}
 	

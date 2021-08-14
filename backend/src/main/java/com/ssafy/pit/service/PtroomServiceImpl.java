@@ -48,5 +48,13 @@ public class PtroomServiceImpl implements PtroomService {
 		ptroomRepository.save(ptroom);
 		return;
 	}
+
+	@Override
+	public int getUserCnt(int classNo) throws Exception {
+		Ptroom ptroom = ptroomRepositorySupport.getPtroomByClassNo(classNo);
+		int userCnt = ptroom.getPtroomUcnt();
+		return userCnt;
+	}
+	
 	
 }

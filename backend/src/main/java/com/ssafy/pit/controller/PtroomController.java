@@ -32,6 +32,28 @@ public class PtroomController {
 	@Autowired
 	PtroomRepositorySupport ptroomRepositorySupport;
 	
+	// PTroom 인원 조회
+	@GetMapping("/{classNo}")
+	public ResponseEntity<Integer> getUserCnt(Authentication authentication, @PathVariable int classNo){
+		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
+		String userEmail = userDetails.getUsername();
+		System.out.println("userType : "+userService.validateUserType(userEmail));
+		if(userService.validateUserType(userEmail) == 1) {
+			return ResponseEntity.status(403).body(null);
+		}
+		else {
+			try {
+				int userCnt = ptroomService.getUserCnt(classNo);
+				return ResponseEntity.status(200).body(userCnt);				
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				return ResponseEntity.status(500).body(null);
+			}
+		}
+	}
+	
+	
 	// PTroom 세션 네임 반환
 	@GetMapping("/enter/{classNo}")
 	public ResponseEntity<String> getSessionName(Authentication authentication, @PathVariable int classNo) {
@@ -70,7 +92,6 @@ public class PtroomController {
 				e.printStackTrace();
 				return ResponseEntity.status(500).body(null);
 			}
-			
 		}
 	}
 	
