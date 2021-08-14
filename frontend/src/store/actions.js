@@ -94,8 +94,7 @@ export function getClassList({ state }) {
 // 클래스 검색하기
 export function getSearchClassList({ state }, payload) {
   let p = payload;
-  const url =
-    `/class?searchType=${p.searchType}&searchKeyword=${p.searchKeyword}
+  const url = `/class?searchType=${p.searchType}&searchKeyword=${p.searchKeyword}
     &classType=${p.classType}&classLevel=${p.classLevel}&classDay=${p.classDay}
     &classStartTime=${p.classStartTime}&classEndTime=${p.classEndTime}`;
   return $axios.get(url);
@@ -185,20 +184,31 @@ export function getClassLikesList() {
     headers: {
       Authorization: token
     }
-  })
+  });
 }
 
 // 찜한 클래스 등록 -  /class/likes/{classNo}  POST
-export function registerClassLikes({state}, payload) {
-  const url = `/class/likes/${payload.classNo}`
-  let body = payload
+export function registerClassLikes({ state }, payload) {
+  const url = `/class/likes/${payload.classNo}`;
+  let body = payload;
   let token = "Bearer " + localStorage.getItem("jwt-auth-token");
   return $axios.post(url, body, {
     headers: {
       Authorization: token
     }
-  })
+  });
 }
 
-
 // 찜한 클래스 삭제 -  /class/likes/{classNo}  DELETE
+
+// 클래스 신청하기
+export function enrollClass({ state }, payload) {
+  const url = `/class/enrollment/${payload.classNo}`;
+  let body = payload;
+  let token = "Bearer " + localStorage.getItem("jwt-auth-token");
+  return $axios.put(url, body, {
+    headers: {
+      Authorization: token
+    }
+  });
+}

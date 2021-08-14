@@ -72,12 +72,16 @@ export default {
         classPricePerMonth: ""
       },
       isInUserLikes: false,
-      userLikesClassList: computed(() => store.getters["root/getUserLikesClassList"])
+      userLikesClassList: computed(
+        () => store.getters["root/getUserLikesClassList"]
+      )
     });
 
-    console.log("state.userLikesClassList : "+state.userLikesClassList);
-    console.log("getters.userLikesClassList : "+ store.getters["root/getUserLikesClassList"]);
-
+    console.log("state.userLikesClassList : " + state.userLikesClassList);
+    console.log(
+      "getters.userLikesClassList : " +
+        store.getters["root/getUserLikesClassList"]
+    );
 
     store
       .dispatch("root/getClassDetail", { classNo: props.classNo })
@@ -107,6 +111,33 @@ export default {
       } else {
         if (state.form.userType === "수강생") {
           // 여기에 클래스 신청하기 로직 추가하자.
+          var flag = true;
+          store
+            .dispatch("root/getRegisterClassList")
+            .then(function(result) {
+              var classList = result.data;
+              for (var i = 0; i < classList.length; i++) {
+                if (classList[i].classNo == props.classNo) {
+                  alert("이미 수강중인 클래스입니다.");
+                  flag = false;
+                  break;
+                }
+              }
+            })
+            .catch(function(err) {
+              console.log(err.response);
+            });
+
+          if (flag) {
+            store
+              .dispatch("root/enrollClass", { classNo: props.classNo })
+              .then(function(result) {
+                alert("신청이 완료되었습니다.");
+              })
+              .catch(function(err) {
+                console.log(err.response);
+              });
+          }
         } else {
           alert("클래스는 수강생만 신청할 수 있습니다.");
         }
@@ -115,29 +146,28 @@ export default {
 
     const clickClassLikes = function() {
       store
-        .dispatch("root/registerClassLikes",{
+        .dispatch("root/registerClassLikes", {
           classNo: props.classNo
         })
-        .then(function(){
+        .then(function() {
           alert("찜 목록에 추가 되었습니다.");
         })
-        .catch(function(err){
+        .catch(function(err) {
           console.log(err);
-        })
-    }
+        });
+    };
     return {
       state,
       clickRegister,
       clickClassLikes
     };
-
   }
 };
 </script>
 
 <style>
 .summary-card {
-  height: 550px;
+  height: 600px;
 }
 
 .card-header {

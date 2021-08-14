@@ -243,7 +243,7 @@ public class ClassController {
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
 		User user = userDetails.getUser();
 		String userEmail = userDetails.getUsername();
-		
+		System.out.println(userService.validateUserType(userEmail));
 		if(userService.validateUserType(userEmail) == 3) {
 			try {
 				if(classService.enrollClass(user, classNo) == 1) {
