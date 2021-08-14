@@ -42,8 +42,8 @@
         </div>
       </div>
       <div class="button-wrapper" v-else>
-        <div type="primary" @click="mvCart" class="button-wrapper-logined">
-          장바구니
+        <div type="primary" @click="mvFavoriteClass" class="button-wrapper-logined">
+          찜목록
         </div>
         <div type="primary" class="button-wrapper-logined">
           <router-link
@@ -262,8 +262,8 @@ export default {
       router.push("/");
     };
 
-    const mvCart = function() {
-      alert("장바구니 클릭1111!");
+    const mvFavoriteClass = function() {
+      router.push("/favoriteclass");
     };
 
     const checkAlert = function() {
@@ -278,7 +278,7 @@ export default {
       clickSearchDetail,
       changeCollapse,
       logout,
-      mvCart,
+      mvFavoriteClass,
       checkAlert,
       getSearchClassList
     };

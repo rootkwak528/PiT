@@ -436,6 +436,12 @@ public class ClassServiceImpl implements ClassService {
 		classRepository.save(classes);
 		return;
 	}
+	
+//	@Override
+//	public void setVideoUrls(int userNo, int classNo) throws Exception {
+//		Classes classes = classRepository.findClassByClassNo(classNo);
+//		return;
+//	}
 
 	@Override
 	public List<String> getVideoUrls(int userNo, int classNo) throws Exception {
