@@ -42,6 +42,12 @@ public class EventController {
 		return ResponseEntity.status(200).body(eventInfoList);
 	}
 	
+	@GetMapping("/{eventNo}")
+	public ResponseEntity<Event> getEventDetail(@PathVariable int eventNo) {
+		Event event = eventService.getEventDetail(eventNo);
+		return ResponseEntity.status(200).body(event);
+	}
+	
 	@PostMapping("")
 	public ResponseEntity<BaseResponseBody> registerEvent(Authentication authentication, 
 			@RequestBody EventInfoReq eventInfo) {
