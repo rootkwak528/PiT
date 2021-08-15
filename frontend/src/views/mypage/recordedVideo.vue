@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="content-wrapper">
-      <div class="classList" v-if="!selectedClassid">
+      <div class="classList" v-if="!state.selectedClassid">
         <div class="submenu-title">녹화된 영상</div>
         <div class="recordedvideo-card-section">
           <el-table
@@ -9,8 +9,7 @@
             style="width: 80%; font-size: 17px;"
             @row-click="mvVideoList"
           >
-            <el-table-column prop="title" label="클래스명">
-            </el-table-column>
+            <el-table-column prop="title" label="클래스명"> </el-table-column>
             <el-table-column
               prop="teacherName"
               label="강사명"
@@ -22,32 +21,83 @@
         </div>
       </div>
       <div class="videoList" v-else>
-        <el-page-header @back="goBack" :content="selectedTitle">
+        <el-page-header @back="goBack" :content="state.selectedTitle">
           <!-- <video-player ref="videoPlayer" :options="playerOptions">
           </video-player> -->
         </el-page-header>
+        <video-player :options="videoOptions" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-// import Calendar from "v-calendar";
-// import VideoPlayer from "vue-video-player";
-// import VueCoreVideoPlayer from "vue-core-video-player";
-//import "video.js/dist/video-js.css";
-
-//import { videoPlayer } from "vue-video-player";
+import "video.js/dist/video-js.min.css";
+import "video.js/dist/video.min.js";
+import VideoPlayer from "./components/videoplayer.vue";
+import { reactive } from "@vue/reactivity";
+import { useStore } from "vuex";
 
 export default {
   name: "recordedVideoTest",
   components: {
-    // Calendar,
-    //videoPlayer
-    // VideoPlayer
+    VideoPlayer
+  },
+  setup() {
+    const store = useStore();
+
+    const state = reactive({
+      selectedClassid: null,
+      selectedTitle: null,
+      classList: []
+    });
+
+    // 수강중 클래스
+    store
+      .dispatch("root/getRegisterClassList")
+      .then(function(result) {
+        state.classList = result.data;
+      })
+      .catch(function(err) {
+        console.log(err);
+      });
+
+    // 수강완료 클래스
+    store
+      .dispatch("root/getFinishedClassList")
+      .then(function(result) {
+        //console.log(result);
+        classData.classList = result.data;
+      })
+      .catch(function(err) {
+        alert(err.response.data.message);
+        console.log(err);
+      });
+
+    const mvVideoList = function(prop) {
+      //console.log(prop.classid);
+      state.selectedClassid = prop.classid;
+      state.selectedTitle = prop.title;
+    };
+    const goBack = function() {
+      state.selectedClassid = null;
+    };
+
+    return { mvVideoList, goBack, state };
   },
   data() {
     return {
+      videoOptions: {
+        autoplay: true,
+        controls: true,
+        sources: [
+          {
+            src:
+              "https://i5a204.p.ssafy.io/openvidu/recordings/ses_O9H9QaNtfm/str_CAM_SG84_con_ATmh8cnZdE.webm",
+            type: "video/webm"
+          }
+        ]
+      },
       classContent: [
         {
           thumbnail:
@@ -85,56 +135,10 @@ export default {
           classStartDate: "2021-08-08",
           classEndDate: "2021-11-08"
         }
-      ],
-      selectedClassid: null,
-      selectedTitle: null,
-      playerOptions: {
-        height: "360",
-        autoplay: false,
-        sources: [
-          {
-            // mp4
-            // type: 'video/mp4',
-            // src: 'http://vjs.zencdn.net/v/oceans.mp4',
-            // flv
-            type: "video/x-flv",
-            src:
-              "https://www.youtube.com/watch?v=eT3c9NDEjWo&ab_channel=webtro1"
-          }
-        ],
-        language: "zh-CN",
-        techOrder: ["flash"],
-        poster:
-          "https://surmon-china.github.io/vue-quill-editor/static/images/surmon-6.jpg"
-      },
-      imageUrl: ""
+      ]
     };
   },
-  methods: {
-    mvVideoList(prop) {
-      console.log(prop.classid);
-      this.selectedClassid = prop.classid;
-      this.selectedTitle = prop.title;
-    },
-    goBack() {
-      this.selectedClassid = null;
-    },
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
-    },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === "image/jpeg";
-      const isLt2M = file.size / 1024 / 1024 < 2;
-
-      if (!isJPG) {
-        this.$message.error("Avatar picture must be JPG format!");
-      }
-      if (!isLt2M) {
-        this.$message.error("Avatar picture size can not exceed 2MB!");
-      }
-      return isJPG && isLt2M;
-    }
-  }
+  methods: {}
 };
 </script>
 

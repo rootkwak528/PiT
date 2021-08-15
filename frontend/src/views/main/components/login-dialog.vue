@@ -97,7 +97,7 @@
 </style>
 
 <script>
-import { reactive, computed, ref, onMounted } from "vue";
+import { reactive, computed, ref } from "vue";
 import { useStore } from "vuex";
 
 export default {
