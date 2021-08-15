@@ -470,9 +470,9 @@ public class ClassServiceImpl implements ClassService {
 	}
 
 	@Override
-	public List<RegisterClassGetRes> getTeachClassList(int userNo) {
-		List<Classes> classList = classRepositorySupport.getClassList("001");
-		List<RegisterClassGetRes> registerClassList = new ArrayList<RegisterClassGetRes>();
+	public List<RegisterClassGetRes> getTeachClassList(int classNo) {
+		List<Classes> classList = classRepositorySupport.getTeachClassList(classNo, "001");
+		List<RegisterClassGetRes> teachClassList = new ArrayList<RegisterClassGetRes>();
 		
 		for (Classes classes : classList) {
 			if(classes.getClassTcnt() <= classes.getClassCcnt() || !classes.getClassPermission().equals("001")) {
@@ -480,7 +480,6 @@ public class ClassServiceImpl implements ClassService {
 			}
 			
 			RegisterClassGetRes registerClass = new RegisterClassGetRes();
-			int classNo = classes.getClassNo();
 			
 			BeanUtils.copyProperties(classes, registerClass);
 			String classThumbnail = classPhotoRepositorySupport.getThumbnail(classNo);
@@ -499,9 +498,9 @@ public class ClassServiceImpl implements ClassService {
 			
 			registerClass.setClassType(classes.getClassType());
 			
-			registerClassList.add(registerClass);
+			teachClassList.add(registerClass);
 		}
-		return registerClassList;
+		return teachClassList;
 	}
 
 	
