@@ -78,28 +78,7 @@ public class ClassController {
 			classList = classService.getClassList(searchInfo, "001");
 		}
 		return ResponseEntity.status(200).body(classList);
-	}
-
-	// 클래스 수업회수 추가하기
-	@PutMapping("/cnt/{classNo}")
-	public ResponseEntity<BaseResponseBody> updateClassCnt(Authentication authentication, @PathVariable int classNo) {
-		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
-		String userEmail = userDetails.getUsername();
-		System.out.println("userType : " + userService.validateUserType(userEmail));
-		if(userService.validateUserType(userEmail) == 2) {
-			try {
-				classService.addClassCnt(classNo);
-				return ResponseEntity.status(200).body(BaseResponseBody.of(200, "클래스 수업횟수가 추가되었습니다."));
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-				return ResponseEntity.status(500).body(BaseResponseBody.of(500, "수정에 오류가 생겼습니다."));
-			}
-		} else {
-			return ResponseEntity.status(403).body(BaseResponseBody.of(403, "접근할 수 없는 페이지입니다."));
-		}
-	}
-	
+	}	
 	
 	// 관리자를 위한 클래스 리스트 가져오기 (authentication) permission(승인, 미승인, 거절)에 따른 클래스 목록보기 가능
 	@GetMapping("/admin")
@@ -384,7 +363,26 @@ public class ClassController {
 		} else {
 			return ResponseEntity.status(403).body(null);
 		}
-		
+	}
+	
+	// 클래스 수업회수 추가하기
+	@PutMapping("/cnt/{classNo}")
+	public ResponseEntity<BaseResponseBody> updateClassCnt(Authentication authentication, @PathVariable int classNo) {
+		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
+		String userEmail = userDetails.getUsername();
+		System.out.println("userType : " + userService.validateUserType(userEmail));
+		if(userService.validateUserType(userEmail) == 2) {
+			try {
+				classService.addClassCnt(classNo);
+				return ResponseEntity.status(200).body(BaseResponseBody.of(200, "클래스 수업횟수가 추가되었습니다."));
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				return ResponseEntity.status(500).body(BaseResponseBody.of(500, "수정에 오류가 생겼습니다."));
+			}
+		} else {
+			return ResponseEntity.status(403).body(BaseResponseBody.of(403, "접근할 수 없는 페이지입니다."));
+		}
 	}
 	
 }
