@@ -263,7 +263,13 @@ export default {
     };
 
     const mvFavoriteClass = function() {
-      router.push("/favoriteclass");
+      console.log("state.userType : " + state.userType);
+      if (state.userType == '수강생') {
+        router.push("/favoriteclass");
+      }
+      else {
+        alert("찜목록은 수강생만 사용할 수 있어요!");
+      }
     };
 
     const checkAlert = function() {
