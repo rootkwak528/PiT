@@ -509,7 +509,7 @@ public class ClassServiceImpl implements ClassService {
 	public List<ClassListGetRes> getFinishedTeachClassList(int userNo) {
 		List<Classes> classList = classRepositorySupport.getTeachClassList(userNo, "001");
 		List<ClassListGetRes> teachFinishedClassList = new ArrayList<ClassListGetRes>();
-		
+		System.out.println(teachFinishedClassList.size());
 		for (Classes classes : classList) {
 			
 			if(classes.getClassTcnt() > classes.getClassCcnt() || !classes.getClassPermission().equals("001")) {

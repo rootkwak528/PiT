@@ -173,12 +173,13 @@ public class ClassController {
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
 		String userEmail = userDetails.getUsername();
 		int userNo = userDetails.getUser().getUserNo();
-		if(userService.validateUserType(userEmail) == 3 || userService.validateUserType(userEmail) == 2) {
+		if(userService.validateUserType(userEmail) == 3) {
 			List<ClassListGetRes> finishedClassList = classService.getFinishedClassList(userNo);
 			System.out.println("수강완료된 클래스 목록 조회 성공!");
 			return ResponseEntity.status(200).body(finishedClassList);
 		}
 		else if(userService.validateUserType(userEmail) == 2) {
+			System.out.println(123123123);
 			List<ClassListGetRes> finishedClassList = classService.getFinishedTeachClassList(userNo);
 			System.out.println("수업을 완료한 클래스 목록 조회 성공");
 			return ResponseEntity.status(200).body(finishedClassList);
