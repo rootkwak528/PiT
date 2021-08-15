@@ -251,7 +251,10 @@ export default {
         const targetWindow = window.open(redirectUrl);
         setTimeout(() => {
           targetWindow.postMessage(
-            { sessionName, nickname, isTrainer, classNo, classTitle },
+            { 
+              essionName, nickname, isTrainer, classNo, classTitle,
+              token: localStorage.getItem("jwt-auth-token")
+            },
             redirectUrl
           );
 
