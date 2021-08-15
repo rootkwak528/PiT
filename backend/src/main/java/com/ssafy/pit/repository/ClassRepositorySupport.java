@@ -131,8 +131,8 @@ public class ClassRepositorySupport {
 //		return classesList;
 //	}
 	
-	public List<Classes> getTeachClassList(int classNo , String classPermission) {
-		return query.selectFrom(qClass).where(qClass.classPermission.eq(classPermission), qClass.classNo.eq(classNo)).fetch();
+	public List<Classes> getTeachClassList(int userNo , String classPermission) {
+		return query.selectFrom(qClass).where(qClass.classPermission.eq(classPermission), qClass.user.userNo.eq(userNo)).fetch();
 	}
 	
 	
