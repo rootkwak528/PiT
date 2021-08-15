@@ -178,6 +178,7 @@ public class ClassController {
 			System.out.println("수강완료된 클래스 목록 조회 성공!");
 			return ResponseEntity.status(200).body(finishedClassList);
 		}
+		
 		else {
 			return ResponseEntity.status(403).body(null);
 		}
@@ -194,7 +195,7 @@ public class ClassController {
 			System.out.println("현재 수강중인 클래스 목록 조회 성공");
 			return ResponseEntity.status(200).body(registerClassList);
 		}
-		else if(userService.validateUserType(userEmail) == 3) {
+		else if(userService.validateUserType(userEmail) == 2) {
 			List<RegisterClassGetRes> registerClassList = classService.getTeachClassList(userNo);
 			System.out.println("현재 수업중인 클래스 목록 조회 성공");
 			return ResponseEntity.status(200).body(registerClassList);
