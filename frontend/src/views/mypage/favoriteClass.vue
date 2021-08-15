@@ -4,7 +4,7 @@
     <div v-if="state.list.length == 0">찜한 클래스가 없어요!</div>
     <div class="class-card-wrapper">
       <el-card
-        class="wrap"
+        class="class-card wrap"
         shadow="none"
         v-for="classItem in state.list"
         :key="classItem"
@@ -15,7 +15,8 @@
         }"
         style="margin: 5px"
       >
-        <span class="delete" @click="testDelete">삭제버튼</span>
+        <i class="el-icon-close delete" @click="testDelete"></i>
+        <!-- <span class="delete" @click="testDelete">삭제버튼</span> -->
         <router-link
           :to="`/classdetail?classNo=${classItem.classNo}`"
           style="text-decoration: none; color: inherit;"
@@ -106,9 +107,14 @@ export default {
 <style>
 .delete {
   position: absolute;
-  top: 5px;
-  right: 5px;
+  top: 10px;
+  right: 10px;
   z-index: 100;
+  font-size: 20px;
+  /* display: none; */
+}
+.delete:hover {
+  /* display: ; */
 }
 .wrap {
   position: relative;
