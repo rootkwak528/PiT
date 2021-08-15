@@ -33,9 +33,15 @@ public class PtroomServiceImpl implements PtroomService {
 	}
 
 	@Override
-	public int enterPtroom(int classNo) {
+	public Integer enterPtroom(int classNo) {
 		Ptroom ptroom = ptroomRepositorySupport.getPtroomByClassNo(classNo);
-		int updateUcnt = ptroom.getPtroomUcnt() + 1;
+		int uCnt = ptroom.getPtroomUcnt();
+		int limit = ptroom.getPtroomLimit();
+		if(uCnt >= limit) {
+			return null;
+		}
+		
+		Integer updateUcnt = ptroom.getPtroomUcnt() + 1;
 		ptroom.setPtroomUcnt(updateUcnt);
 		ptroomRepository.save(ptroom);
 		return updateUcnt;

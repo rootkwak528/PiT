@@ -84,7 +84,7 @@ public class PtroomController {
 	
 	// PTroom 입장
 	@PutMapping("/enter/{classNo}")
-	public ResponseEntity<Integer> enterPtroom(Authentication authentication, @PathVariable int classNo) {
+	public ResponseEntity<String> enterPtroom(Authentication authentication, @PathVariable int classNo) {
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
 		String userEmail = userDetails.getUsername();
 		System.out.println("userType : "+userService.validateUserType(userEmail));
@@ -93,8 +93,14 @@ public class PtroomController {
 		}
 		else {
 			try {
-				int userCnt = ptroomService.enterPtroom(classNo);
-				return ResponseEntity.status(200).body(userCnt);				
+				Integer userCnt = ptroomService.enterPtroom(classNo);
+				if(userCnt == null) {
+					return ResponseEntity.status(200).body("ptroom의 정원이  초과되었습니다.");
+				}
+				else {					
+					return ResponseEntity.status(200).body("ptroom 입장에 성공하였습니다.");
+				}
+				
 			}
 			catch (Exception e) {
 				e.printStackTrace();
@@ -108,7 +114,7 @@ public class PtroomController {
 	public ResponseEntity<BaseResponseBody> leavePtroom(Authentication authentication, @PathVariable int classNo) {
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
 		String userEmail = userDetails.getUsername();
-		System.out.println("userType : "+userService.validateUserType(userEmail));
+		System.out.println("userType : " + userService.validateUserType(userEmail));
 		if(userService.validateUserType(userEmail) == 2) {
 			try {
 				ptroomService.leavePtroom(classNo);
