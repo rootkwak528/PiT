@@ -469,5 +469,40 @@ public class ClassServiceImpl implements ClassService {
 		return videoUrls;
 	}
 
+	@Override
+	public List<RegisterClassGetRes> getTeachClassList(int userNo) {
+		List<Classes> classList = classRepositorySupport.getClassList("001");
+		List<RegisterClassGetRes> registerClassList = new ArrayList<RegisterClassGetRes>();
+		
+		for (Classes classes : classList) {
+			if(classes.getClassTcnt() <= classes.getClassCcnt() || !classes.getClassPermission().equals("001")) {
+				continue;
+			}
+			
+			RegisterClassGetRes registerClass = new RegisterClassGetRes();
+			int classNo = classes.getClassNo();
+			
+			BeanUtils.copyProperties(classes, registerClass);
+			String classThumbnail = classPhotoRepositorySupport.getThumbnail(classNo);
+			if (classThumbnail != null) {
+				registerClass.setClassThumbnail(classThumbnail);
+			}
+			else {
+				registerClass.setClassThumbnail("");
+			}
+			
+			float totalCnt = classes.getClassTcnt();
+			float classCnt = classes.getClassCcnt();
+			float classPercentage = Math.round((classCnt/totalCnt)*10000) / (float) 100.0;				
+			registerClass.setClassPercentage(classPercentage);
+			
+			
+			registerClass.setClassType(classes.getClassType());
+			
+			registerClassList.add(registerClass);
+		}
+		return registerClassList;
+	}
+
 	
 }

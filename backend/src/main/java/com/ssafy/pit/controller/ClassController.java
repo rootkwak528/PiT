@@ -112,6 +112,7 @@ public class ClassController {
 		if(userService.validateUserType(userEmail) == 3) {
 			List<ClassListGetRes> classLikesList = classService.getClassLikesList(userNo);
 			System.out.println("수강생이 찜한 클래스 목록 조회");
+			System.out.println(classLikesList.size());
 			return ResponseEntity.status(200).body(classLikesList);
 		}
 		else {
@@ -188,9 +189,14 @@ public class ClassController {
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
 		String userEmail = userDetails.getUsername();
 		int userNo = userDetails.getUser().getUserNo();
-		if(userService.validateUserType(userEmail) == 3 || userService.validateUserType(userEmail) == 2) {
+		if(userService.validateUserType(userEmail) == 3) {
 			List<RegisterClassGetRes> registerClassList = classService.getRegisterClassList(userNo);
 			System.out.println("현재 수강중인 클래스 목록 조회 성공");
+			return ResponseEntity.status(200).body(registerClassList);
+		}
+		else if(userService.validateUserType(userEmail) == 3) {
+			List<RegisterClassGetRes> registerClassList = classService.getTeachClassList(userNo);
+			System.out.println("현재 수업중인 클래스 목록 조회 성공");
 			return ResponseEntity.status(200).body(registerClassList);
 		}
 		else {
