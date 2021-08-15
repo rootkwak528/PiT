@@ -203,7 +203,7 @@ export function registerClassLikes({ state }, payload) {
 export function deleteClassLikes({ state }, payload) {
   const url = `/class/likes/${payload.classNo}`;
   let token = "Bearer " + localStorage.getItem("jwt-auth-token");
-  return $axios.delete(url, {}, {
+  return $axios.delete(url, {
     headers: {
       Authorization: token
     }

@@ -64,21 +64,32 @@ export default {
     const state = reactive({
       list: []
     });
-
     onMounted(() => {
       getClassLikesList();
     });
 
+
     const clickDeleteClassLikes = function(event) {
-      for (var i =0; i<state.list.length; i++){
-        console.log("state.list 전체 넘버 조회 : "+ state.list[i].classNo);
+      let classTitle = event.target.parentElement.parentElement.querySelector(
+        ".title"
+      ).innerText;
+      console.log("click classTitle : "+classTitle);
+
+      let classNo
+      for (let i=0; i<state.list.length; i++){
+        if (classTitle == state.list[i].classTitle){
+          classNo = state.list[i].classNo;
+        }
       }
+      console.log("click classNo : "+classNo);
+
       store
         .dispatch("root/deleteClassLikes", {
           classNo
         })
         .then(function() {
           alert("찜 목록에서 삭제되었습니다.");
+          getClassLikesList();
         })
         .catch(function(err){
           alert(err.response.data.message);
@@ -92,7 +103,7 @@ export default {
         .dispatch("root/getClassLikesList")
         .then(function(result) {
           state.list = result.data;
-          store.commit("root/setUserLikesClassList", result.data);
+          // store.commit("root/setUserLikesClassList", result.data);
           for (var i = 0; i < state.list.length; i++) {
             var startMonth = parseInt(
               result.data[i].classStartDate.split("-")[1]
@@ -127,13 +138,10 @@ export default {
   opacity: 0;
   cursor: pointer;
 }
-.delete:hover {
-  color: #000000;
-  z-index: 100;
-  opacity: 1;
-  /* display: block; */
-}
 .wrap {
   position: relative;
+}
+.wrap:hover .delete {
+  opacity: 1;
 }
 </style>
