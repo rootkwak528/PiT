@@ -179,7 +179,6 @@ public class ClassController {
 			return ResponseEntity.status(200).body(finishedClassList);
 		}
 		else if(userService.validateUserType(userEmail) == 2) {
-			System.out.println(123123123);
 			List<ClassListGetRes> finishedClassList = classService.getFinishedTeachClassList(userNo);
 			System.out.println("수업을 완료한 클래스 목록 조회 성공");
 			return ResponseEntity.status(200).body(finishedClassList);
