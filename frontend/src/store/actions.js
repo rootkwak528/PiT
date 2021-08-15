@@ -254,3 +254,9 @@ export function enterSession({ state }, payload) {
     }
   })
 }
+
+// 이벤트 목록 조회
+export function getEventInfoList({ state }) {
+  const url = `/event`
+  return $axios.get(url);
+}
