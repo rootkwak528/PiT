@@ -247,7 +247,7 @@ export default {
         
       } else {
         const targetWindow = window.open(redirectUrl);
-        setTimeout(function() {
+        setTimeout(() => {
           targetWindow.postMessage(
             { sessionName, nickname, isTrainer, classNo, classTitle },
             redirectUrl
