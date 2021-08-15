@@ -206,7 +206,7 @@ export default {
       return percentage === 100 ? "Full" : `${percentage}%`;
     },
 
-    onClickPTRoomBtn(event) {
+    async onClickPTRoomBtn(event) {
       const trainerName = event.target.parentElement.parentElement.parentElement.querySelector(
         ".trainer"
       ).innerText;
@@ -235,14 +235,16 @@ export default {
       let isAvail
 
       // 피티룸 개설됐는지 확인
-      this.$store
+      await this.$store
         .dispatch("root/getSessionAvail", {classNo})
         .then(res => {
-          isAvail = res.data
+          isAvail = res.data ? true : false
+          console.log(res.data, isAvail)
         })
 
       // 수강생은 빈 피티룸에 입장 불가
       if (!isTrainer && !isAvail) {
+        console.log(isTrainer, isAvail)
         alert('아직 PT룸이 개설되지 않았습니다.')
         
       } else {
@@ -257,7 +259,12 @@ export default {
           if (isTrainer) {
             this.$store
               .dispatch("root/enterSession", {classNo})
-              .then()
+              .then(res => {
+                console.log(res)
+              })
+              .catch(err => {
+                console.warn(err)
+              })
           }
         }, 1000);
       }
