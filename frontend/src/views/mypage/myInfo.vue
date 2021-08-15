@@ -152,6 +152,7 @@
 import { reactive, computed, ref, onMounted, message } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import { ElMessage } from "element-plus";
 
 export default {
   name: "MyClass",
@@ -313,11 +314,11 @@ export default {
       const isJPG = file.type === "image/jpeg";
       const isLt2M = file.size / 1024 / 1024 < 10;
 
-      if (!isJPG) {
-        console.log("함수 안 : JPG 파일만 업로드 가능합니다.");
-      }
       if (!isLt2M) {
-        message.error("Avatar picture size can not exceed 2MB!");
+        ElMessage({
+          message: "10MB 이하의 파일만 업로드 가능합니다.",
+          type: "error"
+        })
         // this.$message.error("Avatar picture size can not exceed 2MB!");
       }
       return isJPG && isLt2M;
@@ -391,6 +392,7 @@ export default {
               alert("회원정보가 수정되었습니다.");
               loading.value = false;
               store.state.profileUrl = state.form.profile;
+              store.commit("root/setUserNickname", store.state.userNickname);
               store.commit("root/setProfileUrl", store.state.profileUrl);
               console.log(state.form.profile);
               console.log(store.state.profileUrl);
