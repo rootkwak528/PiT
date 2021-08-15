@@ -129,5 +129,5 @@ public class PtroomController {
 			return ResponseEntity.status(403).body(BaseResponseBody.of(403, "접근할 수 없는 페이지입니다."));
 		}
 	}
-	
+
 }

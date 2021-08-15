@@ -531,5 +531,11 @@ public class ClassServiceImpl implements ClassService {
 		return teachFinishedClassList;
 	}
 
-	
+	@Override
+	public void addClassCnt(int classNo) {
+		Classes classes = classRepository.findClassByClassNo(classNo);
+		classes.setClassCcnt(classes.getClassCcnt()+1);
+		classRepository.save(classes);
+		return;
+	}	
 }
