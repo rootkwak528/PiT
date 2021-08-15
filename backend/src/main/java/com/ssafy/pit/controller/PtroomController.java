@@ -19,7 +19,7 @@ import com.ssafy.pit.service.PtroomService;
 import com.ssafy.pit.service.UserService;
 
 @CrossOrigin(
-        origins = "https://i5a204.p.ssafy.io:5000/", 
+        origins = {"https://i5a204.p.ssafy.io:5000", "https://i5a204.p.ssafy.io:8083", "https://localhost:8083"}, 
         allowCredentials = "true", 
         allowedHeaders = "*", 
         methods = {RequestMethod.GET,RequestMethod.POST,RequestMethod.DELETE,RequestMethod.PUT,RequestMethod.OPTIONS}
