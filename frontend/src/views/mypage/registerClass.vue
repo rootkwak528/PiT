@@ -252,7 +252,7 @@ export default {
         setTimeout(() => {
           targetWindow.postMessage(
             { 
-              essionName, nickname, isTrainer, classNo, classTitle,
+              sessionName, nickname, isTrainer, classNo, classTitle,
               token: localStorage.getItem("jwt-auth-token")
             },
             redirectUrl
