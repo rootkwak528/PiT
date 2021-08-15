@@ -36,6 +36,8 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 		
 		// request header에 Authorization(key) : Bearer Token(Value) 형태로 날아옴
 		String header = request.getHeader(JwtTokenUtil.HEADER_STRING);
+		System.out.println("$ " + header);
+		
 		
 		// 헤더가 Bearer로 시작하지 않거나 null인 경우 filter 적용
 		if(header == null || !header.startsWith(JwtTokenUtil.TOKEN_PREFIX)) {
@@ -63,14 +65,22 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 		// String token = Bearer token(header.payload.signature)
 		// 요청 헤더에 Authorization 키값에 jwt 토큰이 포함된 경우에만, 토큰 검증 및 인증 처리 로직 실행.
 		String token = request.getHeader(JwtTokenUtil.HEADER_STRING);
+		System.out.println("> " + token.length() + "  " + token);
 		
 		if (token != null) {
+			System.out.println(">> " + token.length() + "  " + token);
+			
 			// token을 parse, validate 수행
 			JWTVerifier verifier = JwtTokenUtil.getVerifier();
+			System.out.println(">>> " + token.length() + "  " + token);
+			
 			JwtTokenUtil.handleError(verifier, token);
+			System.out.println(">>>> " + token.length() + "  " + token);
+			
 			// token decoding
 			DecodedJWT decodedJWT = verifier.verify(token.replace(JwtTokenUtil.TOKEN_PREFIX, ""));
 			String userEmail = decodedJWT.getSubject();
+			System.out.println(">>>>> " + userEmail);
 			
 			
 			// JWT 토큰에서 얻은 유저이메일로 DB에서 그 유저가 있는지 확인

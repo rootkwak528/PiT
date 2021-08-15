@@ -239,7 +239,7 @@ export function getSessionAvail({ state }, payload) {
 export function enterSession({ state }, payload) {
   const url = `/ptroom/enter/${payload.classNo}`
   let token = "Bearer " + localStorage.getItem("jwt-auth-token");
-  return $axios.put(url, {
+  return $axios.put(url, {}, {
     headers: {
       Authorization: token
     }

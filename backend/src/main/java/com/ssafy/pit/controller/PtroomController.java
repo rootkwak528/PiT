@@ -78,6 +78,8 @@ public class PtroomController {
 	@PutMapping("/enter/{classNo}")
 	public ResponseEntity<Integer> enterPtroom(Authentication authentication, @PathVariable int classNo) {
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
+
+		System.out.println("userDetails : ");
 		String userEmail = userDetails.getUsername();
 		System.out.println("userType : "+userService.validateUserType(userEmail));
 		if(userService.validateUserType(userEmail) == 1) {
