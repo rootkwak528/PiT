@@ -392,6 +392,7 @@ export default {
               alert("회원정보가 수정되었습니다.");
               loading.value = false;
               store.state.profileUrl = state.form.profile;
+              store.commit("root/setUserNickname", store.state.userNickname);
               store.commit("root/setProfileUrl", store.state.profileUrl);
               console.log(state.form.profile);
               console.log(store.state.profileUrl);
