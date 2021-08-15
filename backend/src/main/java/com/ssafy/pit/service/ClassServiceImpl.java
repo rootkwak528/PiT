@@ -470,14 +470,16 @@ public class ClassServiceImpl implements ClassService {
 	}
 
 	@Override
-	public List<RegisterClassGetRes> getTeachClassList(int classNo) {
-		List<Classes> classList = classRepositorySupport.getTeachClassList(classNo, "001");
+	public List<RegisterClassGetRes> getTeachClassList(int userNo) {
+		List<Classes> classList = classRepositorySupport.getTeachClassList(userNo, "001");
 		List<RegisterClassGetRes> teachClassList = new ArrayList<RegisterClassGetRes>();
 		
 		for (Classes classes : classList) {
 			if(classes.getClassTcnt() <= classes.getClassCcnt() || !classes.getClassPermission().equals("001")) {
 				continue;
 			}
+			
+			int classNo = classes.getClassNo();
 			
 			RegisterClassGetRes registerClass = new RegisterClassGetRes();
 			
@@ -501,6 +503,32 @@ public class ClassServiceImpl implements ClassService {
 			teachClassList.add(registerClass);
 		}
 		return teachClassList;
+	}
+
+	@Override
+	public List<ClassListGetRes> getFinishedTeachClassList(int userNo) {
+		List<Classes> classList = classRepositorySupport.getTeachClassList(userNo, "001");
+		List<ClassListGetRes> teachFinishedClassList = new ArrayList<ClassListGetRes>();
+		
+		for (Classes classes : classList) {
+			
+			if(classes.getClassTcnt() > classes.getClassCcnt() || !classes.getClassPermission().equals("001")) {
+				continue;
+			}
+			
+			ClassListGetRes classGetRes = new ClassListGetRes();
+			int classNo = classes.getClassNo();
+			BeanUtils.copyProperties(classes, classGetRes);
+			String classThumbnail = classPhotoRepositorySupport.getThumbnail(classNo);
+			if (classThumbnail != null) {
+				classGetRes.setClassThumbnail(classThumbnail);
+			}
+			else {
+				classGetRes.setClassThumbnail("");
+			}
+			teachFinishedClassList.add(classGetRes);
+		}
+		return teachFinishedClassList;
 	}
 
 	
