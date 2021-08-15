@@ -117,6 +117,9 @@ export default {
 </script>
 
 <style>
+.class-card:hover {
+  box-shadow: 8px 8px 20px #ddd;
+}
 .class-card-wrapper {
   display: flex;
   flex-wrap: wrap;

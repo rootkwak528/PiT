@@ -1,18 +1,6 @@
 <template>
   <el-container class="main-wrapper">
     <el-container class="main-container">
-      <!-- <div v-if="userType == 관리자" style="width: 70%; margin-left: auto; margin-right: auto;">
-        <main-header
-          :height="`70px`"
-          @openLoginDialog="onOpenLoginDialog"
-          @openJoinDialog="onOpenJoinDialog"
-          @openSearchDialog="onOpenSearchDialog"
-        />
-        <navbar />
-        <admin-main />
-        <main-footer />
-      </div> -->
-
       <div style="width: 70%; margin-left: auto; margin-right: auto;">
         <main-header
           :height="`70px`"
