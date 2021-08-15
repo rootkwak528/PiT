@@ -200,6 +200,15 @@ export function registerClassLikes({ state }, payload) {
 }
 
 // 찜한 클래스 삭제 -  /class/likes/{classNo}  DELETE
+export function deleteClassLikes({ state }, payload) {
+  const url = `/class/likes/${payload.classNo}`;
+  let token = "Bearer " + localStorage.getItem("jwt-auth-token");
+  return $axios.delete(url, {}, {
+    headers: {
+      Authorization: token
+    }
+  });
+}
 
 // 클래스 신청하기
 export function enrollClass({ state }, payload) {

@@ -15,7 +15,7 @@
         }"
         style="margin: 5px"
       >
-        <i class="el-icon-close delete" @click="testDelete"></i>
+        <i class="el-icon-close delete" @click="clickDeleteClassLikes"></i>
         <!-- <span class="delete" @click="testDelete">삭제버튼</span> -->
         <router-link
           :to="`/classdetail?classNo=${classItem.classNo}`"
@@ -69,8 +69,20 @@ export default {
       getClassLikesList();
     });
 
-    const testDelete = function(event) {
-      alert("테스트 삭제");
+    const clickDeleteClassLikes = function(event) {
+      for (var i =0; i<state.list.length; i++){
+        console.log("state.list 전체 넘버 조회 : "+ state.list[i].classNo);
+      }
+      store
+        .dispatch("root/deleteClassLikes", {
+          classNo
+        })
+        .then(function() {
+          alert("찜 목록에서 삭제되었습니다.");
+        })
+        .catch(function(err){
+          alert(err.response.data.message);
+        })
       event.stopPropagation();
     };
 
@@ -99,7 +111,7 @@ export default {
     return {
       state,
       getClassLikesList,
-      testDelete
+      clickDeleteClassLikes
     };
   }
 };
@@ -110,11 +122,16 @@ export default {
   top: 10px;
   right: 10px;
   z-index: 100;
-  font-size: 20px;
-  /* display: none; */
+  font-size: 30px;
+  font-weight: bold;
+  opacity: 0;
+  cursor: pointer;
 }
 .delete:hover {
-  /* display: ; */
+  color: #000000;
+  z-index: 100;
+  opacity: 1;
+  /* display: block; */
 }
 .wrap {
   position: relative;
