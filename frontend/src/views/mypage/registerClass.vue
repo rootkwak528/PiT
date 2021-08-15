@@ -25,10 +25,9 @@
           <div class="title">{{ classItem.classTitle }}</div>
           <!-- <div class="desc">{{ classItem.classDesc }}</div> -->
           <div class="registerclass-card-bottom">
-            
             <!-- PT룸 입장 버튼 -->
             <el-button
-              v-if="classItem.classTeacherName==userNickname"
+              v-if="classItem.classTeacherName == userNickname"
               icon="el-icon-s-home"
               class="btn-enter"
               @click="onClickPTRoomBtn"
@@ -67,7 +66,7 @@
 import { onMounted } from "@vue/runtime-core";
 import { useStore, mapState } from "vuex";
 import { reactive } from "@vue/reactivity";
-import axios from 'axios'
+import axios from "axios";
 
 export default {
   name: "RegisterClassTest",
@@ -147,7 +146,6 @@ export default {
             var tmpDateAttrs = [];
             var tmpDays = [];
             for (var j = 0; j < tmpDayList.length; j++) {
-              console.log(tmpDayList.charAt(j));
               var weekday = 0;
               switch (tmpDayList.charAt(j)) {
                 case "월":
@@ -174,13 +172,13 @@ export default {
               }
               //console.log(weekday);
               var tmp = "weekdays : " + weekday;
-              tmpDays.push(tmp);
+              //tmpDays.push(tmp);
             }
 
             //console.log(tmpDays);
-            classData.dates.push(tmpDays);
+            //classData.dates.push(tmpDays);
             //console.log(classData.dates);
-            classData.dates.pop;
+            //classData.dates.pop;
             // var tmp = "dates : " + tmpDays;
             // tmpDateAttrs.push(tmp);
             // // tmp = `,dot: {color: "red"}`;
@@ -197,7 +195,7 @@ export default {
 
   computed: {
     ...mapState({
-      userNickname: state => state.root.userNickname,
+      userNickname: state => state.root.userNickname
     })
   },
 
@@ -213,40 +211,37 @@ export default {
       const classTitle = event.target.parentElement.parentElement.parentElement.querySelector(
         ".title"
       ).innerText;
-      
-      let sessionName
-      let classNo
 
-      for (let i=0; i<this.classData.classList.length; i++) {
+      let sessionName;
+      let classNo;
+
+      for (let i = 0; i < this.classData.classList.length; i++) {
         if (classTitle == this.classData.classList[i].classTitle) {
-          classNo = this.classData.classList[i].classNo
-          this.$store
-            .dispatch("root/getSessionName", {classNo})
-            .then(res => {
-              sessionName = res.data
-            })
-          break
+          classNo = this.classData.classList[i].classNo;
+          this.$store.dispatch("root/getSessionName", { classNo }).then(res => {
+            sessionName = res.data;
+          });
+          break;
         }
       }
 
       const nickname = this.userNickname;
       const isTrainer = trainerName == nickname;
       const redirectUrl = "https://i5a204.p.ssafy.io:5000/";
-      let isAvail
+      let isAvail;
 
       // 피티룸 개설됐는지 확인
       await this.$store
-        .dispatch("root/getSessionAvail", {classNo})
+        .dispatch("root/getSessionAvail", { classNo })
         .then(res => {
-          isAvail = res.data ? true : false
-          console.log(res.data, isAvail)
-        })
+          isAvail = res.data ? true : false;
+          console.log(res.data, isAvail);
+        });
 
       // 수강생은 빈 피티룸에 입장 불가
       if (!isTrainer && !isAvail) {
-        console.log(isTrainer, isAvail)
-        alert('아직 PT룸이 개설되지 않았습니다.')
-        
+        console.log(isTrainer, isAvail);
+        alert("아직 PT룸이 개설되지 않았습니다.");
       } else {
         const targetWindow = window.open(redirectUrl);
         setTimeout(() => {
@@ -258,18 +253,18 @@ export default {
           // 트레이너가 피티룸 개설하면 입장 확인
           if (isTrainer) {
             this.$store
-              .dispatch("root/enterSession", {classNo})
+              .dispatch("root/enterSession", { classNo })
               .then(res => {
-                console.log(res)
+                console.log(res);
               })
               .catch(err => {
-                console.warn(err)
-              })
+                console.warn(err);
+              });
           }
         }, 1000);
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
