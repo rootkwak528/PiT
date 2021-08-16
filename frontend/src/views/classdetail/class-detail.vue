@@ -36,6 +36,6 @@ export default {
   flex-direction: row;
   justify-content: center;
   width: 100%;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
 }
 </style>
