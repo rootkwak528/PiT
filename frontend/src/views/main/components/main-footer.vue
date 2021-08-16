@@ -24,6 +24,7 @@
 </template>
 <style>
 .main-footer {
+  margin-top: 45px;
   font-size: 0.7rem;
   font-weight: 400;
   font-family: ui-sans-serif;
@@ -58,13 +59,23 @@ span.span-T {
 
 @media (max-width: 700px) {
   .main-footer {
+    margin-top: 45px;
     height: auto;
   }
 }
 
-@media (min-width: 701px) {
+@media (max-width: 1360px) {
+  .footer-container {
+    width: 90vw;
+  }
   .main-footer {
-    margin-top: 45px;
+    margin-left: -5vw;
+    padding-left: 5vw;
+  }
+}
+
+@media (min-width: 1360px) {
+  .main-footer {
     height: auto;
   }
 }
