@@ -78,12 +78,16 @@ export default {
               result.data[i].classStartDate.split("-")[1]
             );
             var endMonth = parseInt(result.data[i].classEndDate.split("-")[1]);
-            var tmp =
+            var tmp = (
               Math.floor(
-                result.data[i].classPrice / (endMonth - startMonth + 1) / 10
-              ) * 10;
+                result.data[i].classPrice / (endMonth - startMonth + 1) / 100
+              ) * 100
+            ).toString();
 
-            result.data[i].classPrice = tmp;
+            var left = tmp.slice(0, -3);
+            var right = tmp.slice(-3, tmp.length);
+
+            result.data[i].classPrice = left + "," + right;
 
             // 날짜 지난 클래스 삭제
             var classEndMonth = parseInt(
