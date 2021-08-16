@@ -2,9 +2,9 @@
   <el-tabs v-model="activeName" @tab-click="handleClick">
     <el-tab-pane label="클래스 설명" name="classDescript">
       <div>
-        <h2>클래스 설명</h2>
+        <h2>{{ state.form.classTitle }}</h2>
         <el-divider />
-        <h3>{{ state.form.classTitle }}</h3>
+        <h3>클래스 설명</h3>
         <p>{{ state.form.classDesc }}</p>
         <el-divider />
         <h3>커리큘럼</h3>
@@ -12,7 +12,7 @@
         <el-divider />
         <h3>커뮤니티</h3>
         <div v-for="comment in state.form.comments" :key="comment">
-          <el-card class="box-card">
+          <el-card class="box-card" shadow="never">
             <div class="rate">
               <div style="margin-right: 20px">{{ comment.userNickname }}</div>
               <div>{{ comment.commentWriteDate }}</div>
@@ -28,11 +28,11 @@
       ><h3>커리큘럼</h3>
       <pre>{{ state.form.classCurri }}</pre></el-tab-pane
     >
-    <el-tab-pane label="커뮤니티" name="review"
-      ><h3>커뮤니티</h3>
+    <el-tab-pane label="커뮤니티" name="review">
+      <h3>커뮤니티</h3>
       <div>
         <div v-for="comment in state.form.comments" :key="comment">
-          <el-card class="box-card">
+          <el-card class="box-card" shadow="never">
             <div class="rate">
               <div style="margin-right: 20px">{{ comment.userNickname }}</div>
               <div>{{ comment.commentWriteDate }}</div>
@@ -42,13 +42,13 @@
             </div>
           </el-card>
         </div>
-      </div></el-tab-pane
-    >
+      </div>
+    </el-tab-pane>
   </el-tabs>
 </template>
 
 <script>
-import { reactive, computed, ref, onMounted } from "vue";
+import { reactive, onMounted } from "vue";
 import { useStore } from "vuex";
 
 export default {
