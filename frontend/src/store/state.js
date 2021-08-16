@@ -43,6 +43,8 @@ export default {
   profileUrl: "",
   userType: "",
   userNickname: "",
+  userNo: "",
+  userName: "",
 
   searchType: "0",
   searchKeyword: "",

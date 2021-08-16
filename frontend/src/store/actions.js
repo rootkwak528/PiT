@@ -224,45 +224,60 @@ export function enrollClass({ state }, payload) {
 
 // 세션 네임 조회 - /ptroom/enter/{classNo}  GET
 export function getSessionName({ state }, payload) {
-  const url = `/ptroom/enter/${payload.classNo}`
+  const url = `/ptroom/enter/${payload.classNo}`;
   let token = "Bearer " + localStorage.getItem("jwt-auth-token");
   return $axios.get(url, {
     headers: {
       Authorization: token
     }
-  })
+  });
 }
 
 // 세션 개설여부 조회 - /ptroom/{classNo}  GET
 export function getSessionAvail({ state }, payload) {
-  const url = `/ptroom/${payload.classNo}`
+  const url = `/ptroom/${payload.classNo}`;
   let token = "Bearer " + localStorage.getItem("jwt-auth-token");
   return $axios.get(url, {
     headers: {
       Authorization: token
     }
-  })
+  });
 }
 
 // 세션 입장 - /ptroom/enter/{classNo}  PUT
 export function enterSession({ state }, payload) {
-  const url = `/ptroom/enter/${payload.classNo}`
+  const url = `/ptroom/enter/${payload.classNo}`;
   let token = "Bearer " + localStorage.getItem("jwt-auth-token");
-  return $axios.put(url, {}, {
-    headers: {
-      Authorization: token
+  return $axios.put(
+    url,
+    {},
+    {
+      headers: {
+        Authorization: token
+      }
     }
-  })
+  );
 }
 
 // 이벤트 목록 조회
 export function getEventInfoList({ state }) {
-  const url = `/event`
+  const url = `/event`;
   return $axios.get(url);
 }
 
 // 이벤트 상세 조회
 export function getEventDetail({ state }, payload) {
-  const url = `/event/detail/${payload.eventNo}`
+  const url = `/event/detail/${payload.eventNo}`;
   return $axios.get(url);
+}
+
+// 비디오 다시보기
+export function getVideoUrls({ state }, payload) {
+  const url = `/class/video/${payload.classNo}`;
+  let token = "Bearer " + localStorage.getItem("jwt-auth-token");
+  return $axios.get(url, {
+    headers: {
+      Authorization: token
+    }
+  });
 }

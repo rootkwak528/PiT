@@ -54,11 +54,11 @@ export default {
       store
         .dispatch("root/getUserInfo")
         .then(function(result) {
-          console.log(result);
+          //console.log(result);
           state.userTypeName = result.data.userTypeName;
         })
         .catch(function(err) {
-          alert(err.response.data.message);
+          //alert(err.response.data.message);
           console.log(err);
           //store.commit("root/setIsLogined", false);
           //router.push("/");

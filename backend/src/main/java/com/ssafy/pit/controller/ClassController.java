@@ -1,7 +1,9 @@
 package com.ssafy.pit.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -346,7 +348,7 @@ public class ClassController {
 	
 	// 영상 다시보기 비디오들 리스트
 	@GetMapping("/video/{classNo}")
-	public ResponseEntity<List<String>> getVideoUrls(Authentication authentication, @PathVariable int classNo) {
+	public ResponseEntity<Map<String, List>> getVideoUrls(Authentication authentication, @PathVariable int classNo) {
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
 		User user = userDetails.getUser();
 		String userEmail = userDetails.getUsername();
@@ -354,7 +356,11 @@ public class ClassController {
 		if(userService.validateUserType(userEmail) == 3) {
 			try {				
 				List<String> videoUrls = classService.getVideoUrls(userNo, classNo);
-				return ResponseEntity.status(200).body(videoUrls);
+				List<Date> videoSaveTimes = classService.getSaveTimtes(userNo, classNo);
+				Map<String, List> map = new HashMap<String, List>();
+				map.put("videoUrls", videoUrls);
+				map.put("videoSaveTimes", videoSaveTimes);
+				return ResponseEntity.status(200).body(map);
 			}
 			catch (Exception e) {
 				return ResponseEntity.status(500).body(null);

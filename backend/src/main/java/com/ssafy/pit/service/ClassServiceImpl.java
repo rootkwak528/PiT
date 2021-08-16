@@ -372,10 +372,9 @@ public class ClassServiceImpl implements ClassService {
 				float classCnt = classes.getClassCcnt();
 				float classPercentage = Math.round((classCnt/totalCnt)*10000) / (float) 100.0;				
 				registerClass.setClassPercentage(classPercentage);
-				
-				
 				registerClass.setClassType(classes.getClassType());
 				
+				registerClass.setUserNo(classes.getUser().getUserNo());
 				registerClassList.add(registerClass);
 			}
 			return registerClassList;
@@ -468,6 +467,15 @@ public class ClassServiceImpl implements ClassService {
 		List<String> videoUrls = userVideoRepositorySupport.getVideoUrls(userNo, ptroomNo);
 		return videoUrls;
 	}
+	
+
+	@Override
+	public List<Date> getSaveTimtes(int userNo, int classNo) throws Exception {
+		Ptroom ptroom = ptroomRepositorySupport.getPtroomByClassNo(classNo);
+		int ptroomNo = ptroom.getPtroomNo();
+		List<Date> videoSaveTime = userVideoRepositorySupport.getSaveTimtes(userNo, ptroomNo);
+		return videoSaveTime;
+	}
 
 	@Override
 	public List<RegisterClassGetRes> getTeachClassList(int userNo) {
@@ -497,7 +505,7 @@ public class ClassServiceImpl implements ClassService {
 			float classPercentage = Math.round((classCnt/totalCnt)*10000) / (float) 100.0;				
 			registerClass.setClassPercentage(classPercentage);
 			
-			
+			registerClass.setUserNo(classes.getUser().getUserNo());
 			registerClass.setClassType(classes.getClassType());
 			
 			teachClassList.add(registerClass);
