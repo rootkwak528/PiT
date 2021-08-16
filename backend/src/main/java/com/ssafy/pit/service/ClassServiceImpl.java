@@ -372,10 +372,9 @@ public class ClassServiceImpl implements ClassService {
 				float classCnt = classes.getClassCcnt();
 				float classPercentage = Math.round((classCnt/totalCnt)*10000) / (float) 100.0;				
 				registerClass.setClassPercentage(classPercentage);
-				
-				
 				registerClass.setClassType(classes.getClassType());
 				
+				registerClass.setUserNo(classes.getUser().getUserNo());
 				registerClassList.add(registerClass);
 			}
 			return registerClassList;
@@ -497,7 +496,7 @@ public class ClassServiceImpl implements ClassService {
 			float classPercentage = Math.round((classCnt/totalCnt)*10000) / (float) 100.0;				
 			registerClass.setClassPercentage(classPercentage);
 			
-			
+			registerClass.setUserNo(classes.getUser().getUserNo());
 			registerClass.setClassType(classes.getClassType());
 			
 			teachClassList.add(registerClass);
