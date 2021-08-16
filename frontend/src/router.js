@@ -17,6 +17,8 @@ import AdminMain from "@/views/adminpage/adminMain";
 import AdminClass from "@/views/adminpage/adminClass";
 import AdminClassDetail from "@/views/adminpage/adminclassdetail/adminclass-detail";
 
+import About from "@/views/about/about"
+
 const routes = [
   {
     path: "/",
@@ -96,6 +98,11 @@ const routes = [
         component: AdminClassDetail
       }
     ]
+  },
+  {
+    path: "/about",
+    name: "About",
+    component: About
   }
 ];
 

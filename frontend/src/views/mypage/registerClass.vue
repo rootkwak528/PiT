@@ -17,7 +17,7 @@
         <div style="position: absolute; padding: 18px">
           <div style="display: flex">
             <div class="tag">{{ classItem.classType }}</div>
-            <div style="font-weight: bold">
+            <div class="trainer-title" style="font-weight: bold">
               강사:
               <span class="trainer">{{ classItem.classTeacherName }}</span>
             </div>
@@ -27,7 +27,7 @@
           <div class="registerclass-card-bottom">
             <!-- PT룸 입장 버튼 -->
             <el-button
-              v-if="classItem.classTeacherName == userNickname"
+              v-if="classItem.userNo == userNo"
               icon="el-icon-s-home"
               class="btn-enter"
               @click="onClickPTRoomBtn"
@@ -53,6 +53,7 @@
       </div>
       <div class="card-calendar-wrapper">
         <v-calendar
+          style="height: 240px;"
           :attributes="classData.dayList[index].dateAttrs"
           :min-date="classItem.classStartDate"
           :max-date="classItem.classEndDate"
@@ -195,7 +196,9 @@ export default {
 
   computed: {
     ...mapState({
-      userNickname: state => state.root.userNickname
+      userNickname: state => state.root.userNickname,
+      userName: state => state.root.userName,
+      userNo: state => state.root.userNo
     })
   },
 
@@ -214,10 +217,11 @@ export default {
 
       let sessionName;
       let classNo;
-
+      let classUserNo;
       for (let i = 0; i < this.classData.classList.length; i++) {
         if (classTitle == this.classData.classList[i].classTitle) {
           classNo = this.classData.classList[i].classNo;
+          classUserNo = this.classData.classList[i].userNo;
           this.$store.dispatch("root/getSessionName", { classNo }).then(res => {
             sessionName = res.data;
           });
@@ -225,8 +229,10 @@ export default {
         }
       }
 
+      // 정확히 트레이너인지 판단하려면 userNo를 비교해야함.
       const nickname = this.userNickname;
-      const isTrainer = trainerName == nickname;
+      const name = this.userName;
+      const isTrainer = trainerName == name;
       const redirectUrl = "https://i5a204.p.ssafy.io:5000/";
       let isAvail;
 
@@ -246,7 +252,7 @@ export default {
         const targetWindow = window.open(redirectUrl);
         setTimeout(() => {
           targetWindow.postMessage(
-            { 
+            {
               sessionName, nickname, isTrainer, classNo, classTitle,
               token: localStorage.getItem("jwt-auth-token")
             },
@@ -297,6 +303,7 @@ export default {
   position: relative;
   margin-bottom: 10px;
   max-width: 800px;
+  border-radius: 8px !important;
 }
 
 .card-image-wrapper {
@@ -310,6 +317,40 @@ export default {
   width: 250px; */
 }
 
+/* 민영 수정 시작 */
+.trainer-title {
+  margin-left: 3px;
+}
+
+.vc-container.vc-blue {
+/* .vc-pane-layout { */
+  height: 240px !important;
+  border-top-left-radius: 0% !important;
+  border-bottom-left-radius: 0% !important;
+}
+
+/*
+800이면 사이드바 없애 */
+@media (max-width: 1020) {
+  .card-calendar-wrapper,
+  .vc-popover-content-wrapper,
+  .vc-container.vc-blue,
+  .vc-pane-container,
+  .v-calendar {
+    /* display: none !important; */
+    display: none !important;
+  }
+
+  .el-card__body .card-calendar-wrapper {
+    display: none !important;
+  }
+  .title {
+    width: 90%;
+  }
+}
+
+/* 민영 수정 종료 */
+
 .card-calendar-wrapper > el-image__inner {
   object-fit: cover;
 }
@@ -320,13 +361,19 @@ export default {
   text-align: center;
   color: white;
   border-radius: 0.5rem;
-  font-size: 13px;
+  font-size: 16px;  /* 민영 수정 */
   margin-right: 5px;
+  vertical-align: middle; /* 민영 수정 */
 }
 
 .title {
   font-weight: bold;
   font-size: 18px;
+  width: 350px;
+  /* 민영 수정 시작 */
+  word-break:break-all;
+  margin-top: 6px;
+  /* 민영 수정 끝 */
 }
 
 .registerclass-card-bottom {

@@ -15,6 +15,14 @@ export function getUserNickname(state) {
   return state.userNickname;
 }
 
+export function getUserName(state) {
+  return state.userName;
+}
+
+export function getUserNo(state) {
+  return state.userNo;
+}
+
 export function getSearchType(state) {
   return state.searchType;
 }
