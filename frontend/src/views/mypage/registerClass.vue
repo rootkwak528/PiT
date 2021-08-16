@@ -216,10 +216,11 @@ export default {
 
       let sessionName;
       let classNo;
-
+      let classUserNo;
       for (let i = 0; i < this.classData.classList.length; i++) {
         if (classTitle == this.classData.classList[i].classTitle) {
           classNo = this.classData.classList[i].classNo;
+          classUserNo = this.classData.classList[i].userNo;
           this.$store.dispatch("root/getSessionName", { classNo }).then(res => {
             sessionName = res.data;
           });
@@ -230,7 +231,6 @@ export default {
       // 정확히 트레이너인지 판단하려면 userNo를 비교해야함.
       const nickname = this.userNickname;
       const name = this.userName;
-
       const isTrainer = trainerName == name;
       const redirectUrl = "https://i5a204.p.ssafy.io:5000/";
       let isAvail;
