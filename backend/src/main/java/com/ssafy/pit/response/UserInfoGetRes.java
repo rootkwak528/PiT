@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter
 public class UserInfoGetRes {
 	
+	int userNo;
 	String userGenderName;
 	String userName;
 	String userEmail;

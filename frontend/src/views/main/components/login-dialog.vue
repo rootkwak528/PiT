@@ -97,7 +97,7 @@
 </style>
 
 <script>
-import { reactive, computed, ref, onMounted } from "vue";
+import { reactive, computed, ref } from "vue";
 import { useStore } from "vuex";
 
 export default {
@@ -195,8 +195,12 @@ export default {
                   store.state.profileUrl = result.data.userProfile;
                   store.state.userType = result.data.userTypeName;
                   store.state.userNickname = result.data.userNickname;
+                  store.state.userNo = result.data.userNo;
+                  store.state.userName = result.data.userName;
                   store.commit("root/setUserType", store.state.userType);
                   store.commit("root/setProfileUrl", store.state.profileUrl);
+                  store.commit("root/setUserNo", store.state.userNo);
+                  store.commit("root/setUserName", store.state.userName);
                   store.commit(
                     "root/setUserNickname",
                     store.state.userNickname

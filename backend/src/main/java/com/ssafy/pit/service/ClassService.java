@@ -1,5 +1,6 @@
 package com.ssafy.pit.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.ssafy.pit.entity.User;
@@ -30,5 +31,6 @@ public interface ClassService {
 	List<RegisterClassGetRes> getTeachClassList(int userNo);
 	List<ClassListGetRes> getFinishedTeachClassList(int userNo);
 	void addClassCnt(int classNo);
+	List<Date> getSaveTimtes(int userNo, int classNo) throws Exception;
 	
 }

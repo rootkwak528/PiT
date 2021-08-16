@@ -97,7 +97,6 @@ export default {
               classEndMonth <= today.getMonth() + 1 &&
               classEndDate < today.getDate()
             ) {
-              console.log(state.list[i].classTitle);
               state.list.splice(i, 1);
             }
           }
