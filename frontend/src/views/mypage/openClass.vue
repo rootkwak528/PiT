@@ -182,12 +182,7 @@
     </el-form>
 
     <div class="open-class-footer">
-      <el-button
-        class="form-btn"
-        @click="[submitForm('openclassForm'), clickRegister()]"
-        >가입하기</el-button
-      >
-      <!-- <el-button v-else class="form-btn" disabled>가입하기</el-button> -->
+      <el-button class="form-btn" @click="clickRegister">등록하기</el-button>
     </div>
   </div>
 </template>
@@ -483,17 +478,6 @@ export default {
       openclassForm,
       convertDataFormat
     };
-  },
-  methods: {
-    submitForm(formName) {
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          //alert("submit!");
-        } else {
-          return false;
-        }
-      });
-    }
   }
 };
 </script>
