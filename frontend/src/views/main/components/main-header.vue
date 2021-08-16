@@ -352,4 +352,10 @@ img {
   max-width: 100%;
   height: auto;
 }
+
+.searchDetailOption {
+  padding: 0;
+  /* max-height: 40px; */
+  height: 40px;
+}
 </style>

@@ -8,7 +8,7 @@
           @openJoinDialog="onOpenJoinDialog"
           @openSearchDialog="onOpenSearchDialog"
         />
-        <navbar />
+        <!-- <navbar /> -->
         <router-view />
         <main-footer />
       </div>
