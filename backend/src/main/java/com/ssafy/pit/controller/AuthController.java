@@ -30,9 +30,14 @@ public class AuthController {
 		String userPwd = loginInfo.getUserPwd();
 		UserLoginPostRes userLoginPostRes = new UserLoginPostRes();
 		
+		
 		try {
 			User user = userService.getUserByUserEmail(userEmail);
-			if(passwordEncoder.matches(userPwd, user.getUserPwd())) {
+			
+//			if(passwordEncoder.matches(userPwd, user.getUserPwd())) {
+//				return ResponseEntity.status(200).body(new UserLoginPostRes(200, "로그인에 성공하였습니다.", JwtTokenUtil.getToken(userEmail)));
+//			}
+			if( userPwd.equals(user.getUserPwd())) {
 				return ResponseEntity.status(200).body(new UserLoginPostRes(200, "로그인에 성공하였습니다.", JwtTokenUtil.getToken(userEmail)));
 			}
 			else {
