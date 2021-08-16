@@ -201,6 +201,7 @@ app.use(store);
 app.use(i18n);
 app.use(router);
 app.use(VCalendar, {});
+app.use(window.VueVideoPlayer);
 // app.use(VueVideoPlayer);
 // app.use(Calendar);
 
