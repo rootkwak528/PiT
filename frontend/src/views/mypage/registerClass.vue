@@ -27,7 +27,7 @@
           <div class="registerclass-card-bottom">
             <!-- PT룸 입장 버튼 -->
             <el-button
-              v-if="classItem.classTeacherName == userNickname"
+              v-if="classItem.userNo == userNo"
               icon="el-icon-s-home"
               class="btn-enter"
               @click="onClickPTRoomBtn"
@@ -195,7 +195,9 @@ export default {
 
   computed: {
     ...mapState({
-      userNickname: state => state.root.userNickname
+      userNickname: state => state.root.userNickname,
+      userName: state => state.root.userName,
+      userNo: state => state.root.userNo
     })
   },
 
@@ -225,8 +227,11 @@ export default {
         }
       }
 
+      // 정확히 트레이너인지 판단하려면 userNo를 비교해야함.
       const nickname = this.userNickname;
-      const isTrainer = trainerName == nickname;
+      const name = this.userName;
+
+      const isTrainer = trainerName == name;
       const redirectUrl = "https://i5a204.p.ssafy.io:5000/";
       let isAvail;
 
@@ -246,7 +251,7 @@ export default {
         const targetWindow = window.open(redirectUrl);
         setTimeout(() => {
           targetWindow.postMessage(
-            { 
+            {
               sessionName, nickname, isTrainer, classNo, classTitle,
               token: localStorage.getItem("jwt-auth-token")
             },

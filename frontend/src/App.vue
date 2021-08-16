@@ -92,6 +92,8 @@ export default {
           store.commit("root/setProfileUrl", result.data.userProfile);
           store.commit("root/setUserType", result.data.userTypeName);
           store.commit("root/setUserNickname", result.data.userNickname);
+          store.commit("root/setUserNo", result.data.userNo);
+          store.commit("root/setUserName", result.data.userName);
         })
       }
     }
