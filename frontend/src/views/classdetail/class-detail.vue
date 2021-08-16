@@ -1,8 +1,14 @@
 <template>
   <gallery :classNo="this.$route.query.classNo" style="margin-bottom: 40px;" />
   <div class="content">
-    <class-content :classNo="this.$route.query.classNo" style="width: 68%;" />
-    <class-summary :classNo="this.$route.query.classNo" />
+    <class-content
+      :classNo="this.$route.query.classNo"
+      style="min-width: 100px; width: 68%; margin-right: 20px"
+    />
+    <class-summary
+      :classNo="this.$route.query.classNo"
+      style="min-width: 250px; width: 30%;"
+    />
   </div>
 </template>
 
@@ -27,6 +33,9 @@ export default {
 <style>
 .content {
   display: flex;
-  justify-content: space-between;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+  flex-wrap: wrap;
 }
 </style>
