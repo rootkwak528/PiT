@@ -17,7 +17,7 @@
         <div style="position: absolute; padding: 18px">
           <div style="display: flex">
             <div class="tag">{{ classItem.classType }}</div>
-            <div style="font-weight: bold">
+            <div class="trainer-title" style="font-weight: bold">
               강사:
               <span class="trainer">{{ classItem.classTeacherName }}</span>
             </div>
@@ -25,7 +25,7 @@
           <div class="title">{{ classItem.classTitle }}</div>
           <!-- <div class="desc">{{ classItem.classDesc }}</div> -->
           <div class="registerclass-card-bottom">
-            
+
             <!-- PT룸 입장 버튼 -->
             <el-button
               v-if="classItem.classTeacherName==userNickname"
@@ -54,6 +54,7 @@
       </div>
       <div class="card-calendar-wrapper">
         <v-calendar
+          style="height: 240px;"
           :attributes="classData.dayList[index].dateAttrs"
           :min-date="classItem.classStartDate"
           :max-date="classItem.classEndDate"
@@ -213,7 +214,7 @@ export default {
       const classTitle = event.target.parentElement.parentElement.parentElement.querySelector(
         ".title"
       ).innerText;
-      
+
       let sessionName
       let classNo
 
@@ -246,12 +247,12 @@ export default {
       if (!isTrainer && !isAvail) {
         console.log(isTrainer, isAvail)
         alert('아직 PT룸이 개설되지 않았습니다.')
-        
+
       } else {
         const targetWindow = window.open(redirectUrl);
         setTimeout(() => {
           targetWindow.postMessage(
-            { 
+            {
               sessionName, nickname, isTrainer, classNo, classTitle,
               token: localStorage.getItem("jwt-auth-token")
             },
@@ -302,6 +303,7 @@ export default {
   position: relative;
   margin-bottom: 10px;
   max-width: 800px;
+  border-radius: 8px !important;
 }
 
 .card-image-wrapper {
@@ -315,6 +317,40 @@ export default {
   width: 250px; */
 }
 
+/* 민영 수정 시작 */
+.trainer-title {
+  margin-left: 3px;
+}
+
+.vc-container.vc-blue {
+/* .vc-pane-layout { */
+  height: 240px !important;
+  border-top-left-radius: 0% !important;
+  border-bottom-left-radius: 0% !important;
+}
+
+/*
+800이면 사이드바 없애 */
+@media (max-width: 1020) {
+  .card-calendar-wrapper,
+  .vc-popover-content-wrapper,
+  .vc-container.vc-blue,
+  .vc-pane-container,
+  .v-calendar {
+    /* display: none !important; */
+    display: none !important;
+  }
+
+  .el-card__body .card-calendar-wrapper {
+    display: none !important;
+  }
+  .title {
+    width: 90%;
+  }
+}
+
+/* 민영 수정 종료 */
+
 .card-calendar-wrapper > el-image__inner {
   object-fit: cover;
 }
@@ -325,13 +361,19 @@ export default {
   text-align: center;
   color: white;
   border-radius: 0.5rem;
-  font-size: 13px;
+  font-size: 16px;  /* 민영 수정 */
   margin-right: 5px;
+  vertical-align: middle; /* 민영 수정 */
 }
 
 .title {
   font-weight: bold;
   font-size: 18px;
+  width: 350px;
+  /* 민영 수정 시작 */
+  word-break:break-all;
+  margin-top: 6px;
+  /* 민영 수정 끝 */
 }
 
 .registerclass-card-bottom {
