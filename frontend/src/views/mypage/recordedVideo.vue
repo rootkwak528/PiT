@@ -1,17 +1,18 @@
 <template>
   <div>
     <div class="content-wrapper">
-      <div class="classList" v-if="!state.selectedClassid">
+      <div class="classList" v-if="state.selectedClassid == null">
         <div class="submenu-title">녹화된 영상</div>
         <div class="recordedvideo-card-section">
           <el-table
-            :data="classContent"
+            :data="state.classList"
             style="width: 80%; font-size: 17px;"
             @row-click="mvVideoList"
           >
-            <el-table-column prop="title" label="클래스명"> </el-table-column>
+            <el-table-column prop="classTitle" label="클래스명">
+            </el-table-column>
             <el-table-column
-              prop="teacherName"
+              prop="classTeacherName"
               label="강사명"
               width="100"
               fixed="right"
@@ -66,18 +67,18 @@ export default {
     store
       .dispatch("root/getFinishedClassList")
       .then(function(result) {
-        //console.log(result);
-        classData.classList = result.data;
+        for (var i = 0; i < result.data.length; i++)
+          state.classList.push(result.data[i]);
       })
       .catch(function(err) {
-        alert(err.response.data.message);
-        console.log(err);
+        //alert(err.response );
+        console.log(err.response);
       });
 
     const mvVideoList = function(prop) {
       //console.log(prop.classid);
-      state.selectedClassid = prop.classid;
-      state.selectedTitle = prop.title;
+      state.selectedClassid = prop.classNo;
+      state.selectedTitle = prop.classTitle;
     };
     const goBack = function() {
       state.selectedClassid = null;
