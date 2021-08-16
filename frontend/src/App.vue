@@ -1,13 +1,15 @@
 <template>
   <el-container class="main-wrapper">
     <el-container class="main-container">
-      <div style="width: 70%; margin-left: auto; margin-right: auto;">
+      <!-- 민영: 클래스명 추가, style css 파일로 이동 -->
+      <div class="main-container-content">
         <main-header
           :height="`70px`"
           @openLoginDialog="onOpenLoginDialog"
           @openJoinDialog="onOpenJoinDialog"
           @openSearchDialog="onOpenSearchDialog"
         />
+        <!-- 민영: 네브바 지우기 -->
         <!-- <navbar /> -->
         <router-view />
         <main-footer />
