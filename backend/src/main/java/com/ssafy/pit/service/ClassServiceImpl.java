@@ -468,6 +468,15 @@ public class ClassServiceImpl implements ClassService {
 		List<String> videoUrls = userVideoRepositorySupport.getVideoUrls(userNo, ptroomNo);
 		return videoUrls;
 	}
+	
+
+	@Override
+	public List<Date> getSaveTimtes(int userNo, int classNo) throws Exception {
+		Ptroom ptroom = ptroomRepositorySupport.getPtroomByClassNo(classNo);
+		int ptroomNo = ptroom.getPtroomNo();
+		List<Date> videoSaveTime = userVideoRepositorySupport.getSaveTimtes(userNo, ptroomNo);
+		return videoSaveTime;
+	}
 
 	@Override
 	public List<RegisterClassGetRes> getTeachClassList(int userNo) {
