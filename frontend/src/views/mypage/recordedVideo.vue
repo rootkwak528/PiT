@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="content-wrapper">
-      <div class="classList" v-if="state.selectedClassid == null">
+      <div class="classList" v-if="!state.selectedClassid">
         <div class="submenu-title">녹화된 영상</div>
         <div class="recordedvideo-card-section">
           <el-table
@@ -38,6 +38,7 @@ import "video.js/dist/video.min.js";
 import VideoPlayer from "./components/videoplayer.vue";
 import { reactive } from "@vue/reactivity";
 import { useStore } from "vuex";
+import { onMounted } from "vue";
 
 export default {
   name: "recordedVideoTest",
@@ -53,27 +54,31 @@ export default {
       classList: []
     });
 
-    // 수강중 클래스
-    store
-      .dispatch("root/getRegisterClassList")
-      .then(function(result) {
-        state.classList = result.data;
-      })
-      .catch(function(err) {
-        console.log(err);
-      });
+    onMounted(() => {
+      // 수강중 클래스
+      store
+        .dispatch("root/getRegisterClassList")
+        .then(function(result) {
+          state.classList = result.data;
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
 
-    // 수강완료 클래스
-    store
-      .dispatch("root/getFinishedClassList")
-      .then(function(result) {
-        for (var i = 0; i < result.data.length; i++)
-          state.classList.push(result.data[i]);
-      })
-      .catch(function(err) {
-        //alert(err.response );
-        console.log(err.response);
-      });
+      // 수강완료 클래스
+      store
+        .dispatch("root/getFinishedClassList")
+        .then(function(result) {
+          //console.log(result);
+          for (var i = 0; i < result.data.length; i++)
+            state.classList.push(result.data[i]);
+        })
+        .catch(function(err) {
+          //alert(err.response);
+          console.log(err);
+        });
+      //console.log(state.classList);
+    });
 
     const mvVideoList = function(prop) {
       //console.log(prop.classid);
@@ -138,8 +143,7 @@ export default {
         }
       ]
     };
-  },
-  methods: {}
+  }
 };
 </script>
 
