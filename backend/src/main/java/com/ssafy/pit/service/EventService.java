@@ -13,4 +13,5 @@ public interface EventService {
 	int registerEvent(EventInfoReq eventInfo);
 	int deleteEvent(int eventNo);
 	int updateEvent(int eventNo, EventInfoReq eventInfo);
+	Event getEventDetail(int eventNo);
 }

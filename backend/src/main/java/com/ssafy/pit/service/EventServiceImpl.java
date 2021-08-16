@@ -138,4 +138,9 @@ public class EventServiceImpl implements EventService {
 		}
 		
 	}
+	@Override
+	public Event getEventDetail(int eventNo) {
+		Event event = eventRepository.findUserByEventNo(eventNo);
+		return event;
+	}
 }

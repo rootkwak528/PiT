@@ -3,11 +3,13 @@ package com.ssafy.pit.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.pit.common.auth.PitUserDetails;
 import com.ssafy.pit.common.response.BaseResponseBody;
@@ -16,8 +18,14 @@ import com.ssafy.pit.service.ClassService;
 import com.ssafy.pit.service.PtroomService;
 import com.ssafy.pit.service.UserService;
 
+@CrossOrigin(
+        origins = {"https://i5a204.p.ssafy.io:5000", "https://i5a204.p.ssafy.io:8083", "https://localhost:8083"}, 
+        allowCredentials = "true", 
+        allowedHeaders = "*", 
+        methods = {RequestMethod.GET,RequestMethod.POST,RequestMethod.DELETE,RequestMethod.PUT,RequestMethod.OPTIONS}
+)
 @RequestMapping("/v1/ptroom/")
-@Controller
+@RestController
 public class PtroomController {
 
 	@Autowired
@@ -76,7 +84,7 @@ public class PtroomController {
 	
 	// PTroom 입장
 	@PutMapping("/enter/{classNo}")
-	public ResponseEntity<Integer> enterPtroom(Authentication authentication, @PathVariable int classNo) {
+	public ResponseEntity<String> enterPtroom(Authentication authentication, @PathVariable int classNo) {
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
 		String userEmail = userDetails.getUsername();
 		System.out.println("userType : "+userService.validateUserType(userEmail));
@@ -85,8 +93,14 @@ public class PtroomController {
 		}
 		else {
 			try {
-				int userCnt = ptroomService.enterPtroom(classNo);
-				return ResponseEntity.status(200).body(userCnt);				
+				Integer userCnt = ptroomService.enterPtroom(classNo);
+				if(userCnt == null) {
+					return ResponseEntity.status(200).body("ptroom의 정원이  초과되었습니다.");
+				}
+				else {					
+					return ResponseEntity.status(200).body("ptroom 입장에 성공하였습니다.");
+				}
+				
 			}
 			catch (Exception e) {
 				e.printStackTrace();
@@ -100,7 +114,7 @@ public class PtroomController {
 	public ResponseEntity<BaseResponseBody> leavePtroom(Authentication authentication, @PathVariable int classNo) {
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
 		String userEmail = userDetails.getUsername();
-		System.out.println("userType : "+userService.validateUserType(userEmail));
+		System.out.println("userType : " + userService.validateUserType(userEmail));
 		if(userService.validateUserType(userEmail) == 2) {
 			try {
 				ptroomService.leavePtroom(classNo);
@@ -115,5 +129,5 @@ public class PtroomController {
 			return ResponseEntity.status(403).body(BaseResponseBody.of(403, "접근할 수 없는 페이지입니다."));
 		}
 	}
-	
+
 }

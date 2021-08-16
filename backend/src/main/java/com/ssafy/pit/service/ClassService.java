@@ -29,5 +29,6 @@ public interface ClassService {
 	void setVideoUrls(int userNo, int classNo, SetVideoUrlsPostReq setVideoUrlsInfo) throws Exception;
 	List<RegisterClassGetRes> getTeachClassList(int userNo);
 	List<ClassListGetRes> getFinishedTeachClassList(int userNo);
+	void addClassCnt(int classNo);
 	
 }

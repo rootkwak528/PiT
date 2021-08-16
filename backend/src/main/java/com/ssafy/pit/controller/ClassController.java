@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,6 +32,12 @@ import com.ssafy.pit.service.ClassService;
 import com.ssafy.pit.service.PtroomService;
 import com.ssafy.pit.service.UserService;
 
+@CrossOrigin(
+        origins = {"https://i5a204.p.ssafy.io:5000", "https://i5a204.p.ssafy.io:8083", "https://localhost:8083"}, 
+        allowCredentials = "true", 
+        allowedHeaders = "*", 
+        methods = {RequestMethod.GET,RequestMethod.POST,RequestMethod.DELETE,RequestMethod.PUT,RequestMethod.OPTIONS}
+)
 @RequestMapping("/v1/class")
 @RestController
 public class ClassController {
@@ -70,8 +78,8 @@ public class ClassController {
 			classList = classService.getClassList(searchInfo, "001");
 		}
 		return ResponseEntity.status(200).body(classList);
-	}
-
+	}	
+	
 	// 관리자를 위한 클래스 리스트 가져오기 (authentication) permission(승인, 미승인, 거절)에 따른 클래스 목록보기 가능
 	@GetMapping("/admin")
 	public ResponseEntity<List<ClassListGetRes>> getAdminClassList(Authentication authentication, @RequestParam HashMap<String, String> permissionMap) {
@@ -355,7 +363,26 @@ public class ClassController {
 		} else {
 			return ResponseEntity.status(403).body(null);
 		}
-		
+	}
+	
+	// 클래스 수업회수 추가하기
+	@PutMapping("/cnt/{classNo}")
+	public ResponseEntity<BaseResponseBody> updateClassCnt(Authentication authentication, @PathVariable int classNo) {
+		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
+		String userEmail = userDetails.getUsername();
+		System.out.println("userType : " + userService.validateUserType(userEmail));
+		if(userService.validateUserType(userEmail) == 2) {
+			try {
+				classService.addClassCnt(classNo);
+				return ResponseEntity.status(200).body(BaseResponseBody.of(200, "클래스 수업횟수가 추가되었습니다."));
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				return ResponseEntity.status(500).body(BaseResponseBody.of(500, "수정에 오류가 생겼습니다."));
+			}
+		} else {
+			return ResponseEntity.status(403).body(BaseResponseBody.of(403, "접근할 수 없는 페이지입니다."));
+		}
 	}
 	
 }

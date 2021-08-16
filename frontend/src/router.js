@@ -1,6 +1,7 @@
 import { createWebHistory, createRouter } from "vue-router";
 import Main from "@/views/main/main.vue";
-import Event from "@/views/event.vue";
+import Event from "@/views/eventpage/event.vue";
+import EventDetail from "@/views/eventpage/eventdetail";
 import SearchResult from "@/views/searchResult/search-result";
 import ClassDetail from "@/views/classdetail/class-detail";
 
@@ -26,6 +27,11 @@ const routes = [
     path: "/event",
     name: "Event",
     component: Event
+  },
+  {
+    path: "/eventdetail",
+    name: "EventDetail",
+    component: EventDetail
   },
   {
     path: "/searchresult",

@@ -254,3 +254,15 @@ export function enterSession({ state }, payload) {
     }
   })
 }
+
+// 이벤트 목록 조회
+export function getEventInfoList({ state }) {
+  const url = `/event`
+  return $axios.get(url);
+}
+
+// 이벤트 상세 조회
+export function getEventDetail({ state }, payload) {
+  const url = `/event/detail/${payload.eventNo}`
+  return $axios.get(url);
+}
