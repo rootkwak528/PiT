@@ -1,6 +1,6 @@
 <template>
   <el-row class="main-header" :gutter="10" :style="{ height: height }">
-    <div class="hide-on-small">
+    <div class="main-navbar">
       <div class="logo-wrapper">
         <router-link to="/">
           <div class="ic ic-logo" />
@@ -10,7 +10,7 @@
         <el-select
           v-model="state.searchSelect"
           placeholder="전체 검색"
-          style="margin-right: 5px; width: 250px"
+          style="margin-right: 5px; margin-left: 15px; width: 250px"
         >
           <el-option value="전체 검색">전체 검색</el-option>
           <el-option value="클래스 명 검색">클래스 명 검색</el-option>
@@ -82,6 +82,33 @@
                   >마이페이지</router-link
                 >
               </el-dropdown-item>
+
+              <!-- 민영 수정 시작 -->
+              <el-dropdown-item
+                icon="el-icon-notebook-1"
+                class="small-button-wrapper-logined"
+                style="font:blue; cursor: pointer;"
+              >
+                <router-link
+                to="/rgstClass"
+                style="text-decoration: none; color: inherit;"
+                >마이클래스</router-link
+              >
+              </el-dropdown-item>
+
+              <el-dropdown-item
+                icon="el-icon-star-on"
+                class="small-button-wrapper-logined"
+                style="font:blue; cursor: pointer;"
+              >
+                <span type="primary"
+                @click="mvFavoriteClass"
+                style="text-decoration: none; color: inherit;"
+                >찜목록
+                </span
+              >
+              </el-dropdown-item>
+              <!-- 민영 수정 끝 -->
 
               <el-dropdown-item
                 v-if="state.userType === '관리자'"
@@ -303,7 +330,16 @@ export default {
   top: 14px;
 }
 
-.main-header .hide-on-small .logo-wrapper .ic.ic-logo {
+
+/* .main-header .hide-on-small .main-navbar .logo-wrapper .ic.ic-logo{
+  width: 70px;
+  height: 50px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url("../../../assets/images/MainLogo.png");
+} */
+
+.ic.ic-logo {
   width: 70px;
   height: 50px;
   background-size: contain;
@@ -319,6 +355,11 @@ export default {
 }
 
 .hide-on-small {
+  display: flex;
+  justify-content: space-between;
+}
+
+.main-navbar {
   display: flex;
   justify-content: space-between;
 }
@@ -353,9 +394,36 @@ img {
   height: auto;
 }
 
+/* 민영 수정 시작 */
+
+/* 상세 검색 버튼 정렬 및 마진 */
 .searchDetailOption {
   padding: 0;
   /* max-height: 40px; */
   height: 40px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
+
+/* 반응형 처리 - 마이클래스, 찜목록 */
+@media (max-width: 1080px) {
+  .button-wrapper-logined {
+    display: none;
+  }
+
+  .small-button-wrapper-logined {
+    display: block;
+  }
+}
+
+@media (min-width: 1080px) {
+  .button-wrapper-logined {
+    display: block;
+  }
+
+  .small-button-wrapper-logined {
+    display: none;
+  }
+}
+/* 민영 수정 끝 */
 </style>

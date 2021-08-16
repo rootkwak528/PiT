@@ -248,4 +248,14 @@ export default {
 .join-dialog .dialog-footer .el-button {
   width: 120px;
 }
+
+/* 민영 수정 시작 */
+.el-dialog {
+  padding: 18px;
+}
+
+.el-form-item > label{
+  width: 85px;
+}
+/* 민영 수정 삭제 */
 </style>
