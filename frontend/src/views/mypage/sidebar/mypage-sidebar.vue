@@ -76,5 +76,9 @@ export default {
   margin-left: 10px;
   font-size: 16px;
 }
+
+.el-menu {
+  border: none;
+}
 /* 민영 수정 끝 */
 </style>

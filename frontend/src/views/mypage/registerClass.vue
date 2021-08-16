@@ -8,7 +8,7 @@
       shadow="hover"
       class="registerclass-card"
     >
-      <div class="card-image-wrapper">
+      <div class="card-image-wrapper" style="width: 100%;">
         <el-image
           :src="classItem.classThumbnail"
           fit="cover"
@@ -51,7 +51,7 @@
           </div>
         </div>
       </div>
-      <div class="card-calendar-wrapper">
+      <div class="card-calendar-wrapper d-none d-lg-block">
         <v-calendar
           style="height: 240px;"
           :attributes="classData.dayList[index].dateAttrs"
@@ -329,9 +329,7 @@ export default {
   border-bottom-left-radius: 0% !important;
 }
 
-/*
-800이면 사이드바 없애 */
-@media (max-width: 1020) {
+@media (max-width: 1020px) {
   .card-calendar-wrapper,
   .vc-popover-content-wrapper,
   .vc-container.vc-blue,
