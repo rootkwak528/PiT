@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="content-wrapper">
-      <div class="classList" v-if="!state.selectedClassid">
+      <div class="classList" v-if="!state.selectedClassNo">
         <div class="submenu-title">녹화된 영상</div>
         <div class="recordedvideo-card-section">
           <el-table
@@ -24,7 +24,7 @@
       <div class="videoList" v-else>
         <el-page-header @back="goBack" :content="state.selectedTitle">
         </el-page-header>
-        <video-tree />
+        <videos :classNo="state.selectedClassNo" />
       </div>
     </div>
   </div>
@@ -33,7 +33,7 @@
 <script>
 import "video.js/dist/video-js.min.css";
 import "video.js/dist/video.min.js";
-import videoTree from "./components/videoTree.vue";
+import videos from "./components/videos.vue";
 import { reactive } from "@vue/reactivity";
 import { useStore } from "vuex";
 import { onMounted } from "vue";
@@ -41,13 +41,13 @@ import { onMounted } from "vue";
 export default {
   name: "recordedVideoTest",
   components: {
-    videoTree
+    videos
   },
   setup() {
     const store = useStore();
 
     const state = reactive({
-      selectedClassid: null,
+      selectedClassNo: null,
       selectedTitle: null,
       classList: []
     });
@@ -80,11 +80,12 @@ export default {
 
     const mvVideoList = function(prop) {
       //console.log(prop.classid);
-      state.selectedClassid = prop.classNo;
+      state.selectedClassNo = prop.classNo;
       state.selectedTitle = prop.classTitle;
     };
+
     const goBack = function() {
-      state.selectedClassid = null;
+      state.selectedClassNo = null;
     };
 
     return { mvVideoList, goBack, state };
