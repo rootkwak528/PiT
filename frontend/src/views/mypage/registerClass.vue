@@ -7,6 +7,7 @@
       :key="classItem"
       shadow="hover"
       class="registerclass-card"
+      :id="'card-'+classItem.classNo"
     >
       <div class="card-image-wrapper" style="width: 100%;">
         <el-image
@@ -53,7 +54,6 @@
       </div>
       <div class="card-calendar-wrapper d-none d-lg-block">
         <v-calendar
-          style="height: 240px;"
           :attributes="classData.dayList[index].dateAttrs"
           :min-date="classItem.classStartDate"
           :max-date="classItem.classEndDate"
@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import { onMounted } from "@vue/runtime-core";
+import { ref, onUpdated } from "vue";
 import { useStore, mapState } from "vuex";
 import { reactive } from "@vue/reactivity";
 import axios from "axios";
@@ -76,10 +76,7 @@ export default {
   },
   setup() {
     const store = useStore();
-    onMounted(() => {
-      getRegisterClassList();
-    });
-
+    const _resizeFlag = ref(false)  // 이벤트리스너 한번만 추가하기 위한 flag
     const classData = reactive({
       classList: [],
       dates: [],
@@ -191,7 +188,54 @@ export default {
           console.log(err);
         });
     };
-    return { store, getRegisterClassList, classData };
+
+    const resizeClassCard = function () {
+      classData.classList.forEach(classItem => {
+        const classCard = document.getElementById(`card-${classItem.classNo}`)
+
+        // 마지막 월요일이 달력에 포함되어 있으면 270px, 아니면 240px
+        const lastMonday = classCard.getElementsByClassName('on-bottom on-left')[0]
+        const is270px = !lastMonday.classList.contains('is-not-in-month')
+
+        const cardBodyDOM = classCard.getElementsByClassName('el-card__body')[0]
+        const calendarDOM = classCard.getElementsByClassName('vc-container vc-blue')[0]
+
+        cardBodyDOM.style.height = is270px?'270px':'240px'
+        calendarDOM.style.height = is270px?'270px':'240px'
+      })
+    }
+
+    const addEventOnBtn = function () {
+      // eventListener는 딱 한번만 추가되어야 한다.
+      if (!_resizeFlag.value && classData.classList.length) {
+        _resizeFlag.value = true
+      } else {
+        return
+      }
+
+      classData.classList.forEach(classItem => {
+        const classCard = document.getElementById(`card-${classItem.classNo}`)
+        
+        const calendar = classCard.getElementsByClassName('card-calendar-wrapper')[0]
+        calendar.addEventListener('transitionrun', async function() {
+          // 애니메이션이 완료되면 리사이즈해야 해서 0.35초 대기
+          await new Promise(r => setTimeout(r, 350))
+          resizeClassCard()
+        })
+      })
+    }
+
+    getRegisterClassList();
+
+    onUpdated(() => {
+      resizeClassCard()
+      addEventOnBtn()
+    })
+
+    return { 
+      store, classData,
+      getRegisterClassList, resizeClassCard
+    };
   },
 
   computed: {
@@ -292,7 +336,6 @@ export default {
 
 .registerclass-card > .el-card__body {
   display: flex;
-  height: 240px;
   padding: 0px;
   /* background-image: url("https://cdn.class101.net/images/119a8385-66ea-471a-a4a2-bee3e519c4da/375xauto.webp"); */
 }
@@ -303,7 +346,7 @@ export default {
   position: relative;
   margin-bottom: 10px;
   max-width: 800px;
-  border-radius: 8px !important;
+  border-radius: 0.55rem !important;
 }
 
 .card-image-wrapper {
@@ -324,9 +367,10 @@ export default {
 
 .vc-container.vc-blue {
 /* .vc-pane-layout { */
-  height: 240px !important;
   border-top-left-radius: 0% !important;
   border-bottom-left-radius: 0% !important;
+  border: none;
+  background-color: #f5f5f5;
 }
 
 @media (max-width: 1020px) {
@@ -387,3 +431,14 @@ export default {
   padding: 10px;
 }
 </style>
+
+
+vc-day id-2021-09-05 day-5 day-from-end-26 weekday-1 weekday-position-1 weekday-ordinal-1 weekday-ordinal-from-end-4 week-2 week-from-end-4 in-next-month on-bottom on-left vc-day-box-center-center is-not-in-month
+
+vc-day id-2021-10-03 day-3 day-from-end-29 weekday-1 weekday-position-1 weekday-ordinal-1 weekday-ordinal-from-end-4 week-2 week-from-end-5 in-next-month on-bottom on-left vc-day-box-center-center is-not-in-month
+
+vc-day id-2021-09-26 day-26 day-from-end-5 weekday-1 weekday-position-1 weekday-ordinal-4 weekday-ordinal-from-end-1 week-5 week-from-end-1 in-month on-left vc-day-box-center-center
+
+vc-day id-2021-08-29 day-29 day-from-end-3 weekday-1 weekday-position-1 weekday-ordinal-5 weekday-ordinal-from-end-1 week-5 week-from-end-1 in-month on-left vc-day-box-center-center
+
+vc-day id-2021-08-01 day-1 day-from-end-31 weekday-1 weekday-position-1 weekday-ordinal-1 weekday-ordinal-from-end-5 week-1 week-from-end-5 is-first-day in-month on-top on-left vc-day-box-center-center

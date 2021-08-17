@@ -1,6 +1,6 @@
 <template>
   <el-row class="main-footer">
-    <div class="footer-container d-flex justify-content-between align-items-end">
+    <div class="footer-container d-block d-sm-flex justify-content-between align-items-end">
       <span class="contents">
         <router-link class="about-btn" to="/about">
           <strong>
