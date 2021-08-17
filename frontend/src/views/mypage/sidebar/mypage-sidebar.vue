@@ -16,7 +16,6 @@
         <el-menu-item index="rgstClass">수강중 클래스</el-menu-item>
         <el-menu-item index="finishedClass">수강완료 클래스</el-menu-item>
         <el-menu-item index="recordedVideo">녹화된 수업</el-menu-item>
-        <el-menu-item index="1-4">피드백</el-menu-item>
       </el-menu-item-group>
       <el-menu-item-group v-if="userTypeName == '트레이너'">
         <el-menu-item index="rgstClass">수강중 클래스</el-menu-item>
@@ -27,10 +26,6 @@
     <el-menu-item index="favoriteclass" v-if="userTypeName == '수강생'">
       <i class="el-icon-star-on"></i>
       <span>찜한 클래스</span>
-    </el-menu-item>
-    <el-menu-item index="2" v-if="userTypeName == '트레이너'">
-      <i class="el-icon-star-on"></i>
-      <span>피드백 등록</span>
     </el-menu-item>
     <el-menu-item index="myinfo">
       <i class="el-icon-user-solid"></i>

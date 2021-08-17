@@ -80,6 +80,7 @@
       </div>
 
       <div class="button-wrapper" v-else>
+
         <div v-if="state.userType !== '관리자'">
           <div type="primary" @click="mvFavoriteClass" class="button-wrapper-logined">
             찜목록
@@ -101,7 +102,6 @@
             >
           </div>
         </div>
-
 
         <el-dropdown trigger="click">
           <span class="el-dropdown-link">
@@ -160,7 +160,6 @@
                 </span
               >
               </el-dropdown-item>
-              <!-- 민영 수정 끝 -->
 
               <el-dropdown-item
                 v-if="state.userType === '관리자'"
@@ -177,9 +176,6 @@
 
               <el-dropdown-item icon="el-icon-turn-off" @click="logout"
                 >로그아웃</el-dropdown-item
-              >
-              <el-dropdown-item icon="el-icon-bell" @click="checkAlert"
-                >피드백 알림</el-dropdown-item
               >
             </el-dropdown-menu>
           </template>
