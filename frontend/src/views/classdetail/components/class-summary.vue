@@ -6,7 +6,7 @@
       </div>
     </template>
     <div style="">
-      <el-tag size="mini" color="#BEEDED">8월 8일부터 수강 가능</el-tag>
+      <el-tag size="mini" color="#BEEDED">{{state.startMonth}}월 {{state.startDay}}일부터 수강 가능</el-tag>
       <div style="margin-top: 20px">
         <div class="info-content">
           <div class="sub-item"><i class="el-icon-folder" /> 대분류</div>
@@ -72,7 +72,9 @@ export default {
         userTypeName: "",
         isLogined: computed(() => store.getters["root/getIsLogined"]),
         userType: computed(() => store.getters["root/getUserType"]),
-        classPricePerMonth: ""
+        classPricePerMonth: "",
+        startMonth: "",
+        startDay: ""
       },
       isInUserLikes: false,
       userLikesClassList: computed(
@@ -100,7 +102,11 @@ export default {
         state.form.classPrice = result.data.classPrice;
 
         var startMonth = parseInt(result.data.classStartDate.split("-")[1]);
+        var startDay = parseInt(result.data.classStartDate.split("-")[2]);
         var endMonth = parseInt(result.data.classEndDate.split("-")[1]);
+
+        state.startDay = startDay;
+        state.startMonth = startMonth;
 
         var tmp = (
           Math.floor(

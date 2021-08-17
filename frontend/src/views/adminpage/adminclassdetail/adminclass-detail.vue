@@ -1,6 +1,6 @@
 <template>
   <div class="submenu-title" style="margin-left: 10px">클래스 상세</div>
-  <admin-gallery style="margin-bottom: 40px;"/>
+  <admin-gallery :classNo="this.$route.query.classNo" style="margin-bottom: 40px;"/>
   <div>
     <admin-class-content :classNo="this.$route.query.classNo" />
   </div>
