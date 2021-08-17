@@ -11,10 +11,6 @@
       <i class="el-icon-zoom-in"></i>
       <span>클래스 목록 조회</span>
     </el-menu-item>
-    <el-menu-item index="2">
-      <i class="el-icon-cold-drink"></i>
-      <span>이벤트 목록 조회</span>
-    </el-menu-item>
   </el-menu>
 </template>
 

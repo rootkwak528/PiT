@@ -5,6 +5,7 @@
         <div class="submenu-title">녹화된 영상</div>
         <div class="recordedvideo-card-section">
           <el-table
+            id="recordedvideo-card-content"
             :data="state.classList"
             style="width: 100%; font-size: 17px;"
             @row-click="mvVideoList"
