@@ -455,7 +455,10 @@ export default {
             formData.append("classLimit", state.form.classLimit);
             formData.append("classTcnt", state.form.classTcnt);
             formData.append("classThumbnail", state.form.classThumbnail);
-            formData.append("classSubPhotos", state.form.classSubPhotos);
+            const cnt = state.form.classSubPhotos.length;
+            for (let i = 0; i < cnt; i++) {
+              formData.append("classSubPhotos", state.form.classSubPhotos[i]);
+            }
             store
               .dispatch("root/createClass", {
                 formData: formData
