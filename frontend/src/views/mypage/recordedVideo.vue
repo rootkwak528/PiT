@@ -24,7 +24,7 @@
       <div class="videoList" v-else>
         <el-page-header @back="goBack" :content="state.selectedTitle">
         </el-page-header>
-        <videos :classNo="state.selectedClassNo" />
+        <!-- <router-link to="/video?classNo=${{state.selectedClassNo}}" /> -->
       </div>
     </div>
   </div>
@@ -37,6 +37,7 @@ import videos from "./components/videos.vue";
 import { reactive } from "@vue/reactivity";
 import { useStore } from "vuex";
 import { onMounted } from "vue";
+import { useRouter } from "vue-router";
 
 export default {
   name: "recordedVideoTest",
@@ -45,6 +46,7 @@ export default {
   },
   setup() {
     const store = useStore();
+    const router = useRouter();
 
     const state = reactive({
       selectedClassNo: null,
@@ -83,6 +85,7 @@ export default {
       //console.log(prop.classid);
       state.selectedClassNo = prop.classNo;
       state.selectedTitle = prop.classTitle;
+      router.push("/video?classNo=" + state.selectedClassNo);
     };
 
     const goBack = function() {
