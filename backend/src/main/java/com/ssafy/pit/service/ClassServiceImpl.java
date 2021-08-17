@@ -84,22 +84,22 @@ public class ClassServiceImpl implements ClassService {
 	// 이미지 생성폴더 이름
 	String uploadFolder = "upload";
 	// 자기 이미지 생성할 경로
-//	String uploadPath = "C:" + File.separator + "Users" + File.separator + "ahnda" + File.separator
-//			+ "ssafy5-study" + File.separator + "Second" + File.separator + "Projects" + File.separator + "CommonProject" 
-//			+ File.separator + "S05P13A204" + File.separator + "backend" + File.separator + "src" + File.separator + "main"
-//			+ File.separator + "resources" + File.separator + "static";
+	String uploadPath = "C:" + File.separator + "Users" + File.separator + "ahnda" + File.separator
+			+ "ssafy5-study" + File.separator + "Second" + File.separator + "Projects" + File.separator + "CommonProject" 
+			+ File.separator + "S05P13A204" + File.separator + "backend" + File.separator + "src" + File.separator + "main"
+			+ File.separator + "resources" + File.separator + "static";
 	
 //	/Users/seoyoseb/SSAFYProjects/S05P13A204/backend/src/main/resources/static
 //  서버 이미지 저장될 경로
 //	/home/ubuntu/S05P13A204/backend/src/main/resources/static
 	
-	String uploadPath = "/Users" + File.separator + "seoyoseb" + File.separator + "SSAFYProjects"
-    		+ File.separator + "S05P13A204"
-            + File.separator + "backend" 
-            + File.separator + "src" 
-            + File.separator + "main"
-            + File.separator + "resources"
-            + File.separator + "static";
+//	String uploadPath = "/Users" + File.separator + "seoyoseb" + File.separator + "SSAFYProjects"
+//    		+ File.separator + "S05P13A204"
+//            + File.separator + "backend" 
+//            + File.separator + "src" 
+//            + File.separator + "main"
+//            + File.separator + "resources"
+//            + File.separator + "static";
 	
 	
 	@Override
@@ -612,6 +612,7 @@ public class ClassServiceImpl implements ClassService {
 			if(!uploadDir.exists()) uploadDir.mkdir();
 			
 			List<MultipartFile> parts = request.getFiles("classSubPhotos");
+			System.out.println(parts.size());
 			
 			if(parts.size() == 0) {
 				return 2;

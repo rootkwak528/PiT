@@ -248,6 +248,7 @@ public class ClassController {
 				System.out.println("섬네일 등록 성공!");
 				// 서브이미지들 넣기
 				classService.createSubPhotos(request, classNo);
+				System.out.println("서브이미지 등록 성공!");
 				
 				return ResponseEntity.status(200).body(BaseResponseBody.of(200, "해당 클래스가 승인요청 처리되었습니다."));				
 			}
