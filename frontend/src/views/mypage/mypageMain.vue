@@ -2,18 +2,20 @@
   <div class="name">
     {{ username }}
   </div>
-  <div>
-    <el-row class="tac">
-      <el-col :span="6">
+  <div class="container">
+    <div class="tac row">
+      <div class="col-sm-4 col-md-3 col-12" id="sidebar" style="padding: 0;">
+        <!-- :span="6"  -->
         <mypage-sidebar
           :pathname="pathname"
           :userTypeName="state.userTypeName"
         />
-      </el-col>
-      <el-col :span="18" style="min-height: 655px">
+      </div>
+      <div class="col-sm-8 col-md-9 col-12" id="sidebar-content" style="min-height: 655px; padding: 0;">
+        <!-- :span="18"  -->
         <router-view :userTypeName="state.userTypeName" />
-      </el-col>
-    </el-row>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -69,3 +71,22 @@ export default {
   }
 };
 </script>
+
+<style>
+@media (max-width: 576px) {
+  #sidebar {
+    border-bottom: solid 1.2px #ebeef5;
+    margin-bottom: 35px;
+  }
+
+  #sidebar-content .content-wrapper {
+    margin: 0;
+  }
+}
+
+@media (min-width: 576px) {
+  #sidebar {
+    border-right: solid 1.2px #ebeef5;
+  }
+}
+</style>

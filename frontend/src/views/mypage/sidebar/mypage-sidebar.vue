@@ -61,4 +61,24 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+/* 민영 수정 시작*/
+.el-menu span{
+  font-weight: bold;
+  font-size: 17px;
+}
+.el-menu i{
+  font-weight: bold;
+  font-size: 19px;
+}
+
+.el-menu-item-group .el-menu-item {
+  margin-left: 10px;
+  font-size: 16px;
+}
+
+.el-menu {
+  border: none;
+}
+/* 민영 수정 끝 */
+</style>
