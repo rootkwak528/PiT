@@ -351,7 +351,6 @@ export default {
 }
 
 .registerclass-card-bottom {
-  margin-top: 60px;
   display: flex;
 }
 

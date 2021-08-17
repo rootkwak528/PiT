@@ -19,7 +19,7 @@
         <el-image
           :src="classItem.classThumbnail"
           fit="cover"
-          style="width: 300px; height: 200px;"
+          style="width: 100%; min-height: 200px"
         />
         <div class="class-card-content">
           <div>
