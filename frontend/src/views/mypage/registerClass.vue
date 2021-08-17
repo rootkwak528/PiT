@@ -331,7 +331,6 @@ export default {
 
 .tag {
   background-color: #00c0d4;
-  width: 40px;
   text-align: center;
   color: white;
   border-radius: 0.5rem;
@@ -339,6 +338,8 @@ export default {
   margin-right: 5px;
   vertical-align: middle;
   margin-bottom: 10px;
+  display: inline;
+  padding: 0 8px;
 }
 
 .title {
