@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -222,7 +223,7 @@ public class ClassController {
 	
 	// 클래스 생성 (트레이너가 관리자에게 승인신청)
 	@PostMapping("/create")
-	public ResponseEntity<BaseResponseBody> createClass(Authentication authentication, CreateClassPostReq createClassInfo, MultipartHttpServletRequest request) {
+	public ResponseEntity<BaseResponseBody> createClass(Authentication authentication, @ModelAttribute CreateClassPostReq createClassInfo, MultipartHttpServletRequest request) {
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
 		User user = userDetails.getUser();
 		String userEmail = userDetails.getUsername();

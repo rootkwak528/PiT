@@ -600,7 +600,7 @@ public class ClassServiceImpl implements ClassService {
 			File uploadDir = new File(uploadPath + File.separator + uploadFolder);
 			if(!uploadDir.exists()) uploadDir.mkdir();
 			
-			List<MultipartFile> parts = request.getFiles("classThumbnail");
+			List<MultipartFile> parts = request.getFiles("classSubPhotos");
 			
 			if(parts.size() == 0) {
 				return 2;
