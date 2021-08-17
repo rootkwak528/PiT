@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.ssafy.pit.common.auth.PitUserDetails;
 import com.ssafy.pit.common.response.BaseResponseBody;
@@ -168,11 +169,11 @@ public class UserController {
 	}
 	
 	// 프로필 이미지 변경
-	@PutMapping("/me/profile")
-	public ResponseEntity<? extends BaseResponseBody> updateProfile(Authentication authentication, @RequestBody HashMap<String, String> profileMap) {
+	@PostMapping("/me/profile")
+	public ResponseEntity<? extends BaseResponseBody> updateProfile(Authentication authentication, MultipartHttpServletRequest request) {
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
 		User user = userDetails.getUser();
-		if (userService.update(user, profileMap.get("profile")) == 1) {			
+		if (userService.update(user, request) == 1) {			
 			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "프로필 사진이 업데이트되었습니다."));
 		}
 		else {

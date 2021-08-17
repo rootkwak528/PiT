@@ -31,12 +31,12 @@ public class UserServiceImpl implements UserService {
 	CodeRepositorySupport codeRepositorySupport;
 	
 	// 이미지 생성폴더 이름
-//	String uploadFolder = "upload";
+	String uploadFolder = "upload";
 	// 자기 이미지 생성할 경로
-//	String uploadPath = "C:" + File.separator + "Users" + File.separator + "ahnda" + File.separator
-//			+ "ssafy5-study" + File.separator + "Second" + File.separator + "Projects" + File.separator + "CommonProject" 
-//			+ File.separator + "S05P13A204" + File.separator + "backend" + File.separator + "src" + File.separator + "main"
-//			+ File.separator + "resources" + File.separator + "static";
+	String uploadPath = "C:" + File.separator + "Users" + File.separator + "ahnda" + File.separator
+			+ "ssafy5-study" + File.separator + "Second" + File.separator + "Projects" + File.separator + "CommonProject" 
+			+ File.separator + "S05P13A204" + File.separator + "backend" + File.separator + "src" + File.separator + "main"
+			+ File.separator + "resources" + File.separator + "static";
 	
 //	/Users/seoyoseb/SSAFYProjects/S05P13A204/backend/src/main/resources/static
 	
@@ -93,9 +93,31 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public int update(User user, String profile) {
+	public int update(User user, MultipartHttpServletRequest request) {
 		try {
-			user.setUserProfile(profile);
+			String deleteFileUrl = user.getUserProfile();
+			File uploadDir = new File(uploadPath + File.separator + uploadFolder);
+			if(!uploadDir.exists()) uploadDir.mkdir();
+			
+			File file = null;
+			if(deleteFileUrl != null) {
+				file = new File(uploadPath + File.pathSeparator, deleteFileUrl);
+				
+				if(file.exists()) {
+					file.delete();
+				}
+			}
+			
+			MultipartFile part= request.getFile("file");
+			String fileName = part.getOriginalFilename();
+			UUID uuid = UUID.randomUUID();
+			String extension = FilenameUtils.getExtension(fileName);
+			String savingFileName = uuid + "." + extension;
+			File destFile = new File(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
+			part.transferTo(destFile);
+			String fileUrl = uploadFolder + "/" + savingFileName;
+			
+			user.setUserProfile(fileUrl);
 			userRepository.save(user);
 			return 1;
 		}
