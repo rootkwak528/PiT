@@ -171,7 +171,29 @@
           :on-exceed="handleExceed"
           :on-success="handleFileSuccess"
         >
-          <el-button size="small" type="primary">Click to upload</el-button>
+          <el-button size="small" type="primary">이미지 업로드</el-button>
+          <!-- <template #tip>
+            <div class="el-upload__tip">
+              jpg/png files with a size less than 500kb
+            </div>
+          </template> -->
+        </el-upload>
+      </el-form-item>
+      <el-form-item
+        prop="classSubPhotos"
+        label="클래스이미지"
+        :label-width="state.formLabelWidth"
+      >
+        <el-upload
+          class="upload-demo"
+          action="v1/users/image"
+          accept="image/jpeg"
+          :limit="10"
+          :on-exceed="handleExceedSub"
+          :on-success="handleFileSuccessSub"
+          multiple
+        >
+          <el-button size="small" type="primary">이미지 업로드</el-button>
           <!-- <template #tip>
             <div class="el-upload__tip">
               jpg/png files with a size less than 500kb
@@ -269,6 +291,7 @@ export default {
         classPrice: "",
         classMaterial: "",
         classThumbnail: "",
+        classSubPhotos: [],
         classTime: "",
         classStartTime: "",
         classEndTime: "",
@@ -415,25 +438,27 @@ export default {
             for (var i = 0; i < state.form.classDay.length; i++) {
               day += state.form.classDay[i];
             }
-            var subPhotoArr = [];
+
+            let formData = new FormData();
+            formData.append("classType", state.form.classType);
+            formData.append("classTitle", state.form.classTitle);
+            formData.append("classDay", day);
+            formData.append("classDesc", state.form.classDesc);
+            formData.append("classStartDate", state.form.classStartDate);
+            formData.append("classEndDate", state.form.classEndDate);
+            formData.append("classStartTime", state.form.classStartTime);
+            formData.append("classEndTime", state.form.classEndTime);
+            formData.append("classCurri", state.form.classCurri);
+            formData.append("classPrice", state.form.classPrice);
+            formData.append("classMaterial", state.form.classMaterial);
+            formData.append("classLevel", state.form.classLevel);
+            formData.append("classLimit", state.form.classLimit);
+            formData.append("classTcnt", state.form.classTcnt);
+            formData.append("classThumbnail", state.form.classThumbnail);
+            formData.append("classSubPhotos", state.form.classSubPhotos);
             store
               .dispatch("root/createClass", {
-                classType: state.form.classType,
-                classTitle: state.form.classTitle,
-                classDay: day,
-                classDesc: state.form.classDesc,
-                classStartDate: state.form.classStartDate,
-                classEndDate: state.form.classEndDate,
-                classStartTime: state.form.classStartTime,
-                classEndTime: state.form.classEndTime,
-                classCurri: state.form.classCurri,
-                classPrice: state.form.classPrice,
-                classMaterial: state.form.classMaterial,
-                classLevel: state.form.classLevel,
-                classLimit: state.form.classLimit,
-                classTcnt: state.form.classTcnt,
-                classThumbnail: state.form.classThumbnail,
-                classSubPhotos: subPhotoArr
+                formData: formData
               })
               .then(function(result) {
                 ElMessage({
@@ -463,8 +488,21 @@ export default {
       });
     };
 
+    const handleExceedSub = function() {
+      ElMessage({
+        message: "클래스 이미지는 10장까지 업로드 가능합니다.",
+        type: "error"
+      });
+    };
+
     const handleFileSuccess = function(res, file) {
-      state.form.classThumbnail = URL.createObjectURL(file.raw);
+      state.form.classThumbnail = file.raw;
+      console.log("썸네일 파일 : " + state.form.classThumbnail);
+    };
+
+    const handleFileSuccessSub = function(res, file) {
+      state.form.classSubPhotos.push(file.raw);
+      console.log("클래스 이미지 : " + state.form.classSubPhotos.length);
     };
 
     return {
@@ -475,6 +513,8 @@ export default {
       classLevelOptions,
       handleExceed,
       handleFileSuccess,
+      handleExceedSub,
+      handleFileSuccessSub,
       openclassForm,
       convertDataFormat
     };
