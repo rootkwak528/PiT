@@ -173,7 +173,8 @@ public class UserController {
 	public ResponseEntity<? extends BaseResponseBody> updateProfile(Authentication authentication, MultipartHttpServletRequest request) {
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
 		User user = userDetails.getUser();
-		if (userService.update(user, request) == 1) {			
+		System.out.println("multi request : "+request);
+		if (userService.update(user, request) == 1) {
 			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "프로필 사진이 업데이트되었습니다."));
 		}
 		else {

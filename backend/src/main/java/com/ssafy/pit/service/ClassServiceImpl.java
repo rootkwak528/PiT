@@ -1,5 +1,6 @@
 package com.ssafy.pit.service;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -74,6 +75,20 @@ public class ClassServiceImpl implements ClassService {
 	
 	@Autowired
 	UserVideoRepositorySupport userVideoRepositorySupport;
+	
+	// 이미지 생성폴더 이름
+	String uploadFolder = "upload";
+	// 서버 이미지 저장될 경로
+	//	/home/ubuntu/S05P13A204/backend/src/main/resources/static
+	
+	String uploadPath = "/Users" + File.separator + "seoyoseb" + File.separator + "SSAFYProjects"
+    		+ File.separator + "S05P13A204"
+            + File.separator + "backend" 
+            + File.separator + "src" 
+            + File.separator + "main"
+            + File.separator + "resources"
+            + File.separator + "static";
+	
 	
 	@Override
 	public List<ClassListGetRes> getClassList(ClassSearchGetReq searchInfo, String permission) {
