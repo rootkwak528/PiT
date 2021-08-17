@@ -111,18 +111,26 @@ public class UserServiceImpl implements UserService {
 			}
 			
 			MultipartFile part= request.getFile("file");
-			String fileName = part.getOriginalFilename();
-			UUID uuid = UUID.randomUUID();
-			String extension = FilenameUtils.getExtension(fileName);
-			String savingFileName = uuid + "." + extension;
-			File destFile = new File(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
-			part.transferTo(destFile);
-			String fileUrl = "http://localhost:8080/static/"+uploadFolder + "/" + savingFileName;
-			
-			System.out.println("fileUrl : "+ fileUrl);
-			user.setUserProfile(fileUrl);
-			userRepository.save(user);
-			return 1;
+			if (part == null) {
+				String fileUrl = "";
+				user.setUserProfile(fileUrl);
+				userRepository.save(user);
+				return 2;
+			}
+			else {				
+				String fileName = part.getOriginalFilename();
+				UUID uuid = UUID.randomUUID();
+				String extension = FilenameUtils.getExtension(fileName);
+				String savingFileName = uuid + "." + extension;
+				File destFile = new File(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
+				part.transferTo(destFile);
+				String fileUrl = "http://localhost:8080/static/"+uploadFolder + "/" + savingFileName;
+				
+				System.out.println("fileUrl : "+ fileUrl);
+				user.setUserProfile(fileUrl);
+				userRepository.save(user);
+				return 1;
+			}
 		}
 		catch (Exception e) {
 			return 0;

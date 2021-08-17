@@ -420,6 +420,7 @@ export default {
 
     const clickDeleteProfile = function() {
       alert("프로필 사진을 기본 이미지로 변경하시겠습니까?");
+      state.form.profileImage = "";
       state.form.profile = "";
     };
 
