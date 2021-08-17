@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="content-wrapper">
+    <div class="content-wrapper" v-loading="state.loading">
       <div class="classList" v-if="!state.selectedClassNo">
         <div class="submenu-title">녹화된 영상</div>
         <div class="recordedvideo-card-section">
@@ -49,7 +49,8 @@ export default {
     const state = reactive({
       selectedClassNo: null,
       selectedTitle: null,
-      classList: []
+      classList: [],
+      loading: true
     });
 
     onMounted(() => {
@@ -67,7 +68,6 @@ export default {
       store
         .dispatch("root/getFinishedClassList")
         .then(function(result) {
-          //console.log(result);
           for (var i = 0; i < result.data.length; i++)
             state.classList.push(result.data[i]);
         })
@@ -75,7 +75,8 @@ export default {
           //alert(err.response);
           console.log(err);
         });
-      //console.log(state.classList);
+
+      state.loading = false;
     });
 
     const mvVideoList = function(prop) {

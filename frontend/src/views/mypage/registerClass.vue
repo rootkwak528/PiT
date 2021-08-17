@@ -1,64 +1,67 @@
 <template>
-  <div class="content-wrapper">
+  <div class="content-wrapper" v-loading="classData.loading">
     <div class="submenu-title">수강중 클래스</div>
-    <div v-if="classData.classList.length == 0">수강중인 클래스가 없어요!</div>
-    <el-card
-      v-for="(classItem, index) in classData.classList"
-      :key="classItem"
-      shadow="hover"
-      class="registerclass-card"
-    >
-      <div class="card-image-wrapper">
-        <el-image
-          :src="classItem.classThumbnail"
-          fit="cover"
-          style="vertical-align: middle; opacity: 0.4; width: 100%;"
-        />
-        <div style="position: absolute; padding: 18px">
-          <div style="display: flex">
-            <div class="tag">{{ classItem.classType }}</div>
-            <div style="font-weight: bold">
-              강사:
-              <span class="trainer">{{ classItem.classTeacherName }}</span>
+
+    <div v-if="!classData.isEmpty">
+      <el-card
+        v-for="(classItem, index) in classData.classList"
+        :key="classItem"
+        shadow="hover"
+        class="registerclass-card"
+      >
+        <div class="card-image-wrapper">
+          <el-image
+            :src="classItem.classThumbnail"
+            fit="cover"
+            style="vertical-align: middle; opacity: 0.4; width: 100%;"
+          />
+          <div style="position: absolute; padding: 18px">
+            <div style="display: flex">
+              <div class="tag">{{ classItem.classType }}</div>
+              <div style="font-weight: bold">
+                강사:
+                <span class="trainer">{{ classItem.classTeacherName }}</span>
+              </div>
+            </div>
+            <div class="title">{{ classItem.classTitle }}</div>
+            <!-- <div class="desc">{{ classItem.classDesc }}</div> -->
+            <div class="registerclass-card-bottom">
+              <!-- PT룸 입장 버튼 -->
+              <el-button
+                v-if="classItem.userNo == userNo"
+                icon="el-icon-s-home"
+                class="btn-enter"
+                @click="onClickPTRoomBtn"
+                >PT룸 개설하기
+              </el-button>
+
+              <el-button
+                v-else
+                icon="el-icon-s-home"
+                class="btn-enter"
+                @click="onClickPTRoomBtn"
+                >PT룸 입장하기
+              </el-button>
+
+              <el-progress
+                :text-inside="true"
+                :stroke-width="24"
+                :percentage="100"
+                status="success"
+              ></el-progress>
             </div>
           </div>
-          <div class="title">{{ classItem.classTitle }}</div>
-          <!-- <div class="desc">{{ classItem.classDesc }}</div> -->
-          <div class="registerclass-card-bottom">
-            <!-- PT룸 입장 버튼 -->
-            <el-button
-              v-if="classItem.userNo == userNo"
-              icon="el-icon-s-home"
-              class="btn-enter"
-              @click="onClickPTRoomBtn"
-              >PT룸 개설하기
-            </el-button>
-
-            <el-button
-              v-else
-              icon="el-icon-s-home"
-              class="btn-enter"
-              @click="onClickPTRoomBtn"
-              >PT룸 입장하기
-            </el-button>
-
-            <el-progress
-              :text-inside="true"
-              :stroke-width="24"
-              :percentage="100"
-              status="success"
-            ></el-progress>
-          </div>
         </div>
-      </div>
-      <div class="card-calendar-wrapper">
-        <v-calendar
-          :attributes="classData.dayList[index].dateAttrs"
-          :min-date="classItem.classStartDate"
-          :max-date="classItem.classEndDate"
-        />
-      </div>
-    </el-card>
+        <div class="card-calendar-wrapper">
+          <v-calendar
+            :attributes="classData.dayList[index].dateAttrs"
+            :min-date="classItem.classStartDate"
+            :max-date="classItem.classEndDate"
+          />
+        </div>
+      </el-card>
+    </div>
+    <div v-else>수강중인 클래스가 없어요!</div>
   </div>
 </template>
 
@@ -66,7 +69,6 @@
 import { onMounted } from "@vue/runtime-core";
 import { useStore, mapState } from "vuex";
 import { reactive } from "@vue/reactivity";
-import axios from "axios";
 
 export default {
   name: "RegisterClassTest",
@@ -80,6 +82,8 @@ export default {
     });
 
     const classData = reactive({
+      isEmpty: false,
+      loading: true,
       classList: [],
       dates: [],
       dateAttrs: [],
@@ -187,8 +191,10 @@ export default {
           }
         })
         .catch(function(err) {
+          classData.isEmpty = true;
           console.log(err);
         });
+      classData.loading = false;
     };
     return { store, getRegisterClassList, classData };
   },
@@ -252,7 +258,11 @@ export default {
         setTimeout(() => {
           targetWindow.postMessage(
             {
-              sessionName, nickname, isTrainer, classNo, classTitle,
+              sessionName,
+              nickname,
+              isTrainer,
+              classNo,
+              classTitle,
               token: localStorage.getItem("jwt-auth-token")
             },
             redirectUrl
