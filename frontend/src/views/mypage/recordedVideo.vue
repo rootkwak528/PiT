@@ -1,12 +1,13 @@
 <template>
   <div>
-    <div class="content-wrapper">
+    <div class="content-wrapper" v-loading="state.loading">
       <div class="classList" v-if="!state.selectedClassNo">
         <div class="submenu-title">녹화된 영상</div>
         <div class="recordedvideo-card-section">
           <el-table
+            id="recordedvideo-card-content"
             :data="state.classList"
-            style="width: 80%; font-size: 17px;"
+            style="width: 100%; font-size: 17px;"
             @row-click="mvVideoList"
           >
             <el-table-column prop="classTitle" label="클래스명">
@@ -25,6 +26,7 @@
         <el-page-header @back="goBack" :content="state.selectedTitle">
         </el-page-header>
         <videos :classNo="state.selectedClassNo" />
+        <!-- <router-link to="/video?classNo=${{state.selectedClassNo}}" /> -->
       </div>
     </div>
   </div>
@@ -37,6 +39,7 @@ import videos from "./components/videos.vue";
 import { reactive } from "@vue/reactivity";
 import { useStore } from "vuex";
 import { onMounted } from "vue";
+import { useRouter } from "vue-router";
 
 export default {
   name: "recordedVideoTest",
@@ -45,11 +48,13 @@ export default {
   },
   setup() {
     const store = useStore();
+    const router = useRouter();
 
     const state = reactive({
       selectedClassNo: null,
       selectedTitle: null,
-      classList: []
+      classList: [],
+      loading: true
     });
 
     onMounted(() => {
@@ -67,7 +72,6 @@ export default {
       store
         .dispatch("root/getFinishedClassList")
         .then(function(result) {
-          //console.log(result);
           for (var i = 0; i < result.data.length; i++)
             state.classList.push(result.data[i]);
         })
@@ -75,13 +79,15 @@ export default {
           //alert(err.response);
           console.log(err);
         });
-      //console.log(state.classList);
+
+      state.loading = false;
     });
 
     const mvVideoList = function(prop) {
       //console.log(prop.classid);
       state.selectedClassNo = prop.classNo;
       state.selectedTitle = prop.classTitle;
+      //router.push("/video?classNo=" + state.selectedClassNo);
     };
 
     const goBack = function() {

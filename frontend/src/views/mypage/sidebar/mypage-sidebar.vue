@@ -74,6 +74,7 @@ export default {
 
 .el-menu-item-group .el-menu-item {
   margin-left: 10px;
+  min-width: 140px;
   font-size: 16px;
 }
 

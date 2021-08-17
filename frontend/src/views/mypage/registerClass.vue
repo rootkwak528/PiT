@@ -431,14 +431,3 @@ export default {
   padding: 10px;
 }
 </style>
-
-
-vc-day id-2021-09-05 day-5 day-from-end-26 weekday-1 weekday-position-1 weekday-ordinal-1 weekday-ordinal-from-end-4 week-2 week-from-end-4 in-next-month on-bottom on-left vc-day-box-center-center is-not-in-month
-
-vc-day id-2021-10-03 day-3 day-from-end-29 weekday-1 weekday-position-1 weekday-ordinal-1 weekday-ordinal-from-end-4 week-2 week-from-end-5 in-next-month on-bottom on-left vc-day-box-center-center is-not-in-month
-
-vc-day id-2021-09-26 day-26 day-from-end-5 weekday-1 weekday-position-1 weekday-ordinal-4 weekday-ordinal-from-end-1 week-5 week-from-end-1 in-month on-left vc-day-box-center-center
-
-vc-day id-2021-08-29 day-29 day-from-end-3 weekday-1 weekday-position-1 weekday-ordinal-5 weekday-ordinal-from-end-1 week-5 week-from-end-1 in-month on-left vc-day-box-center-center
-
-vc-day id-2021-08-01 day-1 day-from-end-31 weekday-1 weekday-position-1 weekday-ordinal-1 weekday-ordinal-from-end-5 week-1 week-from-end-5 is-first-day in-month on-top on-left vc-day-box-center-center
