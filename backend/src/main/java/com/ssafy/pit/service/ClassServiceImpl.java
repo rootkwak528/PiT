@@ -4,10 +4,14 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.ssafy.pit.entity.ClassPhoto;
 import com.ssafy.pit.entity.Classes;
@@ -78,8 +82,15 @@ public class ClassServiceImpl implements ClassService {
 	
 	// 이미지 생성폴더 이름
 	String uploadFolder = "upload";
-	// 서버 이미지 저장될 경로
-	//	/home/ubuntu/S05P13A204/backend/src/main/resources/static
+	// 자기 이미지 생성할 경로
+//	String uploadPath = "C:" + File.separator + "Users" + File.separator + "ahnda" + File.separator
+//			+ "ssafy5-study" + File.separator + "Second" + File.separator + "Projects" + File.separator + "CommonProject" 
+//			+ File.separator + "S05P13A204" + File.separator + "backend" + File.separator + "src" + File.separator + "main"
+//			+ File.separator + "resources" + File.separator + "static";
+	
+//	/Users/seoyoseb/SSAFYProjects/S05P13A204/backend/src/main/resources/static
+//  서버 이미지 저장될 경로
+//	/home/ubuntu/S05P13A204/backend/src/main/resources/static
 	
 	String uploadPath = "/Users" + File.separator + "seoyoseb" + File.separator + "SSAFYProjects"
     		+ File.separator + "S05P13A204"
@@ -420,16 +431,37 @@ public class ClassServiceImpl implements ClassService {
 	}
 
 	@Override
-	public void createClassPhoto(String photo, int classNo, boolean isThumbnail)
+	public void createClassPhoto(MultipartHttpServletRequest request, int classNo)
 			throws Exception {
-		ClassPhoto classPhoto = new ClassPhoto();
-		Classes classes = classRepository.findClassByClassNo(classNo);
-		classPhoto.setClasses(classes);
-		classPhoto.setPhotoIsthumbnail(isThumbnail);
-		classPhoto.setPhotoUrl(photo);
 		
-		classPhotoRepository.save(classPhoto);
-		return;
+		try {
+			File uploadDir = new File(uploadPath + File.separator + uploadFolder);
+			if(!uploadDir.exists()) uploadDir.mkdir();
+			
+			MultipartFile part = request.getFile("classThumbnail");
+			String fileName = part.getOriginalFilename();
+			UUID uuid = UUID.randomUUID();
+			String extension = FilenameUtils.getExtension(fileName);
+			String savingFileName = uuid + "." + extension;
+			File destFile = new File(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
+			part.transferTo(destFile);
+			String fileUrl = "http://localhost:8080/static/" + uploadFolder + "/" + savingFileName;
+			System.out.println("fileUrl : "+ fileUrl);
+			
+			ClassPhoto classPhoto = new ClassPhoto();
+			Classes classes = classRepository.findClassByClassNo(classNo);
+			classPhoto.setClasses(classes);
+			classPhoto.setPhotoIsthumbnail(true);
+			classPhoto.setPhotoUrl(fileUrl);
+			
+			classPhotoRepository.save(classPhoto);
+			return;
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
 	}
 
 	@Override
@@ -560,5 +592,45 @@ public class ClassServiceImpl implements ClassService {
 		classes.setClassCcnt(classes.getClassCcnt()+1);
 		classRepository.save(classes);
 		return;
+	}
+
+	@Override
+	public int createSubPhotos(MultipartHttpServletRequest request, int classNo) {
+		try {
+			File uploadDir = new File(uploadPath + File.separator + uploadFolder);
+			if(!uploadDir.exists()) uploadDir.mkdir();
+			
+			List<MultipartFile> parts = request.getFiles("classThumbnail");
+			
+			if(parts.size() == 0) {
+				return 2;
+			}
+			
+			for(MultipartFile part: parts) {
+				String fileName = part.getOriginalFilename();
+				UUID uuid = UUID.randomUUID();
+				String extension = FilenameUtils.getExtension(fileName);
+				String savingFileName = uuid + "." + extension;
+				File destFile = new File(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
+				part.transferTo(destFile);
+				String fileUrl = "http://localhost:8080/static/" + uploadFolder + "/" + savingFileName;
+				System.out.println("fileUrl : "+ fileUrl);
+				
+				ClassPhoto classPhoto = new ClassPhoto();
+				Classes classes = classRepository.findClassByClassNo(classNo);
+				classPhoto.setClasses(classes);
+				classPhoto.setPhotoIsthumbnail(false);
+				classPhoto.setPhotoUrl(fileUrl);
+				classPhotoRepository.save(classPhoto);
+			}
+			
+			return 1;
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+		
 	}	
 }

@@ -3,6 +3,8 @@ package com.ssafy.pit.service;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
 import com.ssafy.pit.entity.User;
 import com.ssafy.pit.request.ClassSearchGetReq;
 import com.ssafy.pit.request.CreateClassPostReq;
@@ -23,7 +25,7 @@ public interface ClassService {
 	List<RegisterClassGetRes> getRegisterClassList(int userNo);
 	void createClass(CreateClassPostReq createClassInfo, User user) throws Exception;
 	int getLatestClassNo() throws Exception;
-	void createClassPhoto(String photo, int classNo, boolean isThumbnail) throws Exception;
+	void createClassPhoto(MultipartHttpServletRequest request, int classNo) throws Exception;
 	int enrollClass(User user, int classNo) throws Exception;
 	void updateClassPermission(int classNo, String permission) throws Exception;
 	List<String> getVideoUrls(int userNo, int classNo) throws Exception;
@@ -32,5 +34,6 @@ public interface ClassService {
 	List<ClassListGetRes> getFinishedTeachClassList(int userNo);
 	void addClassCnt(int classNo);
 	List<Date> getSaveTimtes(int userNo, int classNo) throws Exception;
+	int createSubPhotos(MultipartHttpServletRequest request, int classNo);
 	
 }
