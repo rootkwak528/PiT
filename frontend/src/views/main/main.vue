@@ -14,7 +14,7 @@
       </el-carousel-item>
     </el-carousel>
   </div>
-  <h3 style="margin-top: 72px">Top10 인기 클래스</h3>
+  <h3 style="margin-top: 72px">클래스 목록</h3>
   <class-section></class-section>
 </template>
 <style>
