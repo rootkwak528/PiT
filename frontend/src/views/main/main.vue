@@ -3,7 +3,12 @@
     class="block"
     style="margin-top: 30px; width: 100vw; margin-left: calc(-50vw + 50%);"
   >
-    <el-carousel class="main-carousel" trigger="click" height="550px" interval="5000">
+    <el-carousel
+      class="main-carousel"
+      trigger="click"
+      height="550px"
+      interval="5000"
+    >
       <el-carousel-item v-for="item in imageURLs" :key="item" height="500px">
         <el-image :src="item" style="width: 100%" />
       </el-carousel-item>
@@ -41,7 +46,6 @@ export default {
   }
 };
 </script>
-
 
 <style scoped>
 @media (max-width: 825px) {

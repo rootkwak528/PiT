@@ -14,8 +14,8 @@ public class CreateClassPostReq {
 	String classTitle;
 	String classDesc;
 	String classDay;
-	Date classStartDate;
-	Date classEndDate;
+	String startDate;
+	String endDate;
 	String classStartTime;
 	String classEndTime;
 	String classCurri;
@@ -24,7 +24,5 @@ public class CreateClassPostReq {
 	String classLevel;
 	int classLimit;
 	int classTcnt;
-	String classThumbnail;
-	List<String> classSubPhotos;
 	
 }

@@ -169,10 +169,11 @@ export function createClass({ state }, payload) {
   const url = `/class/create`;
   let token = "Bearer " + localStorage.getItem("jwt-auth-token");
   let body = payload;
-  console.log("body : " + body);
-  return $axios.post(url, body, {
+  console.log("body : " + body.formData);
+  return $axios.post(url, body.formData, {
     headers: {
-      Authorization: token
+      Authorization: token,
+      "Content-Type": "multipart/form-data"
     }
   });
 }

@@ -84,17 +84,18 @@ export default {
         localStorage.getItem("jwt-auth-token") != null
       ) {
         store.commit("root/setIsLogined", true);
-        store.dispatch("root/getUserInfo", {
-          token: localStorage.getItem("jwt-auth-token")
-        })
-        .then(function(result){
-          store.commit("root/setProfileUrl", result.data.userProfile);
-          store.commit("root/setUserType", result.data.userTypeName);
-          store.commit("root/setUserNickname", result.data.userNickname);
-          store.commit("root/setUserNo", result.data.userNo);
-          store.commit("root/setUserName", result.data.userName);
-          console.log("App vue : " + result.data.userProfile);
-        })
+        store
+          .dispatch("root/getUserInfo", {
+            token: localStorage.getItem("jwt-auth-token")
+          })
+          .then(function(result) {
+            store.commit("root/setProfileUrl", result.data.userProfile);
+            store.commit("root/setUserType", result.data.userTypeName);
+            store.commit("root/setUserNickname", result.data.userNickname);
+            store.commit("root/setUserNo", result.data.userNo);
+            store.commit("root/setUserName", result.data.userName);
+            // /console.log("App vue : " + result.data.userProfile);
+          });
       }
     }
     return { store };

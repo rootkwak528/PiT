@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.ssafy.pit.common.auth.PitUserDetails;
 import com.ssafy.pit.common.response.BaseResponseBody;
@@ -221,7 +223,7 @@ public class ClassController {
 	
 	// 클래스 생성 (트레이너가 관리자에게 승인신청)
 	@PostMapping("/create")
-	public ResponseEntity<BaseResponseBody> createClass(Authentication authentication, @RequestBody CreateClassPostReq createClassInfo) {
+	public ResponseEntity<BaseResponseBody> createClass(Authentication authentication, @ModelAttribute CreateClassPostReq createClassInfo, MultipartHttpServletRequest request) {
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
 		User user = userDetails.getUser();
 		String userEmail = userDetails.getUsername();
@@ -237,20 +239,16 @@ public class ClassController {
 				// 클래스 개설한 userName, classTitle, classDay를 encode 하여 ptroomSessionName 생성
 				String ptroomSessionName = 
 						passwordEncoder.encode(user.getUserName()+createClassInfo.getClassTitle()+createClassInfo.getClassDay());
- 
+				
+				// ptroom url 생성
 				ptroomService.createPtroom(ptroomSessionName, classNo);
 				
-				String thumbnailPhoto = createClassInfo.getClassThumbnail();
 				// 썸네일 이미지 넣기
-				classService.createClassPhoto(thumbnailPhoto, classNo, true);
+				classService.createClassPhoto(request, classNo);
 				System.out.println("섬네일 등록 성공!");
 				// 서브이미지들 넣기
-				List<String> subPhotos = createClassInfo.getClassSubPhotos();
-				
-				for(String subPhoto: subPhotos) {
-					classService.createClassPhoto(subPhoto, classNo, false);
-				}
-				System.out.println("서브 사진 등록 성공!");
+				classService.createSubPhotos(request, classNo);
+				System.out.println("서브이미지 등록 성공!");
 				
 				return ResponseEntity.status(200).body(BaseResponseBody.of(200, "해당 클래스가 승인요청 처리되었습니다."));				
 			}
