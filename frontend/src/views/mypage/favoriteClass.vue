@@ -68,20 +68,19 @@ export default {
       getClassLikesList();
     });
 
-
     const clickDeleteClassLikes = function(event) {
       let classTitle = event.target.parentElement.parentElement.querySelector(
         ".title"
       ).innerText;
-      console.log("click classTitle : "+classTitle);
+      console.log("click classTitle : " + classTitle);
 
-      let classNo
-      for (let i=0; i<state.list.length; i++){
-        if (classTitle == state.list[i].classTitle){
+      let classNo;
+      for (let i = 0; i < state.list.length; i++) {
+        if (classTitle == state.list[i].classTitle) {
           classNo = state.list[i].classNo;
         }
       }
-      console.log("click classNo : "+classNo);
+      console.log("click classNo : " + classNo);
 
       store
         .dispatch("root/deleteClassLikes", {
@@ -91,9 +90,9 @@ export default {
           alert("찜 목록에서 삭제되었습니다.");
           getClassLikesList();
         })
-        .catch(function(err){
+        .catch(function(err) {
           alert(err.response.data.message);
-        })
+        });
       event.stopPropagation();
     };
 
@@ -104,18 +103,36 @@ export default {
         .then(function(result) {
           state.list = result.data;
           // store.commit("root/setUserLikesClassList", result.data);
+          // for (var i = 0; i < state.list.length; i++) {
+          //   var startMonth = parseInt(
+          //     result.data[i].classStartDate.split("-")[1]
+          //   );
+          //   var endMonth = parseInt(result.data[i].classEndDate.split("-")[1]);
+          //   result.data[i].classPrice = Math.ceil(
+          //     result.data[i].classPrice / (endMonth - startMonth + 1)
+          //   );
+          // }
+
           for (var i = 0; i < state.list.length; i++) {
+            // 월단위 가격 계산
             var startMonth = parseInt(
               result.data[i].classStartDate.split("-")[1]
             );
             var endMonth = parseInt(result.data[i].classEndDate.split("-")[1]);
-            result.data[i].classPrice = Math.ceil(
-              result.data[i].classPrice / (endMonth - startMonth + 1)
-            );
+            var tmp = (
+              Math.floor(
+                result.data[i].classPrice / (endMonth - startMonth + 1) / 100
+              ) * 100
+            ).toString();
+
+            var left = tmp.slice(0, -3);
+            var right = tmp.slice(-3, tmp.length);
+
+            result.data[i].classPrice = left + "," + right;
           }
         })
         .catch(function(err) {
-          alert(err.response);
+          console.log(err);
         });
     };
 
