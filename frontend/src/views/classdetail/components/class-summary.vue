@@ -2,36 +2,39 @@
   <el-card class="summary-card">
     <template #header>
       <div class="card-header">
-        <div class="title">{{ state.form.classTitle }}</div>
+        <div class="title">구매정보</div>
       </div>
     </template>
     <div style="">
-      <div class="subtitle">구매정보</div>
       <el-tag size="mini" color="#BEEDED">8월 8일부터 수강 가능</el-tag>
-      <div class="info-content">
-        <div class="info-content-child" style="width: 30%">
-          <div><i class="el-icon-folder" /> 대분류</div>
-          <div><i class="el-icon-goods" /> 준비물</div>
-          <div><i class="el-icon-star-off" /> 레벨</div>
-          <div><i class="el-icon-goods" /> 기간</div>
-          <div><i class="el-icon-star-off" /> 수업 수</div>
-        </div>
-        <div class="info-content-child" style="margin-left: 15px">
+      <div style="margin-top: 20px">
+        <div class="info-content">
+          <div class="sub-item"><i class="el-icon-folder" /> 대분류</div>
           <div>{{ state.form.classTypeName }}</div>
+        </div>
+        <div class="info-content">
+          <div class="sub-item"><i class="el-icon-goods" /> 준비물</div>
           <div>{{ state.form.classMaterial }}</div>
+        </div>
+        <div class="info-content">
+          <div class="sub-item"><i class="el-icon-star-off" /> 레벨</div>
           <div>{{ state.form.classLevelName }}</div>
-          <div>3달</div>
+        </div>
+        <div class="info-content">
+          <div class="sub-item"><i class="el-icon-date" /> 기간</div>
+          <div>{{ state.form.classTerm }}</div>
+        </div>
+        <div class="info-content">
+          <div class="sub-item"><i class="el-icon-reading" /> 수업 수</div>
           <div>{{ state.form.classTcnt }}</div>
         </div>
       </div>
       <el-divider />
       <div class="info-content">
-        <div class="info-content-child" style="width: 30%">
-          <div><i class="el-icon-coin" /> 금액</div>
-        </div>
-        <div class="info-content-child" style="margin-left: 15px">
-          <div>총 {{ state.form.classPrice }}원</div>
-        </div>
+        <!-- <div class="info-content-child" style="width: 30%"> -->
+        <div class="sub-item"><i class="el-icon-coin" /> 금액</div>
+        <div>총 {{ state.form.classPrice }}원</div>
+        <!-- </div> -->
       </div>
       <div class="price-per-month">
         <div></div>
@@ -74,7 +77,8 @@ export default {
       isInUserLikes: false,
       userLikesClassList: computed(
         () => store.getters["root/getUserLikesClassList"]
-      )
+      ),
+      classTerm: ""
     });
 
     console.log("state.userLikesClassList : " + state.userLikesClassList);
@@ -98,12 +102,21 @@ export default {
         var startMonth = parseInt(result.data.classStartDate.split("-")[1]);
         var endMonth = parseInt(result.data.classEndDate.split("-")[1]);
 
-        var tmp =
+        var tmp = (
           Math.floor(
-            result.data.classPrice / (endMonth - startMonth + 1) / 10
-          ) * 10;
+            result.data.classPrice / (endMonth - startMonth + 1) / 100
+          ) * 100
+        ).toString();
 
-        state.form.classPricePerMonth = tmp;
+        var left = tmp.slice(0, -3);
+        var right = tmp.slice(-3, tmp.length);
+        state.form.classPricePerMonth = left + "," + right;
+
+        state.form.classTerm = parseInt(
+          state.form.classEndDate.substring(5, 7) -
+            state.form.classStartDate.substring(5, 7) +
+            1
+        );
       })
       .catch(function(err) {
         console.log(err);
@@ -172,7 +185,8 @@ export default {
 
 <style>
 .summary-card {
-  height: 600px;
+  width: 100%;
+  height: 100%;
 }
 
 .card-header {
@@ -184,10 +198,10 @@ export default {
 .info-content {
   display: flex;
   font-size: 15px;
-  margin-top: 20px;
+  /* margin-top: 20px; */
 }
 
-.info-content-child > * {
+.info-content > * {
   margin-bottom: 8px;
 }
 
@@ -231,5 +245,9 @@ export default {
   height: 40px;
   font-size: 18px;
   font-weight: bold;
+}
+
+.sub-item {
+  width: 40%;
 }
 </style>

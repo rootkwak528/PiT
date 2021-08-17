@@ -29,3 +29,17 @@
 body > .el-container {
   margin-bottom: 40px;
 }
+
+/* 민영 수정 시작 */
+.main-container-content {
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 1360px) {
+  .main-container-content {
+    width: 90%;
+  }
+}
+/* 민영 수정 끝 */

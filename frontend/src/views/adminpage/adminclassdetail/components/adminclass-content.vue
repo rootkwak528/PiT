@@ -92,12 +92,30 @@
     </el-tab-pane>
 
     <div class="permission-btn">
-      <el-button v-if="state.form.classPermission === '001'" style="display: none" >클래스 개설승인</el-button>
-      <el-button v-else class="form-btn" @click="clickGranted">클래스 개설승인</el-button>
-      <el-button v-if="state.form.classPermission === '002'" style="display: none" >클래스 개설미승인</el-button>
-      <el-button v-else class="form-btn" @click="clickNotGranted">클래스 개설미승인</el-button>
-      <el-button v-if="state.form.classPermission === '003'" style="display: none" >클래스 개설거절</el-button>
-      <el-button v-else class="form-btn-delete" @click="clickDenied">클래스 개설거절</el-button>
+      <el-button
+        v-if="state.form.classPermission === '001'"
+        style="display: none"
+        >클래스 개설승인</el-button
+      >
+      <el-button v-else class="form-btn" @click="clickGranted"
+        >클래스 개설승인</el-button
+      >
+      <el-button
+        v-if="state.form.classPermission === '002'"
+        style="display: none"
+        >클래스 개설미승인</el-button
+      >
+      <el-button v-else class="form-btn" @click="clickNotGranted"
+        >클래스 개설미승인</el-button
+      >
+      <el-button
+        v-if="state.form.classPermission === '003'"
+        style="display: none"
+        >클래스 개설거절</el-button
+      >
+      <el-button v-else class="form-btn-delete" @click="clickDenied"
+        >클래스 개설거절</el-button
+      >
     </div>
   </el-tabs>
 </template>
@@ -119,7 +137,7 @@ export default {
       form: {
         classTitle: "",
         classDesc: "",
-        classCurri: "",
+        classCurri: ""
       },
       comments: []
     });
@@ -161,23 +179,25 @@ export default {
     };
 
     const clickGranted = function() {
-      state.form.classPermission = '001';
+      state.form.classPermission = "001";
       updateClassPermission();
-      alert("클래스 개설 승인 처리 하셨습니다. 원활한 클래스 관리를 기원합니다.");
+      alert(
+        "클래스 개설 승인 처리 하셨습니다. 원활한 클래스 관리를 기원합니다."
+      );
       router.push("/adminClass");
-    }
+    };
     const clickNotGranted = function() {
-      state.form.classPermission = '002';
+      state.form.classPermission = "002";
       updateClassPermission();
       alert("클래스 개설 미승인 처리 하셨습니다.");
       router.push("/adminClass");
-    }
+    };
     const clickDenied = function() {
-      state.form.classPermission = '003';
+      state.form.classPermission = "003";
       updateClassPermission();
       alert("클래스 개설 거절 처리 하셨습니다.");
       router.push("/adminClass");
-    }
+    };
 
     const updateClassPermission = function() {
       store
@@ -190,8 +210,8 @@ export default {
         })
         .catch(function(err) {
           console.log(err);
-        })
-    }
+        });
+    };
 
     return {
       state,
@@ -210,66 +230,3 @@ export default {
   }
 };
 </script>
-
-<style>
-.content {
-  display: flex;
-  justify-content: space-between;
-}
-
-.summary-card {
-  height: 550px;
-}
-
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.info-content {
-  display: flex;
-  font-size: 15px;
-  margin-top: 20px;
-}
-
-.info-content-child > * {
-  margin-bottom: 8px;
-}
-
-.title {
-  font-size: large;
-  font-weight: bold;
-}
-
-.subtitle {
-  font-weight: bold;
-}
-
-.price-per-month {
-  color: #f35747;
-  font-weight: bold;
-  font-size: 20px;
-  margin-top: 20px;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-}
-
-.btn-submit {
-  margin-top: 30px;
-  background-color: #ef7764;
-  width: 100%;
-  color: white;
-  border: none;
-  border-radius: 0.5rem;
-  height: 40px;
-  font-size: 18px;
-  font-weight: bold;
-}
-.permission-btn {
-  display: flex;
-  margin-top: 25px;
-  justify-content: center;
-}
-</style>

@@ -57,7 +57,7 @@
 <style>
 .login-dialog {
   width: 400px !important;
-  height: 300px;
+  height: 325px;
 }
 .login-dialog .el-dialog__headerbtn {
   float: right;
