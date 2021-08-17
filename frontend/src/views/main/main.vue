@@ -9,10 +9,8 @@
       </el-carousel-item>
     </el-carousel>
   </div>
-  <h3 style="margin-top: 72px">인기 클래스</h3>
+  <h3 style="margin-top: 72px">P;T 클래스</h3>
   <class-section/>
-  <!-- <h3 style="margin-top: 72px">이벤트</h3>
-  <class-section/> -->
 </template>
 <style>
 @import "https://unpkg.com/element-plus/lib/theme-chalk/index.css";

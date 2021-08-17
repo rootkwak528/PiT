@@ -40,6 +40,7 @@ import { reactive } from "@vue/reactivity";
 import { useStore } from "vuex";
 import { onMounted } from "vue";
 import { useRouter } from "vue-router";
+import { eventNames } from 'process';
 
 export default {
   name: "recordedVideoTest",
@@ -93,6 +94,10 @@ export default {
     const goBack = function() {
       state.selectedClassNo = null;
     };
+
+    window.addEventListener('focusout', event => {
+      console.log(event)
+    })
 
     return { mvVideoList, goBack, state };
   }

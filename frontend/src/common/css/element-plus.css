@@ -36,7 +36,7 @@ body > .el-container {
   margin-right: auto;
 }
 
-@media (max-width: 1360px) {
+@media (max-width: 1200px) {
   .main-container-content {
     width: 90%;
   }
