@@ -188,7 +188,7 @@
           class="upload-demo"
           action="v1/users/image"
           accept="image/jpeg"
-          :limit="10"
+          :limit="4"
           :on-exceed="handleExceedSub"
           :on-success="handleFileSuccessSub"
           multiple
@@ -473,7 +473,7 @@ export default {
               })
               .catch(function(err) {
                 ElMessage({
-                  message: err.response.data.message,
+                  message: "업로드된 파일의 용량이 너무 큽니다.",
                   type: "error"
                 });
                 loading.value = false;
