@@ -15,8 +15,8 @@
             <el-table-column
               prop="classTeacherName"
               label="강사명"
-              width="100"
               fixed="right"
+              width="200px"
             >
             </el-table-column>
           </el-table>
