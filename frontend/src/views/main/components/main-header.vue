@@ -383,7 +383,6 @@ export default {
   top: 14px;
 }
 
-
 /* .main-header .hide-on-small .main-navbar .logo-wrapper .ic.ic-logo{
   width: 70px;
   height: 50px;
@@ -446,8 +445,6 @@ img {
   max-width: 100%;
   height: auto;
 }
-
-/* 민영 수정 시작 */
 
 /* 상세 검색 버튼 정렬 및 마진 */
 .searchDetailOption {
@@ -514,6 +511,4 @@ img {
   }
 }
 
-
-/* 민영 수정 끝 */
 </style>

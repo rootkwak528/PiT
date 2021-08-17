@@ -10,8 +10,6 @@
       </el-button-group>
       <span style="padding-left: 20px">{{ state.list.length }} 개의 클래스가 조회되었습니다.</span>
     </div>
-    <!-- <el-divider></el-divider> -->
-    <!-- <div style="border: solid 0.5px; margin-top: 13px; margin-bottom: 10px"></div> -->
     <div class="class-card-wrapper">
       <el-card
         shadow="none"

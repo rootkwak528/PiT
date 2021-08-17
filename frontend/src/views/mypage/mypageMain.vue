@@ -5,14 +5,12 @@
   <div class="container">
     <div class="tac row">
       <div class="col-sm-4 col-md-3 col-12" id="sidebar" style="padding: 0;">
-        <!-- :span="6"  -->
         <mypage-sidebar
           :pathname="pathname"
           :userTypeName="state.userTypeName"
         />
       </div>
       <div class="col-sm-8 col-md-9 col-12" id="sidebar-content" style="min-height: 655px; padding: 0;">
-        <!-- :span="18"  -->
         <router-view :userTypeName="state.userTypeName" />
       </div>
     </div>

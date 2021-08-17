@@ -586,7 +586,7 @@ export default {
 .form-btn {
   color: white;
   background-color: #00c0d4;
-  padding: 10px !important; /* 민영 수정 */
+  padding: 10px !important;
 }
 .form-btn:hover {
   color: #00c0d4;

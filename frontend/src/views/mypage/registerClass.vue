@@ -223,7 +223,7 @@ export default {
 
       classData.classList.forEach(classItem => {
         const classCard = document.getElementById(`card-${classItem.classNo}`)
-        
+
         const calendar = classCard.getElementsByClassName('card-calendar-wrapper')[0]
         calendar.addEventListener('transitionrun', async function() {
           // 애니메이션이 완료되면 리사이즈해야 해서 0.35초 대기
@@ -240,7 +240,7 @@ export default {
       addEventOnBtn()
     })
 
-    return { 
+    return {
       store, classData,
       getRegisterClassList, resizeClassCard
     };
@@ -372,13 +372,11 @@ export default {
   width: 250px; */
 }
 
-/* 민영 수정 시작 */
 .trainer-title {
   margin-left: 3px;
 }
 
 .vc-container.vc-blue {
-/* .vc-pane-layout { */
   border-top-left-radius: 0% !important;
   border-bottom-left-radius: 0% !important;
   border: none;
@@ -403,8 +401,6 @@ export default {
   }
 }
 
-/* 민영 수정 종료 */
-
 .card-calendar-wrapper > el-image__inner {
   object-fit: cover;
 }
@@ -415,9 +411,9 @@ export default {
   text-align: center;
   color: white;
   border-radius: 0.5rem;
-  font-size: 16px; /* 민영 수정 */
+  font-size: 16px;
   margin-right: 5px;
-  vertical-align: middle; /* 민영 수정 */
+  vertical-align: middle;
   margin-bottom: 10px;
 }
 
@@ -425,10 +421,8 @@ export default {
   font-weight: bold;
   font-size: 18px;
   width: 350px;
-  /* 민영 수정 시작 */
   word-break: break-all;
   margin-top: 6px;
-  /* 민영 수정 끝 */
 }
 
 .registerclass-card-bottom {
