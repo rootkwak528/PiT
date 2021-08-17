@@ -40,6 +40,8 @@ public class UserServiceImpl implements UserService {
 	
 //	/Users/seoyoseb/SSAFYProjects/S05P13A204/backend/src/main/resources/static
 	
+//	/home/ubuntu/S05P13A204/backend/src/main/resources/static
+	
 //	String uploadPath = "/Users" + File.separator + "seoyoseb" + File.separator + "SSAFYProjects"
 //    		+ File.separator + "S05P13A204"
 //            + File.separator + "backend" 
