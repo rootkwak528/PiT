@@ -173,9 +173,12 @@ public class UserController {
 	public ResponseEntity<? extends BaseResponseBody> updateProfile(Authentication authentication, MultipartHttpServletRequest request) {
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
 		User user = userDetails.getUser();
-		System.out.println("multi request : "+request);
+		System.out.println("multi request : "+ request.getFile("file"));
 		if (userService.update(user, request) == 1) {
-			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "프로필 사진이 업데이트되었습니다."));
+			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "프로필 사진이 업데이트 되었습니다."));
+		}
+		else if ( userService.update(user, request) == 2) {
+			return ResponseEntity.status(201).body(BaseResponseBody.of(201, "기본 프로필로 업데이트 되었습니다."));
 		}
 		else {
 			return ResponseEntity.status(404).body(BaseResponseBody.of(404, "사진 업데이트중에 문제가 발생하였습니다."));
