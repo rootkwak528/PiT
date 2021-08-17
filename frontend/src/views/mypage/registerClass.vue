@@ -1,7 +1,6 @@
 <template>
   <div class="content-wrapper" v-loading="classData.loading">
     <div class="submenu-title">수강중 클래스</div>
-
     <div v-if="!classData.isEmpty">
       <el-card
         v-for="(classItem, index) in classData.classList"
@@ -9,7 +8,7 @@
         shadow="hover"
         class="registerclass-card"
       >
-        <div class="card-image-wrapper">
+        <div class="card-image-wrapper" style="width: 100%;">
           <el-image
             :src="classItem.classThumbnail"
             fit="cover"
@@ -18,42 +17,43 @@
           <div style="position: absolute; padding: 18px">
             <div style="display: flex">
               <div class="tag">{{ classItem.classType }}</div>
-              <div style="font-weight: bold">
+              <div class="trainer-title" style="font-weight: bold">
                 강사:
                 <span class="trainer">{{ classItem.classTeacherName }}</span>
               </div>
-            </div>
-            <div class="title">{{ classItem.classTitle }}</div>
-            <!-- <div class="desc">{{ classItem.classDesc }}</div> -->
-            <div class="registerclass-card-bottom">
-              <!-- PT룸 입장 버튼 -->
-              <el-button
-                v-if="classItem.userNo == userNo"
-                icon="el-icon-s-home"
-                class="btn-enter"
-                @click="onClickPTRoomBtn"
-                >PT룸 개설하기
-              </el-button>
+              <div class="title">{{ classItem.classTitle }}</div>
+              <!-- <div class="desc">{{ classItem.classDesc }}</div> -->
+              <div class="registerclass-card-bottom">
+                <!-- PT룸 입장 버튼 -->
+                <el-button
+                  v-if="classItem.userNo == userNo"
+                  icon="el-icon-s-home"
+                  class="btn-enter"
+                  @click="onClickPTRoomBtn"
+                  >PT룸 개설하기
+                </el-button>
 
-              <el-button
-                v-else
-                icon="el-icon-s-home"
-                class="btn-enter"
-                @click="onClickPTRoomBtn"
-                >PT룸 입장하기
-              </el-button>
+                <el-button
+                  v-else
+                  icon="el-icon-s-home"
+                  class="btn-enter"
+                  @click="onClickPTRoomBtn"
+                  >PT룸 입장하기
+                </el-button>
 
-              <el-progress
-                :text-inside="true"
-                :stroke-width="24"
-                :percentage="100"
-                status="success"
-              ></el-progress>
+                <el-progress
+                  :text-inside="true"
+                  :stroke-width="24"
+                  :percentage="100"
+                  status="success"
+                ></el-progress>
+              </div>
             </div>
           </div>
         </div>
-        <div class="card-calendar-wrapper">
+        <div class="card-calendar-wrapper d-none d-lg-block">
           <v-calendar
+            style="height: 240px;"
             :attributes="classData.dayList[index].dateAttrs"
             :min-date="classItem.classStartDate"
             :max-date="classItem.classEndDate"
@@ -312,6 +312,7 @@ export default {
   position: relative;
   margin-bottom: 10px;
   max-width: 800px;
+  border-radius: 8px !important;
 }
 
 .card-image-wrapper {
@@ -325,6 +326,38 @@ export default {
   width: 250px; */
 }
 
+/* 민영 수정 시작 */
+.trainer-title {
+  margin-left: 3px;
+}
+
+.vc-container.vc-blue {
+  /* .vc-pane-layout { */
+  height: 240px !important;
+  border-top-left-radius: 0% !important;
+  border-bottom-left-radius: 0% !important;
+}
+
+@media (max-width: 1020px) {
+  .card-calendar-wrapper,
+  .vc-popover-content-wrapper,
+  .vc-container.vc-blue,
+  .vc-pane-container,
+  .v-calendar {
+    /* display: none !important; */
+    display: none !important;
+  }
+
+  .el-card__body .card-calendar-wrapper {
+    display: none !important;
+  }
+  .title {
+    width: 90%;
+  }
+}
+
+/* 민영 수정 종료 */
+
 .card-calendar-wrapper > el-image__inner {
   object-fit: cover;
 }
@@ -335,13 +368,19 @@ export default {
   text-align: center;
   color: white;
   border-radius: 0.5rem;
-  font-size: 13px;
+  font-size: 16px; /* 민영 수정 */
   margin-right: 5px;
+  vertical-align: middle; /* 민영 수정 */
 }
 
 .title {
   font-weight: bold;
   font-size: 18px;
+  width: 350px;
+  /* 민영 수정 시작 */
+  word-break: break-all;
+  margin-top: 6px;
+  /* 민영 수정 끝 */
 }
 
 .registerclass-card-bottom {

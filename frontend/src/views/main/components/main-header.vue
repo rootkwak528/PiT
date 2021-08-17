@@ -29,18 +29,57 @@
           >상세 검색 조건</el-button
         >
       </div>
-      <div
-        class="button-wrapper"
-        v-if="!state.isLogined"
-        style="margin-top:10px;"
-      >
-        <div class="btn-notlogined" @click="clickLogin">
-          로그인
+
+      <!-- 민영 수정 시작 -->
+      <div v-if="!state.isLogined">
+
+
+        <el-dropdown class="btn-notlogined small-btn-notlogined" trigger="click" style="margin-top: 0;">
+          <span class="el-dropdown-link">
+            <div class="profile">
+              <img
+              :src="require('@/assets/images/more.png')"
+              id="more-img"
+            />
+            </div>
+          </span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item
+                icon="el-icon-s-custom"
+                style="font:blue; cursor: pointer;"
+                >
+                  <span class="btn-notlogined" @click="clickLogin">
+                    로그인
+                  </span>
+                </el-dropdown-item>
+                <el-dropdown-item
+                  icon="el-icon-s-custom"
+                  style="font:blue; cursor: pointer;"
+                  >
+                  <span class="btn-notlogined" @click="clickJoin">
+                    회원가입
+                  </span>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+        </el-dropdown>
+
+
+        <div
+          class="button-wrapper"
+          style="margin-top:10px;"
+        >
+          <div class="btn-notlogined big-btn-notlogined" @click="clickLogin">
+            로그인
+          </div>
+          <div class="btn-notlogined big-btn-notlogined" @click="clickJoin">
+            회원가입
+          </div>
         </div>
-        <div class="btn-notlogined" @click="clickJoin">
-          회원가입
-        </div>
+
       </div>
+      <!-- 민영 수정 끝 -->
       <div class="button-wrapper" v-else>
         <div type="primary" @click="mvFavoriteClass" class="button-wrapper-logined">
           찜목록
@@ -344,7 +383,7 @@ export default {
   height: 50px;
   background-size: contain;
   background-repeat: no-repeat;
-  background-image: url("../../../assets/images/MainLogo.png");
+  background-image: url("../../../assets/images/MainLogo2.png");
 }
 
 #searchBtn {
@@ -405,6 +444,20 @@ img {
   margin-right: 10px;
 }
 
+.small-btn-notlogined img {
+  vertical-align: middle;
+  max-width:200px;
+  height: 30px;
+  cursor: pointer;
+  border-radius: 50%;
+  margin: 5px;
+}
+
+#more-img {
+  filter: opacity(.5) drop-shadow(0 0 0 #f6c774);
+  -webkit-filter: opacity(.5) drop-shadow(0 0 0 #f6c774);
+}
+
 /* 반응형 처리 - 마이클래스, 찜목록 */
 @media (max-width: 1080px) {
   .button-wrapper-logined {
@@ -425,5 +478,28 @@ img {
     display: none;
   }
 }
+
+/* 반응형 처리 - 로그인, 회원가입 */
+@media (max-width: 980px) {
+  .big-btn-notlogined {
+    display: none;
+  }
+
+  .small-btn-notlogined {
+    display: block;
+  }
+}
+
+@media (min-width: 980px) {
+  .big-btn-notlogined {
+    display: block;
+  }
+
+  .small-btn-notlogined {
+    display: none;
+  }
+}
+
+
 /* 민영 수정 끝 */
 </style>

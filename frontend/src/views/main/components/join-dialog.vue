@@ -555,7 +555,7 @@ export default {
 <style>
 .join-dialog {
   width: 500px !important;
-  height: 750px !important;
+  height: 705px !important;
 }
 .join-dialog .el-dialog__headerbtn {
   float: right;
@@ -586,6 +586,7 @@ export default {
 .form-btn {
   color: white;
   background-color: #00c0d4;
+  padding: 10px !important; /* 민영 수정 */
 }
 .form-btn:hover {
   color: #00c0d4;
