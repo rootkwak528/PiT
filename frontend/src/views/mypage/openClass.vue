@@ -444,8 +444,8 @@ export default {
             formData.append("classTitle", state.form.classTitle);
             formData.append("classDay", day);
             formData.append("classDesc", state.form.classDesc);
-            formData.append("classStartDate", state.form.classStartDate);
-            formData.append("classEndDate", state.form.classEndDate);
+            formData.append("startDate", state.form.classStartDate);
+            formData.append("endDate", state.form.classEndDate);
             formData.append("classStartTime", state.form.classStartTime);
             formData.append("classEndTime", state.form.classEndTime);
             formData.append("classCurri", state.form.classCurri);
