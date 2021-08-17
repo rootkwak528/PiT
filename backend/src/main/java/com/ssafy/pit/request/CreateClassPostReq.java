@@ -24,7 +24,5 @@ public class CreateClassPostReq {
 	String classLevel;
 	int classLimit;
 	int classTcnt;
-	String classThumbnail;
-	List<String> classSubPhotos;
 	
 }
