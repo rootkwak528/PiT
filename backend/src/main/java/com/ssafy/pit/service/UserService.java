@@ -13,7 +13,7 @@ public interface UserService {
 	User getUserByUserNickname(String userNickname);
 	UserInfoGetRes getUserInfo(User user);
 	int update(User user, UserInfoPutReq userUpdateInfo);
-	int update(User user, String profile);
+	int update(User user, MultipartHttpServletRequest request);
 	int delete(String userEmail);
 	int validateUserType(String userEmail);
 }

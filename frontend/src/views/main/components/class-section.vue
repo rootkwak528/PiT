@@ -97,6 +97,9 @@ export default {
               result.data[i].classEndDate.split("-")[2]
             );
 
+            console.log(i);
+            console.log(classEndMonth + " " + classEndDate);
+            console.log(today.getMonth() + 1 + " " + today.getDate());
             if (
               classEndMonth <= today.getMonth() + 1 &&
               classEndDate < today.getDate()

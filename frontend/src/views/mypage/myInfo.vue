@@ -16,7 +16,7 @@
           >
             <img
               v-if="state.form.profile"
-              :src="state.form.profile"
+              :src="'http://localhost:8080/static/'+state.form.profile"
               class="avatar"
             />
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -317,7 +317,8 @@ export default {
     });
 
     const handleAvatarSuccess = function(res, file) {
-      state.form.profile = URL.createObjectURL(file.raw);
+      state.form.profile = file.raw;
+      // state.form.profile = URL.createObjectURL(file.raw);
       console.log("업로드 후 profile : " + state.form.profile);
     };
 
@@ -422,9 +423,11 @@ export default {
     };
 
     const updateProfile = function() {
+      let formData = new FormData();
+      formData.append("file", state.form.profile);
       store
         .dispatch("root/updateProfile", {
-          profile: state.form.profile,
+          profile: formData,
           token: "Bearer " + localStorage.getItem("jwt-auth-token")
         })
         .then(function() {
