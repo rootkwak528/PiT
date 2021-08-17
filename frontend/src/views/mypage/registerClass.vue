@@ -54,7 +54,7 @@
         </div>
         <div class="card-calendar-wrapper d-none d-lg-block">
           <v-calendar
-            :attributes="classData.dayList[index].dateAttrs"
+            :attributes="classData.dayData[index]"
             :min-date="classItem.classStartDate"
             :max-date="classItem.classEndDate"
           />
@@ -73,9 +73,6 @@ import { reactive } from "@vue/reactivity";
 
 export default {
   name: "RegisterClassTest",
-  components: {
-    // Calendar,
-  },
   setup() {
     const store = useStore();
     const _resizeFlag = ref(false)  // 이벤트리스너 한번만 추가하기 위한 flag
@@ -83,112 +80,47 @@ export default {
       isEmpty: false,
       loading: true,
       classList: [],
-      dates: [],
-      dateAttrs: [],
-      dayList: [
-        {
-          dateAttrs: [
-            {
-              highlight: true,
-              dates: [{ weekdays: 0 }, { weekdays: 3 }]
-            }
-          ]
-        },
-        {
-          dateAttrs: [
-            {
-              highlight: true,
-              dates: [{ weekdays: 0 }, { weekdays: 3 }]
-            }
-          ]
-        },
-        {
-          dateAttrs: [
-            {
-              highlight: true,
-              dates: [{ weekdays: 6 }]
-            }
-          ]
-        },
-        {
-          dateAttrs: [
-            {
-              highlight: true,
-              dates: [{ weekdays: 1 }, { weekdays: 3 }, { weekdays: 5 }]
-            }
-          ]
-        }
-      ]
+      dayData: [],
     });
 
     const getRegisterClassList = function() {
       store
         .dispatch("root/getRegisterClassList")
-        .then(function(result) {
-          // console.log(result);
-          //console.log(result.data);
-          classData.classList = result.data;
-          for (var i = 0; i < classData.classList.length; i++) {
-            if (classData.classList[i].classType == "001") {
-              //PT
-              classData.classList[i].classType = "PT";
-            } else if (classData.classList[i].classType == "002") {
-              //요가
-              classData.classList[i].classType = "요가";
-            } else if (classData.classList[i].classType == "003") {
-              //필라테스
-              classData.classList[i].classType = "필라테스";
-            } else {
-              //기타
-              classData.classList[i].classType = "기타";
+        .then(res => {
+
+          classData.classList = res.data;
+          classData.classList.forEach(classItem => {
+            // 태그에 들어갈 수업 분류
+            switch (classItem.classType) {
+              case "001": classItem.classType = "PT"; break;
+              case "002": classItem.classType = "요가"; break;
+              case "003": classItem.classType = "필라테스"; break;
+              default   : classItem.classType = "기타"; break;
             }
 
-            var tmpDayList = classData.classList[i].classDay; // 요일 리스트
-            //console.log(tmpDayList);
-            var tmpDateAttrs = [];
-            var tmpDays = [];
-            for (var j = 0; j < tmpDayList.length; j++) {
-              var weekday = 0;
-              switch (tmpDayList.charAt(j)) {
-                case "월":
-                  weekday = 0;
-                  break;
-                case "화":
-                  weekday = 1;
-                  break;
-                case "수":
-                  weekday = 2;
-                  break;
-                case "목":
-                  weekday = 3;
-                  break;
-                case "금":
-                  weekday = 4;
-                  break;
-                case "토":
-                  weekday = 5;
-                  break;
-                case "일":
-                  weekday = 6;
-                  break;
+            // 달력에 들어갈 요일 확인
+            const weekdays = []
+            for (let i=1; i<8; i++) {
+              if (classItem.classDay.includes('_일월화수목금토'[i])) {
+                weekdays.push(i)
               }
-              //console.log(weekday);
-              var tmp = "weekdays : " + weekday;
-              //tmpDays.push(tmp);
             }
 
-            //console.log(tmpDays);
-            //classData.dates.push(tmpDays);
-            //console.log(classData.dates);
-            //classData.dates.pop;
-            // var tmp = "dates : " + tmpDays;
-            // tmpDateAttrs.push(tmp);
-            // // tmp = `,dot: {color: "red"}`;
-            // // tmpDateAttrs.push(tmp);
-            // console.log(tmpDateAttrs);
-          }
+            // 달력 스타일링
+            classData.dayData.push([{
+              dates: { 
+                weekdays,
+                start: classItem.classStartDate,
+                end: classItem.classEndDate,
+              },
+              highlight: {
+                color: 'orange',
+                fillMode: 'light',
+              },
+            }])
+          })
         })
-        .catch(function(err) {
+        .catch(err => {
           classData.isEmpty = true;
           console.log(err);
         });
@@ -203,12 +135,12 @@ export default {
         const lastMonday = classCard.getElementsByClassName('on-bottom on-left')[0]
         const is270px = !lastMonday.classList.contains('is-not-in-month')
 
-        const cardBodyDOM1 = classCard.getElementsByClassName('el-card__body')[0]
-        const cardBodyDOM2 = classCard.getElementsByClassName('card-content')[0]
+        const cardBodyImgDOM = classCard.getElementsByClassName('el-card__body')[0]
+        const cardBodyBtnDOM = classCard.getElementsByClassName('card-content')[0]
         const calendarDOM = classCard.getElementsByClassName('vc-container vc-blue')[0]
 
-        cardBodyDOM1.style.height = is270px?'270px':'240px'
-        cardBodyDOM2.style.height = is270px?'270px':'240px'
+        cardBodyImgDOM.style.height = is270px?'270px':'240px'
+        cardBodyBtnDOM.style.height = is270px?'270px':'240px'
         calendarDOM.style.height = is270px?'270px':'240px'
       })
     }
@@ -223,7 +155,7 @@ export default {
 
       classData.classList.forEach(classItem => {
         const classCard = document.getElementById(`card-${classItem.classNo}`)
-        
+
         const calendar = classCard.getElementsByClassName('card-calendar-wrapper')[0]
         calendar.addEventListener('transitionrun', async function() {
           // 애니메이션이 완료되면 리사이즈해야 해서 0.35초 대기
@@ -240,7 +172,7 @@ export default {
       addEventOnBtn()
     })
 
-    return { 
+    return {
       store, classData,
       getRegisterClassList, resizeClassCard
     };
@@ -293,12 +225,10 @@ export default {
         .dispatch("root/getSessionAvail", { classNo })
         .then(res => {
           isAvail = res.data ? true : false;
-          console.log(res.data, isAvail);
         });
 
       // 수강생은 빈 피티룸에 입장 불가
       if (!isTrainer && !isAvail) {
-        console.log(isTrainer, isAvail);
         alert("아직 PT룸이 개설되지 않았습니다.");
       } else {
         const targetWindow = window.open(redirectUrl);
@@ -349,12 +279,9 @@ export default {
 .registerclass-card > .el-card__body {
   display: flex;
   padding: 0px;
-  /* background-image: url("https://cdn.class101.net/images/119a8385-66ea-471a-a4a2-bee3e519c4da/375xauto.webp"); */
 }
 
 .registerclass-card {
-  /* background-size: cover;
-  opacity: 0.5; */
   position: relative;
   margin-bottom: 10px;
   max-width: 800px;
@@ -368,21 +295,17 @@ export default {
 
 .card-calendar-wrapper {
   text-align: center;
-  /* height: 200px;
-  width: 250px; */
 }
 
-/* 민영 수정 시작 */
 .trainer-title {
   margin-left: 3px;
 }
 
 .vc-container.vc-blue {
-/* .vc-pane-layout { */
   border-top-left-radius: 0% !important;
   border-bottom-left-radius: 0% !important;
   border: none;
-  background-color: #f5f5f5;
+  background-color: #ffffff;
 }
 
 @media (max-width: 1020px) {
@@ -391,7 +314,6 @@ export default {
   .vc-container.vc-blue,
   .vc-pane-container,
   .v-calendar {
-    /* display: none !important; */
     display: none !important;
   }
 
@@ -403,8 +325,6 @@ export default {
   }
 }
 
-/* 민영 수정 종료 */
-
 .card-calendar-wrapper > el-image__inner {
   object-fit: cover;
 }
@@ -415,9 +335,9 @@ export default {
   text-align: center;
   color: white;
   border-radius: 0.5rem;
-  font-size: 16px; /* 민영 수정 */
+  font-size: 16px;
   margin-right: 5px;
-  vertical-align: middle; /* 민영 수정 */
+  vertical-align: middle;
   margin-bottom: 10px;
 }
 
@@ -425,10 +345,8 @@ export default {
   font-weight: bold;
   font-size: 18px;
   width: 350px;
-  /* 민영 수정 시작 */
   word-break: break-all;
   margin-top: 6px;
-  /* 민영 수정 끝 */
 }
 
 .registerclass-card-bottom {

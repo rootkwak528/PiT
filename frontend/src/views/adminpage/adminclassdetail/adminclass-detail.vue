@@ -3,7 +3,6 @@
   <admin-gallery style="margin-bottom: 40px;"/>
   <div>
     <admin-class-content :classNo="this.$route.query.classNo" />
-    <!-- <admin-class-summary :classNo="this.$route.query.classNo" /> -->
   </div>
 
 </template>

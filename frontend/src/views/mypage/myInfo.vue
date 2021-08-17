@@ -1,9 +1,7 @@
 <template>
   <div class="content-wrapper">
     <div class="submenu-title">마이페이지</div>
-    <!-- <el-row class="tac"> -->
     <div class="tac row">
-      <!-- <el-col :span="8"> -->
       <div class="col-lg-4 col-12" id="profile-content">
         <div class="profileUpload">
           <el-upload
@@ -45,10 +43,8 @@
             >프로필 적용
           </el-button>
         </div>
-      <!-- </el-col> -->
       </div>
 
-      <!-- <el-col :span="16"> -->
       <div class="col-lg-8 col-12">
         <el-form
           v-loading="loading"
@@ -157,9 +153,7 @@
             </div>
           </el-form-item>
         </el-form>
-      <!-- </el-col> -->
       </div>
-    <!-- </el-row> -->
     </div>
   </div>
 </template>
@@ -565,7 +559,6 @@ img {
   text-align: center;
 }
 
-/* 민영 수정 시작 */
 @media (max-width: 992px) {
   #profile-content {
     border-bottom: solid 1.2px #ebeef5;
@@ -573,6 +566,4 @@ img {
     padding-bottom: 35px;
   }
 }
-
-/* 민영 수정 끝 */
 </style>

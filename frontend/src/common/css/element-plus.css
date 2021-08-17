@@ -30,7 +30,6 @@ body > .el-container {
   margin-bottom: 40px;
 }
 
-/* 민영 수정 시작 */
 .main-container-content {
   width: 70%;
   margin-left: auto;
@@ -42,4 +41,3 @@ body > .el-container {
     width: 90%;
   }
 }
-/* 민영 수정 끝 */
