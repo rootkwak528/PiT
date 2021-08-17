@@ -6,7 +6,7 @@
         <div class="recordedvideo-card-section">
           <el-table
             :data="state.classList"
-            style="width: 80%; font-size: 17px;"
+            style="width: 100%; font-size: 17px;"
             @row-click="mvVideoList"
           >
             <el-table-column prop="classTitle" label="클래스명">
