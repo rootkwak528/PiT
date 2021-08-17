@@ -47,7 +47,7 @@ export default {
     });
 
     store
-      .dispatch("root/getVideoUrls", { classNo: this.$route.query.word })
+      .dispatch("root/getVideoUrls", { classNo: props.classNo })
       .then(function(result) {
         console.log(result.data);
         state.videoUrlList = result.data.videoUrls;

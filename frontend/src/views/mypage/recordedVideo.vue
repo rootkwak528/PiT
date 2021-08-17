@@ -24,6 +24,7 @@
       <div class="videoList" v-else>
         <el-page-header @back="goBack" :content="state.selectedTitle">
         </el-page-header>
+        <videos :classNo="state.selectedClassNo" />
         <!-- <router-link to="/video?classNo=${{state.selectedClassNo}}" /> -->
       </div>
     </div>
@@ -85,7 +86,7 @@ export default {
       //console.log(prop.classid);
       state.selectedClassNo = prop.classNo;
       state.selectedTitle = prop.classTitle;
-      router.push("/video?classNo=" + state.selectedClassNo);
+      //router.push("/video?classNo=" + state.selectedClassNo);
     };
 
     const goBack = function() {
