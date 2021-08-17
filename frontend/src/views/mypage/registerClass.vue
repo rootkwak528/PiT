@@ -1,12 +1,13 @@
 <template>
   <div class="content-wrapper" v-loading="classData.loading">
     <div class="submenu-title">수강중 클래스</div>
-    <div v-if="!classData.isEmpty">
+    <div v-if="!classData.isEmpty" class="card-content-container">
       <el-card
         v-for="(classItem, index) in classData.classList"
         :key="classItem"
         shadow="hover"
         class="registerclass-card"
+        :id="'card-'+classItem.classNo"
       >
         <div class="card-image-wrapper" style="width: 100%;">
           <el-image
@@ -14,8 +15,8 @@
             fit="cover"
             style="vertical-align: middle; opacity: 0.4; width: 100%;"
           />
-          <div style="position: absolute; padding: 18px">
-            <div style="display: flex">
+          <div style="position: absolute; padding: 18px" class="card-content d-flex flex-column justify-content-between">
+            <div>
               <div class="tag">{{ classItem.classType }}</div>
               <div class="trainer-title" style="font-weight: bold">
                 강사:
@@ -23,37 +24,36 @@
               </div>
               <div class="title">{{ classItem.classTitle }}</div>
               <!-- <div class="desc">{{ classItem.classDesc }}</div> -->
-              <div class="registerclass-card-bottom">
-                <!-- PT룸 입장 버튼 -->
-                <el-button
-                  v-if="classItem.userNo == userNo"
-                  icon="el-icon-s-home"
-                  class="btn-enter"
-                  @click="onClickPTRoomBtn"
-                  >PT룸 개설하기
-                </el-button>
+            </div>
+            <div class="registerclass-card-bottom">
+              <!-- PT룸 입장 버튼 -->
+              <el-button
+                v-if="classItem.userNo == userNo"
+                icon="el-icon-s-home"
+                class="btn-enter"
+                @click="onClickPTRoomBtn"
+                >PT룸 개설하기
+              </el-button>
 
-                <el-button
-                  v-else
-                  icon="el-icon-s-home"
-                  class="btn-enter"
-                  @click="onClickPTRoomBtn"
-                  >PT룸 입장하기
-                </el-button>
+              <el-button
+                v-else
+                icon="el-icon-s-home"
+                class="btn-enter"
+                @click="onClickPTRoomBtn"
+                >PT룸 입장하기
+              </el-button>
 
-                <el-progress
-                  :text-inside="true"
-                  :stroke-width="24"
-                  :percentage="100"
-                  status="success"
-                ></el-progress>
-              </div>
+              <el-progress
+                :text-inside="true"
+                :stroke-width="24"
+                :percentage="100"
+                status="success"
+              ></el-progress>
             </div>
           </div>
         </div>
         <div class="card-calendar-wrapper d-none d-lg-block">
           <v-calendar
-            style="height: 240px;"
             :attributes="classData.dayList[index].dateAttrs"
             :min-date="classItem.classStartDate"
             :max-date="classItem.classEndDate"
@@ -61,12 +61,13 @@
         </div>
       </el-card>
     </div>
+
     <div v-else>수강중인 클래스가 없어요!</div>
   </div>
 </template>
 
 <script>
-import { onMounted } from "@vue/runtime-core";
+import { ref, onUpdated } from "vue";
 import { useStore, mapState } from "vuex";
 import { reactive } from "@vue/reactivity";
 
@@ -77,10 +78,7 @@ export default {
   },
   setup() {
     const store = useStore();
-    onMounted(() => {
-      getRegisterClassList();
-    });
-
+    const _resizeFlag = ref(false)  // 이벤트리스너 한번만 추가하기 위한 flag
     const classData = reactive({
       isEmpty: false,
       loading: true,
@@ -196,7 +194,56 @@ export default {
         });
       classData.loading = false;
     };
-    return { store, getRegisterClassList, classData };
+
+    const resizeClassCard = function () {
+      classData.classList.forEach(classItem => {
+        const classCard = document.getElementById(`card-${classItem.classNo}`)
+
+        // 마지막 월요일이 달력에 포함되어 있으면 270px, 아니면 240px
+        const lastMonday = classCard.getElementsByClassName('on-bottom on-left')[0]
+        const is270px = !lastMonday.classList.contains('is-not-in-month')
+
+        const cardBodyDOM1 = classCard.getElementsByClassName('el-card__body')[0]
+        const cardBodyDOM2 = classCard.getElementsByClassName('card-content')[0]
+        const calendarDOM = classCard.getElementsByClassName('vc-container vc-blue')[0]
+
+        cardBodyDOM1.style.height = is270px?'270px':'240px'
+        cardBodyDOM2.style.height = is270px?'270px':'240px'
+        calendarDOM.style.height = is270px?'270px':'240px'
+      })
+    }
+
+    const addEventOnBtn = function () {
+      // eventListener는 딱 한번만 추가되어야 한다.
+      if (!_resizeFlag.value && classData.classList.length) {
+        _resizeFlag.value = true
+      } else {
+        return
+      }
+
+      classData.classList.forEach(classItem => {
+        const classCard = document.getElementById(`card-${classItem.classNo}`)
+        
+        const calendar = classCard.getElementsByClassName('card-calendar-wrapper')[0]
+        calendar.addEventListener('transitionrun', async function() {
+          // 애니메이션이 완료되면 리사이즈해야 해서 0.35초 대기
+          await new Promise(r => setTimeout(r, 350))
+          resizeClassCard()
+        })
+      })
+    }
+
+    getRegisterClassList();
+
+    onUpdated(() => {
+      resizeClassCard()
+      addEventOnBtn()
+    })
+
+    return { 
+      store, classData,
+      getRegisterClassList, resizeClassCard
+    };
   },
 
   computed: {
@@ -301,7 +348,6 @@ export default {
 
 .registerclass-card > .el-card__body {
   display: flex;
-  height: 240px;
   padding: 0px;
   /* background-image: url("https://cdn.class101.net/images/119a8385-66ea-471a-a4a2-bee3e519c4da/375xauto.webp"); */
 }
@@ -312,7 +358,7 @@ export default {
   position: relative;
   margin-bottom: 10px;
   max-width: 800px;
-  border-radius: 8px !important;
+  border-radius: 0.55rem !important;
 }
 
 .card-image-wrapper {
@@ -332,10 +378,11 @@ export default {
 }
 
 .vc-container.vc-blue {
-  /* .vc-pane-layout { */
-  height: 240px !important;
+/* .vc-pane-layout { */
   border-top-left-radius: 0% !important;
   border-bottom-left-radius: 0% !important;
+  border: none;
+  background-color: #f5f5f5;
 }
 
 @media (max-width: 1020px) {
@@ -371,6 +418,7 @@ export default {
   font-size: 16px; /* 민영 수정 */
   margin-right: 5px;
   vertical-align: middle; /* 민영 수정 */
+  margin-bottom: 10px;
 }
 
 .title {
@@ -394,5 +442,9 @@ export default {
   border: none;
   border-radius: 0.8rem;
   padding: 10px;
+}
+
+.card-content-container {
+  margin-top: 10px;
 }
 </style>
