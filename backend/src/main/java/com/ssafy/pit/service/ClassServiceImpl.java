@@ -1,6 +1,7 @@
 package com.ssafy.pit.service;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -415,6 +416,16 @@ public class ClassServiceImpl implements ClassService {
 	public void createClass(CreateClassPostReq createClassInfo, User user) throws Exception {
 		Classes classes = new Classes();
 		BeanUtils.copyProperties(createClassInfo, classes);
+		SimpleDateFormat dateToStringFormat = new SimpleDateFormat("yyyy-MM-dd");
+		
+		String startDate = createClassInfo.getStartDate();
+		String endDate = createClassInfo.getEndDate();
+		
+		Date classStartDate = dateToStringFormat.parse(startDate);
+		Date classEndDate = dateToStringFormat.parse(endDate);
+		
+		classes.setClassStartDate(classStartDate);
+		classes.setClassEndDate(classEndDate);
 		classes.setUser(user);
 		classes.setClassTeacherName(user.getUserName());
 		classes.setClassUcnt(0);
