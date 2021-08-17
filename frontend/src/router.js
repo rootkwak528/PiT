@@ -12,6 +12,7 @@ import RecordedVideo from "@/views/mypage/recordedVideo";
 import MyInfo from "@/views/mypage/myInfo";
 import FavoriteClass from "@/views/mypage/favoriteClass";
 import OpenClass from "@/views/mypage/openClass";
+import Videos from "@/views/mypage/components/videos";
 
 import AdminMain from "@/views/adminpage/adminMain";
 import AdminClass from "@/views/adminpage/adminClass";
@@ -79,6 +80,11 @@ const routes = [
         path: "/openClass",
         name: "OpenClass",
         component: OpenClass
+      },
+      {
+        path: "/videos",
+        name: "Videos",
+        component: Videos
       }
     ]
   },

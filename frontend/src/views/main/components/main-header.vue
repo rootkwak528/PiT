@@ -97,7 +97,7 @@
               <img
               v-if="state.profileUrl"
               id="profileImg"
-              :src="state.profileUrl"
+              :src="'http://localhost:8080/static/'+state.profileUrl"
               alt="profile"
               style="width:100%; max-width:200px; height: 40px; cursor: pointer; border-radius: 50%;"
             />
@@ -383,7 +383,7 @@ export default {
   height: 50px;
   background-size: contain;
   background-repeat: no-repeat;
-  background-image: url("../../../assets/images/MainLogo.png");
+  background-image: url("../../../assets/images/MainLogo2.png");
 }
 
 #searchBtn {

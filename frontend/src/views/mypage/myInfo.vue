@@ -1,8 +1,10 @@
 <template>
   <div class="content-wrapper">
     <div class="submenu-title">마이페이지</div>
-    <el-row class="tac">
-      <el-col :span="8">
+    <!-- <el-row class="tac"> -->
+    <div class="tac row">
+      <!-- <el-col :span="8"> -->
+      <div class="col-lg-4 col-12" id="profile-content">
         <div class="profileUpload">
           <el-upload
             class="avatar-uploader"
@@ -14,7 +16,7 @@
           >
             <img
               v-if="state.form.profile"
-              :src="state.form.profile"
+              :src="'http://localhost:8080/static/'+state.form.profile"
               class="avatar"
             />
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -32,13 +34,17 @@
             style="display:none"
             >기본 이미지로 변경
           </el-button>
-          <el-button class="form-btn" @click="updateProfile"
+          <el-button
+          class="form-btn" @click="updateProfile"
+          style="margin: 0;"
             >프로필 적용
           </el-button>
         </div>
-      </el-col>
+      <!-- </el-col> -->
+      </div>
 
-      <el-col :span="16">
+      <!-- <el-col :span="16"> -->
+      <div class="col-lg-8 col-12">
         <el-form
           v-loading="loading"
           :model="state.form"
@@ -71,10 +77,12 @@
             :label-width="state.formLabelWidth"
           >
             <el-input
+              id="nickname-input"
               style="float:left; width:70%"
               v-model="state.form.nickname"
             ></el-input>
             <el-button
+              id="nickname-check"
               style="float:right; width:28%"
               class="form-btn"
               @click="checkDuplicatedUpdateNickname"
@@ -138,13 +146,16 @@
                 >수정하기</el-button
               >
               <el-button class="form-btn-delete" @click="clickDeleteUser"
+              style="margin: 0;"
                 >탈퇴하기</el-button
               >
             </div>
           </el-form-item>
         </el-form>
-      </el-col>
-    </el-row>
+      <!-- </el-col> -->
+      </div>
+    <!-- </el-row> -->
+    </div>
   </div>
 </template>
 
@@ -306,7 +317,8 @@ export default {
     });
 
     const handleAvatarSuccess = function(res, file) {
-      state.form.profile = URL.createObjectURL(file.raw);
+      state.form.profile = file.raw;
+      // state.form.profile = URL.createObjectURL(file.raw);
       console.log("업로드 후 profile : " + state.form.profile);
     };
 
@@ -411,9 +423,11 @@ export default {
     };
 
     const updateProfile = function() {
+      let formData = new FormData();
+      formData.append("file", state.form.profile);
       store
         .dispatch("root/updateProfile", {
-          profile: state.form.profile,
+          profile: formData,
           token: "Bearer " + localStorage.getItem("jwt-auth-token")
         })
         .then(function() {
@@ -543,4 +557,15 @@ img {
   margin: 15px;
   text-align: center;
 }
+
+/* 민영 수정 시작 */
+@media (max-width: 992px) {
+  #profile-content {
+    border-bottom: solid 1.2px #ebeef5;
+    margin-bottom: 35px;
+    padding-bottom: 35px;
+  }
+}
+
+/* 민영 수정 끝 */
 </style>
