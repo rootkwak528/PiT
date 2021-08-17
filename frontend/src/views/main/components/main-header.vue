@@ -30,7 +30,7 @@
         >
       </div>
 
-      <!-- 민영 수정 시작 -->
+
       <div v-if="!state.isLogined">
 
 
@@ -65,7 +65,6 @@
             </template>
         </el-dropdown>
 
-
         <div
           class="button-wrapper"
           style="margin-top:10px;"
@@ -79,18 +78,31 @@
         </div>
 
       </div>
-      <!-- 민영 수정 끝 -->
+
       <div class="button-wrapper" v-else>
-        <div type="primary" @click="mvFavoriteClass" class="button-wrapper-logined">
-          찜목록
+        <div v-if="state.userType !== '관리자'">
+          <div type="primary" @click="mvFavoriteClass" class="button-wrapper-logined">
+            찜목록
+          </div>
+          <div type="primary" class="button-wrapper-logined">
+            <router-link
+              to="/rgstClass"
+              style="text-decoration: none; color: inherit;"
+              >마이클래스</router-link
+            >
+          </div>
         </div>
-        <div type="primary" class="button-wrapper-logined">
-          <router-link
-            to="/rgstClass"
-            style="text-decoration: none; color: inherit;"
-            >마이클래스</router-link
-          >
+        <div v-else>
+          <div type="primary" class="button-wrapper-logined">
+            <router-link
+              to="/rgstClass"
+              style="text-decoration: none; color: inherit;"
+              >관리자페이지</router-link
+            >
+          </div>
         </div>
+
+
         <el-dropdown trigger="click">
           <span class="el-dropdown-link">
             <div class="profile">
@@ -112,7 +124,7 @@
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item
-                icon="el-icon-s-custom"
+                icon="el-icon-user-solid"
                 style="font:blue; cursor: pointer;"
               >
                 <router-link
@@ -122,8 +134,8 @@
                 >
               </el-dropdown-item>
 
-              <!-- 민영 수정 시작 -->
               <el-dropdown-item
+                v-if="state.userType !== '관리자'"
                 icon="el-icon-notebook-1"
                 class="small-button-wrapper-logined"
                 style="font:blue; cursor: pointer;"
@@ -136,6 +148,7 @@
               </el-dropdown-item>
 
               <el-dropdown-item
+                v-if="state.userType !== '관리자'"
                 icon="el-icon-star-on"
                 class="small-button-wrapper-logined"
                 style="font:blue; cursor: pointer;"
@@ -152,12 +165,13 @@
               <el-dropdown-item
                 v-if="state.userType === '관리자'"
                 icon="el-icon-s-custom"
+                class="small-button-wrapper-logined"
                 style="font:blue; cursor: pointer;"
               >
                 <router-link
                   to="/adminClass"
                   style="text-decoration: none; color: inherit;"
-                  >관리자 페이지</router-link
+                  >관리자페이지</router-link
                 >
               </el-dropdown-item>
 

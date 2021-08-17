@@ -7,7 +7,7 @@
     active-text-color="#00C0D4"
     router="true"
   >
-    <el-submenu index="1">
+    <el-submenu index="1" v-if="userTypeName !== '관리자'">
       <template #title>
         <i class="el-icon-notebook-1"></i>
         <span>마이클래스</span>
@@ -33,7 +33,7 @@
       <span>피드백 등록</span>
     </el-menu-item>
     <el-menu-item index="myinfo">
-      <i class="el-icon-user"></i>
+      <i class="el-icon-user-solid"></i>
       <span>마이페이지</span>
     </el-menu-item>
   </el-menu>

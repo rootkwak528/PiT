@@ -8,9 +8,9 @@
         <el-button v-bind:class="{'non-active': !state.pNotGranted, 'active': state.pNotGranted }" @click="clickPermissionNotGranted">미승인</el-button>
         <el-button v-bind:class="{'non-active': !state.pDenied, 'active': state.pDenied }" @click="clickPermissionDenied">거절</el-button>
       </el-button-group>
-      <span style="margin-left: 20px">{{ state.list.length }} 개의 클래스가 조회되었습니다.</span>
+      <span style="padding-left: 20px">{{ state.list.length }} 개의 클래스가 조회되었습니다.</span>
     </div>
-    <el-divider></el-divider>
+    <!-- <el-divider></el-divider> -->
     <!-- <div style="border: solid 0.5px; margin-top: 13px; margin-bottom: 10px"></div> -->
     <div class="class-card-wrapper">
       <el-card
@@ -188,4 +188,17 @@ flex-wrap: wrap;
   font-size: 20px;
   font-weight: bold;
 }
+
+.class-by-permission {
+  border-bottom: solid 1.2px #ebeef5;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+}
+
+@media (max-width: 576px) {
+  .content-wrapper {
+    margin-left: 0px !important;
+  }
+}
+
 </style>
