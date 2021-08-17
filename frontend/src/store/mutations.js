@@ -15,6 +15,14 @@ export function setUserNickname(state, userNickname) {
   state.userNickname = userNickname;
 }
 
+export function setUserNo(state, userNo) {
+  state.userNo = userNo;
+}
+
+export function setUserName(state, userName) {
+  state.userName = userName;
+}
+
 export function setSearchType(state, searchType) {
   state.searchType = searchType;
 }

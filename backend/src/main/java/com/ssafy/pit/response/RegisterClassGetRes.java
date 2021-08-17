@@ -10,6 +10,7 @@ import lombok.Setter;
 public class RegisterClassGetRes {
 	
 	int classNo;
+	int userNo;
 	int classPrice;
 	String classThumbnail;
 	String classTitle;
