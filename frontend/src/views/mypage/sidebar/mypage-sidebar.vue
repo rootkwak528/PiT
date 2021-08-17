@@ -7,7 +7,7 @@
     active-text-color="#00C0D4"
     router="true"
   >
-    <el-submenu index="1">
+    <el-submenu index="1" v-if="userTypeName !== '관리자'">
       <template #title>
         <i class="el-icon-notebook-1"></i>
         <span>마이클래스</span>
@@ -33,7 +33,7 @@
       <span>피드백 등록</span>
     </el-menu-item>
     <el-menu-item index="myinfo">
-      <i class="el-icon-user"></i>
+      <i class="el-icon-user-solid"></i>
       <span>마이페이지</span>
     </el-menu-item>
   </el-menu>
@@ -62,7 +62,6 @@ export default {
 </script>
 
 <style>
-/* 민영 수정 시작*/
 .el-menu span{
   font-weight: bold;
   font-size: 17px;
@@ -71,15 +70,12 @@ export default {
   font-weight: bold;
   font-size: 19px;
 }
-
 .el-menu-item-group .el-menu-item {
   margin-left: 10px;
   min-width: 140px;
   font-size: 16px;
 }
-
 .el-menu {
   border: none;
 }
-/* 민영 수정 끝 */
 </style>

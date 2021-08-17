@@ -7,7 +7,7 @@
             <span class="span-p">P</span>
             <span class="span-i">;</span>
             <span class="span-T">T</span>
-            &nbsp&nbsp피땀눈물
+            &nbsp;&nbsp;피땀눈물
           </strong><br><br>
         </router-link>
         피땀눈물은 비대면 상황에서도<br>

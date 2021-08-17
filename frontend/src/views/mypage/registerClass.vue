@@ -155,7 +155,7 @@ export default {
 
       classData.classList.forEach(classItem => {
         const classCard = document.getElementById(`card-${classItem.classNo}`)
-        
+
         const calendar = classCard.getElementsByClassName('card-calendar-wrapper')[0]
         calendar.addEventListener('transitionrun', async function() {
           // 애니메이션이 완료되면 리사이즈해야 해서 0.35초 대기
@@ -172,7 +172,7 @@ export default {
       addEventOnBtn()
     })
 
-    return { 
+    return {
       store, classData,
       getRegisterClassList, resizeClassCard
     };
@@ -297,7 +297,6 @@ export default {
   text-align: center;
 }
 
-/* 민영 수정 시작 */
 .trainer-title {
   margin-left: 3px;
 }
@@ -325,7 +324,6 @@ export default {
     width: 90%;
   }
 }
-/* 민영 수정 종료 */
 
 .card-calendar-wrapper > el-image__inner {
   object-fit: cover;

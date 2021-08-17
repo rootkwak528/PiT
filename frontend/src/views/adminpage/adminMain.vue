@@ -3,16 +3,16 @@
     {{ username }}
   </div>
   <div>
-    <el-row class="tac">
-      <el-col :span="6">
+    <div class="tac row">
+      <div class="col-sm-4 col-md-3 col-12" id="admin-sidebar">
         <adminpage-sidebar :pathname="pathname"/>
-      </el-col>
-      <el-col :span="18" style="min-height: 655px">
+      </div>
+      <div class="col-sm-8 col-md-9 col-12">
         <div class="view-section">
           <router-view />
         </div>
-      </el-col>
-    </el-row>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -33,5 +33,18 @@ export default {
 <style>
 .view-section {
   height: 100%;
+}
+
+@media (max-width: 576px) {
+  #admin-sidebar {
+    border-bottom: solid 1.2px #ebeef5;
+    margin-bottom: 35px;
+  }
+}
+
+@media (min-width: 576px) {
+  #admin-sidebar {
+    border-right: solid 1.2px #ebeef5;
+  }
 }
 </style>

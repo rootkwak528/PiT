@@ -1,9 +1,7 @@
 <template>
   <div class="content-wrapper">
     <div class="submenu-title">마이페이지</div>
-    <!-- <el-row class="tac"> -->
     <div class="tac row">
-      <!-- <el-col :span="8"> -->
       <div class="col-lg-4 col-12" id="profile-content">
         <div class="profileUpload">
           <el-upload
@@ -16,9 +14,14 @@
           >
             <img
               v-if="state.form.profile"
-              :src="'http://localhost:8080/static/'+state.form.profile"
+              :src="state.form.profile"
               class="avatar"
             />
+            <!-- <img
+              v-if="state.form.profile"
+              :src="'http://localhost:8080/static/'+state.form.profile"
+              class="avatar"
+            /> -->
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
           <el-button
@@ -40,10 +43,8 @@
             >프로필 적용
           </el-button>
         </div>
-      <!-- </el-col> -->
       </div>
 
-      <!-- <el-col :span="16"> -->
       <div class="col-lg-8 col-12">
         <el-form
           v-loading="loading"
@@ -152,9 +153,7 @@
             </div>
           </el-form-item>
         </el-form>
-      <!-- </el-col> -->
       </div>
-    <!-- </el-row> -->
     </div>
   </div>
 </template>
@@ -292,6 +291,7 @@ export default {
         desc: "",
         phone: "",
         profile: "",
+        profileImage: "",
         type: "",
         email: "",
         name: "",
@@ -317,9 +317,10 @@ export default {
     });
 
     const handleAvatarSuccess = function(res, file) {
-      state.form.profile = file.raw;
-      // state.form.profile = URL.createObjectURL(file.raw);
-      console.log("업로드 후 profile : " + state.form.profile);
+      state.form.profile = URL.createObjectURL(file.raw);
+      state.form.profileImage = file.raw;
+      console.log("1. URL create profile : " + state.form.profile);
+      console.log("1. File raw : " + state.form.profileImage);
     };
 
     const beforeAvatarUpload = function(file) {
@@ -424,16 +425,15 @@ export default {
 
     const updateProfile = function() {
       let formData = new FormData();
-      formData.append("file", state.form.profile);
+      formData.append("file", state.form.profileImage);
       store
         .dispatch("root/updateProfile", {
-          profile: formData,
+          file: formData,
           token: "Bearer " + localStorage.getItem("jwt-auth-token")
         })
         .then(function() {
           alert("프로필 사진이 변경되었습니다.");
-          store.state.profileUrl = state.form.profile;
-          store.commit("root/setProfileUrl", store.state.profileUrl);
+          store.commit("root/setProfileUrl", state.form.profile);
         })
         .catch(function(err) {
           alert(err.response.data.message);
@@ -558,7 +558,6 @@ img {
   text-align: center;
 }
 
-/* 민영 수정 시작 */
 @media (max-width: 992px) {
   #profile-content {
     border-bottom: solid 1.2px #ebeef5;
@@ -566,6 +565,4 @@ img {
     padding-bottom: 35px;
   }
 }
-
-/* 민영 수정 끝 */
 </style>

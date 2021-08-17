@@ -46,11 +46,9 @@ export default {
 
 
 <style scoped>
-/* 민영 수정 시작 */
 @media (max-width: 825px) {
   .main-carousel {
     display: none;
   }
 }
-
 </style>
