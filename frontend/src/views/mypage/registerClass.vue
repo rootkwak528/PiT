@@ -1,7 +1,7 @@
 <template>
   <div class="content-wrapper" v-loading="classData.loading">
     <div class="submenu-title">수강중 클래스</div>
-    <div v-if="!classData.isEmpty">
+    <div v-if="!classData.isEmpty" class="card-content-container">
       <el-card
         v-for="(classItem, index) in classData.classList"
         :key="classItem"
@@ -16,7 +16,7 @@
             style="vertical-align: middle; opacity: 0.4; width: 100%;"
           />
           <div style="position: absolute; padding: 18px" class="card-content d-flex flex-column justify-content-between">
-            <div class="card-content-container">
+            <div>
               <div class="tag">{{ classItem.classType }}</div>
               <div class="trainer-title" style="font-weight: bold">
                 강사:
@@ -61,6 +61,7 @@
         </div>
       </el-card>
     </div>
+
     <div v-else>수강중인 클래스가 없어요!</div>
   </div>
 </template>
