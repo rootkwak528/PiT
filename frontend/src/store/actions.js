@@ -78,7 +78,7 @@ export function deleteUser() {
 export function updateProfile({ state }, payload) {
   const url = `/users/me/profile`;
   let body = payload;
-  return $axios.post(url, body.profile, {
+  return $axios.post(url, body.file, {
     headers: {
       Authorization: body.token,
       "Content-Type": "multipart/form-data"

@@ -96,6 +96,7 @@ export default {
           store.commit("root/setUserNickname", result.data.userNickname);
           store.commit("root/setUserNo", result.data.userNo);
           store.commit("root/setUserName", result.data.userName);
+          console.log("App vue : " + result.data.userProfile);
         })
       }
     }

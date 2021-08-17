@@ -16,9 +16,14 @@
           >
             <img
               v-if="state.form.profile"
-              :src="'http://localhost:8080/static/'+state.form.profile"
+              :src="state.form.profile"
               class="avatar"
             />
+            <!-- <img
+              v-if="state.form.profile"
+              :src="'http://localhost:8080/static/'+state.form.profile"
+              class="avatar"
+            /> -->
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
           <el-button
@@ -292,6 +297,7 @@ export default {
         desc: "",
         phone: "",
         profile: "",
+        profileImage: "",
         type: "",
         email: "",
         name: "",
@@ -317,9 +323,10 @@ export default {
     });
 
     const handleAvatarSuccess = function(res, file) {
-      state.form.profile = file.raw;
-      // state.form.profile = URL.createObjectURL(file.raw);
-      console.log("업로드 후 profile : " + state.form.profile);
+      state.form.profile = URL.createObjectURL(file.raw);
+      state.form.profileImage = file.raw;
+      console.log("1. URL create profile : " + state.form.profile);
+      console.log("1. File raw : " + state.form.profileImage);
     };
 
     const beforeAvatarUpload = function(file) {
@@ -424,16 +431,15 @@ export default {
 
     const updateProfile = function() {
       let formData = new FormData();
-      formData.append("file", state.form.profile);
+      formData.append("file", state.form.profileImage);
       store
         .dispatch("root/updateProfile", {
-          profile: formData,
+          file: formData,
           token: "Bearer " + localStorage.getItem("jwt-auth-token")
         })
         .then(function() {
           alert("프로필 사진이 변경되었습니다.");
-          store.state.profileUrl = state.form.profile;
-          store.commit("root/setProfileUrl", store.state.profileUrl);
+          store.commit("root/setProfileUrl", state.form.profile);
         })
         .catch(function(err) {
           alert(err.response.data.message);
