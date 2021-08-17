@@ -383,7 +383,7 @@ export default {
   height: 50px;
   background-size: contain;
   background-repeat: no-repeat;
-  background-image: url("../../../assets/images/MainLogo.png");
+  background-image: url("../../../assets/images/MainLogo2.png");
 }
 
 #searchBtn {
