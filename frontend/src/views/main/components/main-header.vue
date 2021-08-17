@@ -95,7 +95,7 @@
         <div v-else>
           <div type="primary" class="button-wrapper-logined">
             <router-link
-              to="/rgstClass"
+              to="/adminClass"
               style="text-decoration: none; color: inherit;"
               >관리자페이지</router-link
             >
