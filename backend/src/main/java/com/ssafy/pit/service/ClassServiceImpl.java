@@ -404,7 +404,7 @@ public class ClassServiceImpl implements ClassService {
 			String savingFileName = uuid + "." + extension;
 			File destFile = new File(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
 			part.transferTo(destFile);
-			String fileUrl = "http://i5a204.p.ssafy.io:8080/static/"+uploadFolder + "/" + savingFileName;
+			String fileUrl = "https://i5a204.p.ssafy.io:8080/static/"+uploadFolder + "/" + savingFileName;
 			
 			ClassPhoto classPhoto = new ClassPhoto();
 			Classes classes = classRepository.findClassByClassNo(classNo);
