@@ -193,14 +193,14 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public int delete(String userEmail) {
-//		String deleteFileUrl = userRepository.findUserByUserEmail(userEmail).getUserProfile();
-//		File file = null;
-//        if(deleteFileUrl != null) {
-//           file = new File(uploadPath + File.separator, deleteFileUrl);
-//           if(file.exists()) {
-//              file.delete();
-//           }
-//        }
+		String deleteFileUrl = userRepository.findUserByUserEmail(userEmail).getUserProfile();
+		File file = null;
+        if(deleteFileUrl != null) {
+           file = new File(uploadPath + File.separator, deleteFileUrl);
+           if(file.exists()) {
+              file.delete();
+           }
+        }
 		
 		return userRepository.deleteByUserEmail(userEmail);
 	}
