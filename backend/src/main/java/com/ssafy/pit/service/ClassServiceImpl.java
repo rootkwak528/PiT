@@ -83,24 +83,13 @@ public class ClassServiceImpl implements ClassService {
 	
 	// 이미지 생성폴더 이름
 	String uploadFolder = "upload";
-	// 자기 이미지 생성할 경로
-//	String uploadPath = "C:" + File.separator + "Users" + File.separator + "ahnda" + File.separator
-//			+ "ssafy5-study" + File.separator + "Second" + File.separator + "Projects" + File.separator + "CommonProject" 
-//			+ File.separator + "S05P13A204" + File.separator + "backend" + File.separator + "src" + File.separator + "main"
-//			+ File.separator + "resources" + File.separator + "static";
 	
-//	/Users/seoyoseb/SSAFYProjects/S05P13A204/backend/src/main/resources/static
-//  서버 이미지 저장될 경로
-//	/home/ubuntu/S05P13A204/backend/src/main/resources/static
-	
-	String uploadPath = "/Users" + File.separator + "seoyoseb" + File.separator + "SSAFYProjects"
-    		+ File.separator + "S05P13A204"
+	String uploadPath = "/home" + File.separator + "ubuntu" + File.separator + "S05P13A204"
             + File.separator + "backend" 
             + File.separator + "src" 
             + File.separator + "main"
             + File.separator + "resources"
             + File.separator + "static";
-	
 	
 	@Override
 	public List<ClassListGetRes> getClassList(ClassSearchGetReq searchInfo, String permission) {
@@ -298,26 +287,12 @@ public class ClassServiceImpl implements ClassService {
 	public List<ClassListGetRes> getFinishedClassList(int userNo) {
 		
 		try {	
-//			Date now = new Date();
-//			SimpleDateFormat dateToStringFormat = new SimpleDateFormat("yyyy-MM-dd");
-//			SimpleDateFormat stringToDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			
 			List<Classes> userClassList = classRepositorySupport.getUserClassList(userNo);
 			List<ClassListGetRes> finishedClassList = new ArrayList<ClassListGetRes> ();
 			
 			
 			for (Classes classes : userClassList) {
-//				// 날짜비교
-//				Date endDate = classes.getClassEndDate();
-//				String endTime = classes.getClassEndTime();
-//				
-//				String endDateString = dateToStringFormat.format(endDate) + " " + endTime + ":00:00";
-//				Date classEndDate = stringToDateFormat.parse(endDateString);
-//				
-//				if(now.compareTo(classEndDate) <= 0) {
-//					continue;
-//				}
-				
 				if(classes.getClassTcnt() > classes.getClassCcnt() || !classes.getClassPermission().equals("001")) {
 					continue;
 				}
@@ -345,31 +320,12 @@ public class ClassServiceImpl implements ClassService {
 	@Override
 	public List<RegisterClassGetRes> getRegisterClassList(int userNo) {
 		try {	
-//			Date now = new Date();
-//			SimpleDateFormat dateToStringFormat = new SimpleDateFormat("yyyy-MM-dd");
-//			SimpleDateFormat stringToDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			
 			List<Classes> userClassList = classRepositorySupport.getUserClassList(userNo);
 			List<RegisterClassGetRes> registerClassList = new ArrayList<RegisterClassGetRes> ();
 			
 			
 			for (Classes classes : userClassList) {
-				// 날짜비교
-//				Date endDate = classes.getClassEndDate();
-//				Date startDate = classes.getClassStartDate();
-//				String endTime = classes.getClassEndTime();
-//				String startTime = classes.getClassStartTime();
-//				
-//				
-//				String startDateString = dateToStringFormat.format(startDate) + " " + startTime + ":00:00";
-//				String endDateString = dateToStringFormat.format(endDate) + " " + endTime + ":00:00";
-//				Date classStartDate = stringToDateFormat.parse(startDateString);
-//				Date classEndDate = stringToDateFormat.parse(endDateString);
-//				
-//				// 현재 날짜가 클래스 수업 마지막 날짜보다 크다면 이미 수강이 완료된 것이므로 Continue
-//				if(now.compareTo(classEndDate) > 0) {
-//					continue;
-//				}
 				
 				if(classes.getClassTcnt() <= classes.getClassCcnt() || !classes.getClassPermission().equals("001")) {
 					continue;
@@ -448,7 +404,7 @@ public class ClassServiceImpl implements ClassService {
 			String savingFileName = uuid + "." + extension;
 			File destFile = new File(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
 			part.transferTo(destFile);
-			String fileUrl = "http://localhost:8080/static/" + uploadFolder + "/" + savingFileName;
+			String fileUrl = "http://i5a204.p.ssafy.io:8080/static/"+uploadFolder + "/" + savingFileName;
 			
 			ClassPhoto classPhoto = new ClassPhoto();
 			Classes classes = classRepository.findClassByClassNo(classNo);
@@ -614,7 +570,7 @@ public class ClassServiceImpl implements ClassService {
 				String savingFileName = uuid + "." + extension;
 				File destFile = new File(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
 				part.transferTo(destFile);
-				String fileUrl = "http://localhost:8080/static/" + uploadFolder + "/" + savingFileName;
+				String fileUrl = "http://i5a204.p.ssafy.io:8080/static/"+uploadFolder + "/" + savingFileName;
 				
 				ClassPhoto classPhoto = new ClassPhoto();
 				Classes classes = classRepository.findClassByClassNo(classNo);

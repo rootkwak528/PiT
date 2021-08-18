@@ -32,18 +32,8 @@ public class UserServiceImpl implements UserService {
 	
 	// 이미지 생성폴더 이름
 	String uploadFolder = "upload";
-	// 자기 이미지 생성할 경로
-//	String uploadPath = "C:" + File.separator + "Users" + File.separator + "ahnda" + File.separator
-//			+ "ssafy5-study" + File.separator + "Second" + File.separator + "Projects" + File.separator + "CommonProject" 
-//			+ File.separator + "S05P13A204" + File.separator + "backend" + File.separator + "src" + File.separator + "main"
-//			+ File.separator + "resources" + File.separator + "static";
 	
-//	/Users/seoyoseb/SSAFYProjects/S05P13A204/backend/src/main/resources/static
-//  서버 이미지 저장될 경로
-//	/home/ubuntu/S05P13A204/backend/src/main/resources/static
-	
-	String uploadPath = "/Users" + File.separator + "seoyoseb" + File.separator + "SSAFYProjects"
-    		+ File.separator + "S05P13A204"
+	String uploadPath = "/home" + File.separator + "ubuntu" + File.separator + "S05P13A204"
             + File.separator + "backend" 
             + File.separator + "src" 
             + File.separator + "main"
@@ -57,15 +47,12 @@ public class UserServiceImpl implements UserService {
 		user.setUserGender(userRegisterInfo.getUserGender());
 		user.setUserName(userRegisterInfo.getUserName());
 		user.setUserEmail(userRegisterInfo.getUserEmail());
-//		user.setUserPwd(userRegisterInfo.getUserPwd());
 		user.setUserPwd(passwordEncoder.encode(userRegisterInfo.getUserPwd()));
 		user.setUserType(userRegisterInfo.getUserType());
 		user.setUserProfile(userRegisterInfo.getUserProfile());
 		user.setUserNickname(userRegisterInfo.getUserNickname());
 		user.setUserDesc(userRegisterInfo.getUserDesc());
 		user.setUserPhone(userRegisterInfo.getUserPhone());
-		
-		
 		
 		return userRepository.save(user);
 	}
@@ -124,7 +111,7 @@ public class UserServiceImpl implements UserService {
 				String savingFileName = uuid + "." + extension;
 				File destFile = new File(uploadPath + File.separator + uploadFolder + File.separator + savingFileName);
 				part.transferTo(destFile);
-				String fileUrl = "http://localhost:8080/static/"+uploadFolder + "/" + savingFileName;
+				String fileUrl = "http://i5a204.p.ssafy.io:8080/static/"+uploadFolder + "/" + savingFileName;
 				
 				System.out.println("fileUrl : "+ fileUrl);
 				user.setUserProfile(fileUrl);
