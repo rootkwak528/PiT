@@ -30,7 +30,6 @@ public class AuthController {
 		String userPwd = loginInfo.getUserPwd();
 		UserLoginPostRes userLoginPostRes = new UserLoginPostRes();
 		
-		
 		try {
 			User user = userService.getUserByUserEmail(userEmail);
 			

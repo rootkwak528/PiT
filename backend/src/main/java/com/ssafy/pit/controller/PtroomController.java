@@ -45,7 +45,6 @@ public class PtroomController {
 	public ResponseEntity<Integer> getUserCnt(Authentication authentication, @PathVariable int classNo){
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
 		String userEmail = userDetails.getUsername();
-		System.out.println("userType : "+userService.validateUserType(userEmail));
 		if(userService.validateUserType(userEmail) == 1) {
 			return ResponseEntity.status(403).body(null);
 		}
@@ -87,7 +86,6 @@ public class PtroomController {
 	public ResponseEntity<String> enterPtroom(Authentication authentication, @PathVariable int classNo) {
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
 		String userEmail = userDetails.getUsername();
-		System.out.println("userType : "+userService.validateUserType(userEmail));
 		if(userService.validateUserType(userEmail) == 1) {
 			return ResponseEntity.status(403).body(null);
 		}
@@ -114,7 +112,6 @@ public class PtroomController {
 	public ResponseEntity<BaseResponseBody> leavePtroom(Authentication authentication, @PathVariable int classNo) {
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
 		String userEmail = userDetails.getUsername();
-		System.out.println("userType : " + userService.validateUserType(userEmail));
 		if(userService.validateUserType(userEmail) == 2) {
 			try {
 				ptroomService.leavePtroom(classNo);

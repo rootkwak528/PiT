@@ -148,9 +148,6 @@ public class UserController {
 	// 유저 아바타 테스트
 	@PostMapping("/image")
 	public ResponseEntity<? extends BaseResponseBody> image(String url) {
-		System.out.println("이미지 진입");
-		System.out.println(url);
-			
 		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "테스트"));
 	}
 	
@@ -173,7 +170,6 @@ public class UserController {
 	public ResponseEntity<? extends BaseResponseBody> updateProfile(Authentication authentication, MultipartHttpServletRequest request) {
 		PitUserDetails userDetails = (PitUserDetails) authentication.getDetails();
 		User user = userDetails.getUser();
-		System.out.println("multi request : "+ request.getFile("file"));
 		if (userService.update(user, request) == 1) {
 			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "프로필 사진이 업데이트 되었습니다."));
 		}

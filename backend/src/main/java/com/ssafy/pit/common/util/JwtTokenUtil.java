@@ -36,7 +36,6 @@ public class JwtTokenUtil {
 	}
     
 	public void setExpirationTime() {
-    		//JwtTokenUtil.expirationTime = Integer.parseInt(expirationTime);
     		JwtTokenUtil.expirationTime = expirationTime;
 	}
 
