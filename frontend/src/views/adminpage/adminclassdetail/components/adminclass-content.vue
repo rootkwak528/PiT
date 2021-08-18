@@ -5,7 +5,7 @@
         <h2>클래스 설명</h2>
         <el-divider />
         <h3>클래스 요약</h3>
-        <el-tag size="mini" color="#BEEDED">8월 8일부터 수강 가능</el-tag>
+        <el-tag size="mini" color="#BEEDED">{{state.startMonth}}월 {{state.startDay}}일부터 수강 가능</el-tag>
         <div class="info-content">
           <div class="info-content-child" style="width: 20%">
             <div><i class="el-icon-folder" /> 대분류</div>
@@ -21,7 +21,7 @@
             <div>{{ state.form.classLevelName }}</div>
             <div>3달</div>
             <div>{{ state.form.classTcnt }}</div>
-            <div>총 {{ state.form.classPrice }}원</div>
+            <div>총 {{ state.form.classPricePerMonth }}원</div>
           </div>
         </div>
         <el-divider />
@@ -62,7 +62,7 @@
           <div>{{ state.form.classTypeName }}</div>
           <div>{{ state.form.classMaterial }}</div>
           <div>{{ state.form.classLevelName }}</div>
-          <div>3달</div>
+          <div>{{ state.form.classTerm }}</div>
           <div>{{ state.form.classTcnt }}</div>
           <div>총 {{ state.form.classPrice }}원</div>
         </div>
@@ -139,7 +139,10 @@ export default {
         classDesc: "",
         classCurri: ""
       },
-      comments: []
+      comments: [],
+      startDay: "",
+      startMonth: "",
+      classTerm: ""
     });
 
     onMounted(() => {
@@ -168,9 +171,26 @@ export default {
           console.log("adminclass-content : " + state.form.classPermission);
 
           var startMonth = parseInt(result.data.classStartDate.split("-")[1]);
+          var startDay = parseInt(result.data.classStartDate.split("-")[2]);
           var endMonth = parseInt(result.data.classEndDate.split("-")[1]);
-          state.form.classPricePerMonth = Math.ceil(
-            result.data.classPrice / (endMonth - startMonth + 1)
+
+          state.startMonth = startMonth;
+          state.startDay = startDay;
+
+          var tmp = (
+            Math.floor(
+              result.data.classPrice / (endMonth - startMonth + 1) / 100
+            ) * 100
+          ).toString();
+
+          var left = tmp.slice(0, -3);
+          var right = tmp.slice(-3, tmp.length);
+          state.form.classPricePerMonth = left + "," + right;
+
+          state.form.classTerm = parseInt(
+            state.form.classEndDate.substring(5, 7) -
+              state.form.classStartDate.substring(5, 7) +
+              1
           );
         })
         .catch(function(err) {

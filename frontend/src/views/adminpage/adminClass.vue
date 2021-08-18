@@ -38,7 +38,7 @@
                 <div>
                   {{ classItem.classTeacherName }}
                 </div>
-                <div class="title">{{ classItem.classTitle }}</div>
+                <div class="admin-class-title">{{ classItem.classTitle }}</div>
               </div>
               <div class="class-card-tag">
                 <el-tag size="mini" color="#BEEDED">
@@ -123,15 +123,38 @@ export default {
         .then(function(result) {
           state.list = result.data;
 
-          for (var i = 0; i < state.list.length; i++) {
+          const today = new Date();
+
+          var i = 0;
+          while (i < result.data.length) {
+            // 날짜 지난 클래스 삭제
+            var dateArr = result.data[i].classEndDate.split("-");
+            var endMonth = parseInt(dateArr[1]);
+            var endDate = parseInt(dateArr[2]);
+
+            if (endMonth <= today.getMonth() + 1 && endDate < today.getDate()) {
+              result.data.splice(i, 1);
+              i--;
+            }
+            i++;
+          }
+
+          for (i = 0; i < state.list.length; i++) {
+            // 월단위 가격 계산
             var startMonth = parseInt(
               result.data[i].classStartDate.split("-")[1]
             );
             var endMonth = parseInt(result.data[i].classEndDate.split("-")[1]);
-            result.data[i].classPrice = Math.ceil(
-              result.data[i].classPrice / (endMonth - startMonth + 1)
-            );
-            // console.log("getClassList classPermission : "+result.data[i].classPermission);
+            var tmp = (
+              Math.floor(
+                result.data[i].classPrice / (endMonth - startMonth + 1) / 100
+              ) * 100
+            ).toString();
+
+            var left = tmp.slice(0, -3);
+            var right = tmp.slice(-3, tmp.length);
+
+            result.data[i].classPrice = left + "," + right;
           }
         })
         .catch(function(err) {
@@ -197,6 +220,12 @@ flex-wrap: wrap;
   .content-wrapper {
     margin-left: 0px !important;
   }
+}
+.admin-class-title{
+  font-weight: bold;
+  font-size: 18px;
+  word-break: break-all;
+  margin-top: 6px;
 }
 
 </style>
