@@ -5,7 +5,9 @@
         <h2>클래스 설명</h2>
         <el-divider />
         <h3>클래스 요약</h3>
-        <el-tag size="mini" color="#BEEDED">{{state.startMonth}}월 {{state.startDay}}일부터 수강 가능</el-tag>
+        <el-tag size="mini" color="#BEEDED"
+          >{{ state.startMonth }}월 {{ state.startDay }}일부터 수강 가능</el-tag
+        >
         <div class="info-content">
           <div class="info-content-child" style="width: 20%">
             <div><i class="el-icon-folder" /> 대분류</div>
@@ -30,19 +32,6 @@
         <el-divider />
         <h3>커리큘럼</h3>
         <pre>{{ state.form.classCurri }}</pre>
-        <el-divider />
-        <h3>커뮤니티</h3>
-        <div v-for="comment in state.form.comments" :key="comment">
-          <el-card class="box-card">
-            <div class="rate">
-              <div style="margin-right: 20px">{{ comment.userNickname }}</div>
-              <div>{{ comment.commentWriteDate }}</div>
-            </div>
-            <div>
-              {{ comment.commentContent }}
-            </div>
-          </el-card>
-        </div>
       </div>
     </el-tab-pane>
 
@@ -72,23 +61,6 @@
     <el-tab-pane label="커리큘럼" name="curriculum"
       ><h3>커리큘럼</h3>
       <pre>{{ state.form.classCurri }}</pre>
-    </el-tab-pane>
-
-    <el-tab-pane label="커뮤니티" name="review"
-      ><h3>커뮤니티</h3>
-      <div>
-        <div v-for="comment in state.form.comments" :key="comment">
-          <el-card class="box-card">
-            <div class="rate">
-              <div style="margin-right: 20px">{{ comment.userNickname }}</div>
-              <div>{{ comment.commentWriteDate }}</div>
-            </div>
-            <div>
-              {{ comment.commentContent }}
-            </div>
-          </el-card>
-        </div>
-      </div>
     </el-tab-pane>
 
     <div class="permission-btn">
