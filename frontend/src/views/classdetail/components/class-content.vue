@@ -10,7 +10,7 @@
         <h3>커리큘럼</h3>
         <pre>{{ state.form.classCurri }}</pre>
         <el-divider />
-        <h3>커뮤니티</h3>
+        <!-- <h3>커뮤니티</h3>
         <div v-for="comment in state.form.comments" :key="comment">
           <el-card class="box-card" shadow="never">
             <div class="rate">
@@ -21,14 +21,14 @@
               {{ comment.commentContent }}
             </div>
           </el-card>
-        </div>
+        </div> -->
       </div>
     </el-tab-pane>
     <el-tab-pane label="커리큘럼" name="curriculum"
       ><h3>커리큘럼</h3>
       <pre>{{ state.form.classCurri }}</pre></el-tab-pane
     >
-    <el-tab-pane label="커뮤니티" name="review">
+    <!-- <el-tab-pane label="커뮤니티" name="review">
       <h3>커뮤니티</h3>
       <div>
         <div v-for="comment in state.form.comments" :key="comment">
@@ -43,7 +43,7 @@
           </el-card>
         </div>
       </div>
-    </el-tab-pane>
+    </el-tab-pane> -->
   </el-tabs>
 </template>
 
