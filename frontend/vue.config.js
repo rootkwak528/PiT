@@ -5,12 +5,12 @@ module.exports = {
     // Invalid Host Error 및 HTTPS 관련
     disableHostCheck: true,
     https: true,
-    
+
     port: 8083,
     open: true,
     proxy: {
       '/v1': {
-        target: 'http://localhost:8080/'
+        target: 'https://i5a204.p.ssafy.io/api'
       }
     },
     historyApiFallback: true,
