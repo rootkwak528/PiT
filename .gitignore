@@ -1,6 +1,6 @@
 # application.properties
   
-# application.properties
+:application.properties
 
 # .DS_Store
 
@@ -21,7 +21,7 @@ package-lock.json
 
 # static 
 
-static/
+ static/
 
 # UserServiceImpl.java - 파일 업로드 경로
 
