@@ -49,7 +49,7 @@ export default {
     });
 
     store
-      .dispatch("root/getClassDetail", { classNo: props.classNo })
+      .dispatch("root/getAdminClassDetail", { classNo: props.classNo })
       .then(function(result) {
         state.form.photoList = result.data.photoUrls;
       })
