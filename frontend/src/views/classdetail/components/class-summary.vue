@@ -22,7 +22,7 @@
         </div>
         <div class="info-content">
           <div class="sub-item"><i class="el-icon-date" /> 기간</div>
-          <div>{{ state.form.classTerm }}</div>
+          <div>{{ state.form.classTerm }}개월</div>
         </div>
         <div class="info-content">
           <div class="sub-item"><i class="el-icon-reading" /> 수업 수</div>
