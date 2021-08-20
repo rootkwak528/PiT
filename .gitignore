@@ -1,6 +1,6 @@
 # application.properties
   
-application.properties
+# application.properties
 
 # .DS_Store
 
@@ -25,4 +25,4 @@ package-lock.json
 
 # UserServiceImpl.java - 파일 업로드 경로
 
-backend/src/main/java/com/ssafy/pit/service/UserServiceImpl.java
+# backend/src/main/java/com/ssafy/pit/service/UserServiceImpl.java
