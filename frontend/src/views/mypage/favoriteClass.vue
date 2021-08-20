@@ -33,7 +33,7 @@
                 <div>
                   {{ classItem.classTeacherName }}
                 </div>
-                <div class="title">{{ classItem.classTitle }}</div>
+                <div class="favorite-title">{{ classItem.classTitle }}</div>
               </div>
               <div class="class-card-tag">
                 <el-tag size="mini" color="#BEEDED">
@@ -160,5 +160,11 @@ export default {
 }
 .wrap:hover .delete {
   opacity: 1;
+}
+.favorite-title{
+  font-weight: bold;
+  font-size: 18px;
+  word-break: break-all;
+  margin-top: 6px;
 }
 </style>
