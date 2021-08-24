@@ -1,5 +1,6 @@
 ![issue](https://img.shields.io/badge/issue-0-yellow.svg) ![ubuntu](https://img.shields.io/badge/ubuntu-20.04-important.svg)<br />
-![openvidu](https://img.shields.io/badge/openvidu-2.19.0-brightgreen.svg) ![spring](https://img.shields.io/badge/spring-2.5.4-brightgreen.svg) ![node](https://img.shields.io/badge/node-14.16.1-brightgreen.svg) ![vue](https://img.shields.io/badge/vue-3.0.0-brightgreen.svg) ![vuex](https://img.shields.io/badge/vuex-4.0.0-green.svg) ![element-plus](https://img.shields.io/badge/element_plus-1.1.0_beta.1-green.svg) ![bootstrap](https://img.shields.io/badge/bootstrap-5.1.0-green.svg)
+![openvidu](https://img.shields.io/badge/openvidu-2.19.0-brightgreen.svg) ![spring](https://img.shields.io/badge/spring-2.5.4-brightgreen.svg) ![node](https://img.shields.io/badge/node-14.16.1-brightgreen.svg) ![vue](https://img.shields.io/badge/vue-3.0.0-brightgreen.svg)<br />
+![vuex](https://img.shields.io/badge/vuex-4.0.0-green.svg) ![element-plus](https://img.shields.io/badge/element_plus-1.1.0_beta.1-green.svg) ![bootstrap](https://img.shields.io/badge/bootstrap-5.1.0-green.svg)
 
 <br />
 
