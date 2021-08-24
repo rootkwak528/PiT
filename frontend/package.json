@@ -11,7 +11,7 @@
     "@mdi/font": "5.9.55",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
-    "element-plus": "^1.0.2-beta.44",
+    "element-plus": "^1.1.0-beta.1",
     "element-ui": "^2.15.3",
     "node-sass": "^6.0.0",
     "package": "^1.0.1",
