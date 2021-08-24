@@ -10,7 +10,7 @@
 [6. 서버 구조](#6-서버-구조)<br/>
 [7. 데이터베이스 구조](#7-데이터베이스-구조)<br/>
 [8. 실행 방법](#8-실행-방법)<br/>
-[9. Contributor](#9-Contributor)<br/>
+[9. Contributor](#9-contributor)<br/>
 
 <br />
 <br />
@@ -21,6 +21,7 @@
 - 개발인원 : 곽호근, 서민영, 서요셉, 안대현, 윤영은
 - 주제 : 화상 PT와 클래스 신청 서비스를 연계한 통합 웹 서비스
 - 역할
+
   ![overview - role and responsibilities](https://i.imgur.com/sMBvMyA.png)
     - Backend : 서요셉, 안대현
     - Frontend : 서요셉, 윤영은
