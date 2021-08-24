@@ -1,5 +1,5 @@
 <template>
-  <h1>입력한 검색어 : {{ this.$route.query.word }}</h1>
+  <h2 style="margin-top: 20px">입력한 검색어 : {{ this.$route.query.word }}</h2>
   <search-class-section />
 </template>
 

@@ -206,7 +206,11 @@ app.use(window.VueVideoPlayer);
 // app.use(Calendar);
 
 components.forEach(component => {
-  app.component(component.name, component);
+  try {
+    app.component(component.name, component);
+  } catch (err) {
+    console.log(err)
+  }
 });
 
 plugins.forEach(plugin => {

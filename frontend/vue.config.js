@@ -10,7 +10,6 @@ module.exports = {
     open: true,
     proxy: {
       '/v1': {
-        // target: 'https://i5a204.p.ssafy.io/api'
         target: 'http://localhost:8080/'
       }
     },
