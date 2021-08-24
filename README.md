@@ -20,8 +20,7 @@
 - 개발기간 : 2021.07.12 - 2021.08.20
 - 개발인원 : 곽호근, 서민영, 서요셉, 안대현, 윤영은
 - 주제 : 화상 PT와 클래스 신청 서비스를 연계한 통합 웹 서비스
-- 역할
-
+- 역할<br />
   ![overview - role and responsibilities](https://i.imgur.com/sMBvMyA.png)
     - Backend : 서요셉, 안대현
     - Frontend : 서요셉, 윤영은
